@@ -219,7 +219,7 @@
     gap: 12px;
   }
   @media (min-width: 620px) {
-    .kpi-grid { grid-template-columns: repeat(4, 1fr); }
+    .kpi-grid { grid-template-columns: repeat(3, 1fr); }
   }
   .kpi {
     background: var(--surface-raised);
@@ -457,7 +457,8 @@
       unitsReturned: 9    // số cái nằm trong các đơn "Đã hoàn"
     },
     cogsRate: 0.40,   // giá vốn = 40% giá bán (tạm thời)
-    adsSpend: 4148010, // chi phí quảng cáo lũy kế cùng kỳ (khớp accountTotals.spend bên dưới)
+    adsSpend: 4148010, // chi phí quảng cáo lũy kế cùng kỳ, CHƯA gồm VAT (khớp accountTotals.spend bên dưới)
+    adsVatRate: 0.10, // VAT quảng cáo Facebook — cộng thêm 10% lên chi phí ads khi tính lợi nhuận
 
     // ---- dữ liệu quảng cáo (từ export Facebook Ads Manager, lũy kế đến 21/08/2026) ----
     accountTotals: {
@@ -500,14 +501,15 @@
   const netGmv = hasRevenue ? r.gross - r.returnedAmount : null;
   const cogs = hasRevenue ? netGmv * DATA.cogsRate : null;
   const ads = DATA.adsSpend;
-  const grossProfit = (hasRevenue && ads !== null) ? netGmv - cogs - ads : null;
+  const adsCost = ads !== null ? ads * (1 + DATA.adsVatRate) : null; // chi phí ads thực trả, đã gồm 10% VAT
+  const grossProfit = (hasRevenue && adsCost !== null) ? netGmv - cogs - adsCost : null;
   const margin = (grossProfit !== null && netGmv) ? grossProfit / netGmv : null;
   const returnRate = (r.ordersTotal && r.ordersReturned !== null) ? r.ordersReturned / r.ordersTotal : null;
   const ordersKept = (r.ordersTotal && r.ordersReturned !== null) ? r.ordersTotal - r.ordersReturned : null;
   const aov = (ordersKept && netGmv !== null) ? netGmv / ordersKept : null;
-  const adsToGmv = (ads !== null && netGmv) ? ads / netGmv : null;
-  const unitsSold = (r.unitsGross !== null && r.unitsGross !== undefined && r.unitsReturned !== null && r.unitsReturned !== undefined)
-    ? r.unitsGross - r.unitsReturned : null;
+  const adsToGmv = (adsCost !== null && netGmv) ? adsCost / netGmv : null;
+  const hasUnits = r.unitsGross !== null && r.unitsGross !== undefined && r.unitsReturned !== null && r.unitsReturned !== undefined;
+  const unitsSold = hasUnits ? r.unitsGross - r.unitsReturned : null;
 
   const heroEl = document.getElementById("hero-profit");
   if (grossProfit === null) {
@@ -534,7 +536,7 @@
       <div class="chip-row">
         ${chip("Biên lợi nhuận", pct(margin))}
         ${chip("Giá vốn (40%)", vnd(cogs))}
-        ${chip("Ads", vnd(ads))}
+        ${chip("Ads (đã VAT)", vnd(adsCost))}
       </div>`;
   } else {
     subHtml = `<div class="chip-row"><span class="op">Công thức: GMV ròng (đã trừ đơn hoàn) × 60% − Chi phí quảng cáo</span></div>`;
@@ -544,11 +546,12 @@
   const kpis = [
     { label: "GMV tạo đơn", value: r.gross, accent: "var(--ink-faint)" },
     { label: "GMV ròng", value: netGmv, accent: "var(--good)" },
-    { label: "Số lượng đã bán", value: unitsSold, unit: NBSP + "cái", accent: "var(--good)" },
+    { label: "Số lượng bán ra", value: hasUnits ? r.unitsGross : null, unit: NBSP + "cái", accent: "var(--ink-faint)" },
+    { label: "Số lượng bán ròng (trừ hoàn)", value: unitsSold, unit: NBSP + "cái", accent: "var(--good)" },
     { label: "Tỷ lệ hoàn hàng", value: returnRate, isPct: true, accent: "var(--critical)" },
     { label: "AOV sau hoàn", value: aov, accent: "var(--ink-faint)" },
     { label: "Giá vốn (40%)", value: cogs, accent: "var(--warn)" },
-    { label: "Chi phí Ads", value: ads, accent: "var(--warn)" },
+    { label: "Chi phí Ads (đã VAT)", value: adsCost, accent: "var(--warn)" },
     { label: "Ads / GMV ròng", value: adsToGmv, isPct: true, accent: "var(--accent)" }
   ];
   document.getElementById("kpi-grid").innerHTML = kpis.map(k => {
