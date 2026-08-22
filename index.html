@@ -1,33 +1,606 @@
-<!doctype html>
-<html lang="vi">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Santony — Bảng điều hành</title>
-  <style>
-    :root{--ink:#17221e;--muted:#738078;--line:#e4e7e2;--paper:#f4f4f0;--green:#173328;--lime:#c9ee65;--blue:#356fd1;--red:#c84f46;--amber:#dd9836}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif}nav{height:70px;background:var(--green);color:#fff;display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;padding:0 42px}.brand{display:flex;align-items:center;gap:11px;letter-spacing:2.7px;font-size:15px;font-weight:700}.brand i{width:34px;height:34px;border-radius:50%;background:var(--lime);color:var(--green);display:grid;place-items:center;font:italic 22px Georgia}.nav-title{text-align:center;font-size:12px;font-weight:700}.nav-meta{justify-self:end;color:#b8cdc4;font-size:11px}.page{max-width:1360px;margin:auto;padding:44px 42px 28px}header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:30px}.eyebrow{font-size:9px;font-weight:800;letter-spacing:1.35px;color:#7d8a83;margin:0 0 9px}h1{font:700 36px/1.12 Georgia,serif;letter-spacing:-.9px;margin:0 0 9px}.subtitle{font-size:13px;color:var(--muted);margin:0}.period,.kpi,.panel{background:#fff;border:1px solid var(--line);border-radius:12px}.period{padding:12px 16px;display:flex;flex-direction:column;min-width:185px}.period small,.period span{font-size:8px;color:#8b948f}.period b{font:700 14px Georgia;margin:5px 0 3px}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px}.kpi{padding:18px 19px 17px;position:relative;overflow:hidden}.kpi:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--blue)}.kpi.green:before{background:#27a276}.kpi.orange:before{background:var(--amber)}.kpi.red:before{background:var(--red)}.kpi label{color:#778179;font-size:9px;font-weight:800;letter-spacing:.8px}.kpi strong{font:700 25px Georgia;display:block;margin:15px 0 7px}.kpi p{font-size:9px;color:#7b8780;margin:0}.main-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:14px;margin-bottom:14px}.panel{padding:23px}.panel h2{font:700 19px Georgia;margin:0}.panel-head{display:flex;justify-content:space-between}.tag{background:#eef4ee;color:#66806f;border-radius:99px;padding:5px 9px;font-size:8px;font-weight:700}.bridge{display:grid;grid-template-columns:1fr 28px 1fr 28px 1fr;align-items:stretch;gap:8px;margin:24px 0}.bridge>i{display:grid;place-items:center;font:400 20px Georgia;color:#a2aaa5}.bridge-card{border-radius:9px;padding:15px;display:flex;flex-direction:column;gap:6px}.bridge-card span{font-size:9px;color:#758078}.bridge-card strong{font:700 16px Georgia}.bridge-card small{font-size:8px;color:#8a938e}.gross{background:#edf2fb}.returned{background:#faece9}.returned strong{color:#bd5147}.net{background:#e9f5ef}.net strong{color:#16805f}.compare{border-top:1px solid var(--line);padding-top:17px}.compare-head{display:flex;justify-content:space-between;margin-bottom:13px;font-size:9px;color:#758078}.compare-head b{color:#bc5148}.row{display:grid;grid-template-columns:100px 1fr 48px;align-items:center;gap:10px;margin:9px 0;font-size:9px}.track{height:11px;background:#edf0ed;border-radius:5px;overflow:hidden}.track i{display:block;height:100%;border-radius:5px}.netbar{width:91.4%;background:#2c9d74}.cogsbar{width:36.6%;background:#dda14b}.adsbar{width:63.4%;background:#cf6358}.totalbar{width:100%;background:#7f403b}.row>b{text-align:right}.formula{border-top:1px solid var(--line);padding-top:18px;margin-top:16px;display:flex;align-items:center;gap:10px;font-size:10px;color:#6e7973}.formula strong{font:700 17px Georgia;color:var(--red);margin-left:auto}.caption{font-size:8px;color:#9aa19d}.score{display:grid;grid-template-columns:115px 1fr;gap:20px;align-items:center;margin:20px 0 27px}.ring{width:112px;height:112px;border-radius:50%;background:conic-gradient(var(--red) 0 69.4%,#e8ece8 69.4%);position:relative;display:grid;place-content:center;text-align:center}.ring:after{content:"";position:absolute;inset:10px;border-radius:50%;background:#fff}.ring strong,.ring span{position:relative;z-index:1}.ring strong{font:700 21px Georgia}.ring span{font-size:8px;color:#858e89}.alert{background:#f7e9e6;color:#b94e44;padding:4px 7px;border-radius:4px;font-size:8px;font-weight:800}.score h2{font:700 16px Georgia;margin:9px 0 7px}.score p,.definition p{font-size:9px;line-height:1.5;color:#758078}.definition{border-top:1px solid var(--line);padding-top:17px}.definition b{font-size:10px}.definition strong{color:var(--red)}.bottom{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.compact{display:flex;justify-content:space-between;gap:25px;min-height:130px}.compact strong{display:block;font:700 19px Georgia;color:var(--red);margin:4px 0}.compact span{font-size:9px;color:#758078}.compact>p{font-size:9px;line-height:1.55;color:#7c8680;margin:21px 0 0}footer{border-top:1px solid #dfe2de;margin-top:30px;padding-top:18px;display:flex;justify-content:space-between;color:#909893;font-size:8px}@media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}.main-grid,.bottom{grid-template-columns:1fr}.page{padding:30px 22px}}@media(max-width:600px){nav{padding:0 18px;grid-template-columns:1fr 1fr}.nav-title{display:none}.nav-meta{font-size:9px}.page{padding:25px 14px}header{flex-direction:column;align-items:flex-start;gap:20px}h1{font-size:29px}.period{width:100%}.bridge{grid-template-columns:1fr}.bridge>i{height:15px}.kpis{gap:8px}.kpi{padding:14px 12px}.kpi strong{font-size:19px}.score{grid-template-columns:90px 1fr}.ring{width:88px;height:88px}.compact{flex-direction:column;gap:0}footer{flex-direction:column;gap:8px}}
-  </style>
-</head>
-<body>
-  <nav><div class="brand"><i>S</i>SANTONY</div><div class="nav-title">Tổng quan</div><div class="nav-meta">● Cập nhật từ ảnh · 21/08</div></nav>
-  <main class="page">
-    <header><div><p class="eyebrow">BẢNG ĐIỀU HÀNH / SNAPSHOT</p><h1>Santony đang vận hành thế nào?</h1><p class="subtitle">Một trang duy nhất để nhìn nhanh GMV, giá vốn, tỷ lệ hoàn và áp lực quảng cáo.</p></div><div class="period"><small>KỲ DỮ LIỆU</small><b>09/07 — 21/08</b><span>19 đơn trong ảnh Pancake</span></div></header>
-    <section class="kpis">
-      <article class="kpi green"><label>GMV RÒNG</label><strong>7.040.000 ₫</strong><p>8.908.000 ₫ − 1.868.000 ₫ hoàn</p></article>
-      <article class="kpi"><label>AOV SAU HOÀN</label><strong>440.000 ₫</strong><p>7.040.000 ₫ / 16 đơn không hoàn</p></article>
-      <article class="kpi orange"><label>TỶ LỆ HOÀN</label><strong>15,8%</strong><p>3 đơn hoàn / 19 tổng đơn</p></article>
-      <article class="kpi red"><label>ADS / GMV</label><strong>55,1%</strong><p>3.880.126 ₫ chi tiêu quảng cáo</p></article>
-    </section>
-    <section class="main-grid">
-      <article class="panel"><div class="panel-head"><div><p class="eyebrow">CẤU TRÚC GMV</p><h2>Từ GMV tạo đơn đến phần còn lại</h2></div><span class="tag">Tạm tính</span></div>
-        <div class="bridge"><div class="bridge-card gross"><span>GMV tạo đơn</span><strong>8.908.000 ₫</strong><small>19 đơn</small></div><i>−</i><div class="bridge-card returned"><span>GMV đơn hoàn</span><strong>1.868.000 ₫</strong><small>3 đơn · 21%</small></div><i>=</i><div class="bridge-card net"><span>GMV ròng</span><strong>7.040.000 ₫</strong><small>16 đơn không hoàn</small></div></div>
-        <div class="compare"><div class="compare-head"><span>Chi phí so với GMV ròng</span><b>Giá vốn + Ads = 95,1%</b></div><div class="row"><span>GMV ròng</span><div class="track"><i class="netbar" style="width:100%"></i></div><b>100%</b></div><div class="row"><span>Giá vốn</span><div class="track"><i class="cogsbar" style="width:40%"></i></div><b>40%</b></div><div class="row"><span>Ads</span><div class="track"><i class="adsbar" style="width:55.1%"></i></div><b>55,1%</b></div><div class="row"><span>Giá vốn + Ads</span><div class="track"><i class="totalbar" style="width:95.1%"></i></div><b>95,1%</b></div></div>
-        <div class="formula"><span>GMV ròng</span><i>−</i><span>Giá vốn</span><i>−</i><span>Ads</span><i>=</i><strong style="color:#16805f">343.874 ₫</strong></div><p class="caption">Phần còn lại chưa trừ phí vận chuyển, hoàn hàng, COD, giảm giá và vận hành.</p>
-      </article>
-      <article class="panel"><p class="eyebrow">ĐIỂM CẦN NHÌN</p><div class="score"><div class="ring" style="background:conic-gradient(var(--red) 0 55.1%,#e8ece8 55.1%)"><strong>55,1%</strong><span>Ads / GMV ròng</span></div><div><span class="alert">Cao</span><h2>Ads đang chiếm hơn nửa GMV ròng</h2><p>Cứ 100.000 ₫ GMV sau hoàn thì đang chi khoảng 55.100 ₫ cho quảng cáo.</p></div></div><div class="definition"><b>Ads / GMV tính thế nào?</b><p>3.880.126 ₫ chi quảng cáo ÷ 7.040.000 ₫ GMV sau hoàn = <strong>55,1%</strong>.</p></div></article>
-    </section>
-    <section class="bottom"><article class="panel compact"><div><p class="eyebrow">BIÊN CÒN LẠI TẠM TÍNH</p><strong style="color:#16805f">343.874 ₫</strong><span>4,9% GMV ròng</span></div><p>Chỉ là GMV sau hoàn trừ giá vốn 40% và Ads; chưa phải lợi nhuận ròng.</p></article><article class="panel compact"><div><p class="eyebrow">ẢNH HƯỞNG ĐƠN HOÀN</p><strong>−1.868.000 ₫</strong><span>21% GMV tạo đơn</span></div><p>3 trong 19 đơn bị hoàn, làm GMV giảm từ 8.908.000 ₫ xuống 7.040.000 ₫.</p></article></section>
-    <footer><span>SANTONY / MANAGEMENT VIEW</span><span>GMV luôn trừ đơn hoàn trước khi tính giá vốn và Ads/GMV. Giá vốn hiện là giả định 40%.</span></footer>
-  </main>
-</body>
-</html>
+<meta charset="utf-8">
+<title>Santony Profit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,680&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink: #211C22;
+    --ink-soft: #5C5560;
+    --ink-faint: #8B848C;
+    --surface: #F6F4F2;
+    --surface-raised: #FFFFFF;
+    --border: #E4DFDB;
+    --accent: #9C2F53;
+    --accent-soft: #F1DCE3;
+    --good: #2E7D5B;
+    --good-soft: #DCEEE4;
+    --warn: #B8802A;
+    --warn-soft: #F5E7CF;
+    --critical: #C0392B;
+    --critical-soft: #F7DEDB;
+    --muted-track: #EDEAE7;
+    --shadow: 0 1px 2px rgba(33,28,34,0.04), 0 8px 24px rgba(33,28,34,0.05);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #F3EEF0;
+      --ink-soft: #B9AFB6;
+      --ink-faint: #837C82;
+      --surface: #1B171A;
+      --surface-raised: #242024;
+      --border: #353034;
+      --accent: #E68CAB;
+      --accent-soft: #3A1F29;
+      --good: #6FCF9E;
+      --good-soft: #16332A;
+      --warn: #E3B15C;
+      --warn-soft: #3A2E17;
+      --critical: #E8776B;
+      --critical-soft: #3A1E1B;
+      --muted-track: #2A262A;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #F3EEF0;
+    --ink-soft: #B9AFB6;
+    --ink-faint: #837C82;
+    --surface: #1B171A;
+    --surface-raised: #242024;
+    --border: #353034;
+    --accent: #E68CAB;
+    --accent-soft: #3A1F29;
+    --good: #6FCF9E;
+    --good-soft: #16332A;
+    --warn: #E3B15C;
+    --warn-soft: #3A2E17;
+    --critical: #E8776B;
+    --critical-soft: #3A1E1B;
+    --muted-track: #2A262A;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 28px 20px 64px;
+  }
+
+  /* ---------- Masthead ---------- */
+  .masthead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    padding-bottom: 22px;
+    margin-bottom: 26px;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 680;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+  }
+  .brand .accent-dot { color: var(--accent); }
+  .brand-sub {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+  .updated-pill {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 12px;
+    white-space: nowrap;
+  }
+
+  /* ---------- Sections ---------- */
+  .section { margin-bottom: 44px; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .section-num {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    color: var(--ink-faint);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 6px;
+  }
+  .section-title {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: -0.005em;
+  }
+  .section-note {
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    margin-left: auto;
+  }
+
+  /* ---------- Hero profit card ---------- */
+  .hero {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 26px 28px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--accent);
+  }
+  .hero-label {
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .hero-figure {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: clamp(34px, 6vw, 48px);
+    line-height: 1.1;
+    margin-top: 6px;
+    letter-spacing: -0.01em;
+  }
+  .hero-figure.empty {
+    color: var(--ink-faint);
+    font-size: 22px;
+    font-weight: 500;
+    font-family: "IBM Plex Sans", sans-serif;
+  }
+  .hero-figure .sign { color: var(--ink-faint); font-weight: 500; margin-right: 2px; }
+  .hero-sub { margin-top: 14px; }
+  .chip-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 13px;
+  }
+  .chip-row + .chip-row { margin-top: 8px; }
+  .chip-row .op { color: var(--ink-faint); font-size: 13px; padding: 0 1px; }
+  .stat-chip {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 7px;
+    white-space: nowrap;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 5px 10px;
+  }
+  .stat-chip.accent { background: var(--accent-soft); border-color: transparent; }
+  .stat-chip .chip-label { color: var(--ink-soft); font-size: 12.5px; }
+  .stat-chip .chip-value {
+    color: var(--ink);
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 13.5px;
+  }
+  .stat-chip.accent .chip-value { color: var(--accent); }
+
+  /* ---------- KPI grid ---------- */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  @media (min-width: 620px) {
+    .kpi-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  .kpi {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 16px;
+    border-top: 3px solid var(--kpi-accent, var(--border));
+    min-width: 0;
+  }
+  .kpi-label {
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--ink-soft);
+    font-weight: 500;
+    min-height: 2.7em;
+  }
+  .kpi-value {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: clamp(17px, 3.4vw, 21px);
+    margin-top: 6px;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .kpi-value.empty { color: var(--ink-faint); font-size: 13.5px; font-weight: 400; font-family: "IBM Plex Sans", sans-serif; white-space: normal; }
+  .kpi-hint { font-size: 11px; color: var(--ink-faint); margin-top: 4px; }
+
+  /* ---------- Ad summary tiles ---------- */
+  .tile-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .tile {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .tile-label { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .tile-value {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 19px;
+    margin-top: 4px;
+  }
+
+  /* ---------- Table ---------- */
+  .table-card {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table-scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; }
+  thead th {
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    font-weight: 500;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  thead th.num, td.num { text-align: right; }
+  tbody td {
+    padding: 12px 14px;
+    font-size: 13.5px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody td.num {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  .campaign-name { font-weight: 500; }
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 3px 9px 3px 7px;
+    border-radius: 100px;
+  }
+  .status-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .status-pill.active { background: var(--good-soft); color: var(--good); }
+  .status-pill.active .dot { background: var(--good); }
+  .status-pill.inactive { background: var(--muted-track); color: var(--ink-faint); }
+  .status-pill.inactive .dot { background: var(--ink-faint); }
+  .roas-good { color: var(--good); font-weight: 600; }
+  .dim { color: var(--ink-faint); }
+
+  /* ---------- Funnel ---------- */
+  .funnel-card {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px 18px;
+    margin-top: 14px;
+    box-shadow: var(--shadow);
+  }
+  .funnel-title { font-size: 13px; font-weight: 600; margin-bottom: 14px; }
+  .funnel-row { margin-bottom: 12px; }
+  .funnel-row:last-child { margin-bottom: 0; }
+  .funnel-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    margin-bottom: 5px;
+  }
+  .funnel-meta .lbl { color: var(--ink-soft); }
+  .funnel-meta .val { font-family: "IBM Plex Mono", monospace; font-weight: 600; }
+  .funnel-track {
+    background: var(--muted-track);
+    border-radius: 6px;
+    height: 14px;
+    overflow: hidden;
+  }
+  .funnel-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 6px;
+    transition: width 0.6s ease;
+  }
+  .funnel-rate {
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-top: 4px;
+    font-family: "IBM Plex Mono", monospace;
+  }
+
+  footer {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .funnel-fill { transition: none; }
+  }
+</style>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <div>
+      <div class="brand">Santony<span class="accent-dot">·</span>Lợi nhuận</div>
+      <div class="brand-sub">Dashboard theo dõi lợi nhuận theo ngày</div>
+    </div>
+    <div class="updated-pill" id="updated-pill">Cập nhật lần cuối: —</div>
+  </div>
+
+  <!-- ============ SECTION 1 — LỢI NHUẬN ============ -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <span class="section-title">Lợi nhuận</span>
+      <span class="section-note" id="period-note"></span>
+    </div>
+
+    <div class="hero">
+      <div class="hero-label">Lợi nhuận gộp</div>
+      <div class="hero-figure" id="hero-profit">—</div>
+      <div class="hero-sub" id="hero-sub"></div>
+    </div>
+
+    <div class="kpi-grid" id="kpi-grid"></div>
+  </div>
+
+  <!-- ============ SECTION 2 — HIỆU QUẢ QUẢNG CÁO ============ -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <span class="section-title">Hiệu quả quảng cáo</span>
+      <span class="section-note">Lũy kế đến 21/08/2026</span>
+    </div>
+
+    <div class="tile-row" id="ad-tiles"></div>
+
+    <div class="table-card">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Chiến dịch</th>
+              <th>Trạng thái</th>
+              <th class="num">Chi tiêu</th>
+              <th class="num">Liên hệ mới</th>
+              <th class="num">Lượt mua</th>
+              <th class="num">Doanh thu (Ads)</th>
+              <th class="num">ROAS</th>
+            </tr>
+          </thead>
+          <tbody id="campaign-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="funnel-card">
+      <div class="funnel-title">Phễu chuyển đổi — toàn tài khoản</div>
+      <div id="funnel"></div>
+    </div>
+  </div>
+
+  <footer>Số liệu quảng cáo lấy từ file xuất Facebook Ads Manager · Số liệu doanh thu/đơn hàng cập nhật thủ công mỗi ngày</footer>
+</div>
+
+<script>
+  /* ============================================================
+     DAILY INPUT — cập nhật các số ở đây mỗi khi có số liệu mới
+     ============================================================ */
+  const DATA = {
+    updatedAt: "2026-08-22",
+    period: "Kỳ hiện tại",
+
+    revenue: {
+      gross: 10345000,      // GMV tạo đơn — tổng tiền tất cả đơn (22 đơn, lũy kế đến 22/08)
+      returnedAmount: 1868000, // GMV đơn "Đã hoàn" (3 đơn) — đơn duy nhất KHÔNG tính vào GMV ròng
+      ordersTotal: 22,
+      ordersReturned: 3,
+      // Quy đổi giá trị đơn -> số cái: 255k=1, 330k/459k/479k=2, 679k=3, 859k=4
+      unitsGross: 45,     // tổng số cái trên tất cả đơn
+      unitsReturned: 9    // số cái nằm trong các đơn "Đã hoàn"
+    },
+    cogsRate: 0.40,   // giá vốn = 40% giá bán (tạm thời)
+    adsSpend: 4148010, // chi phí quảng cáo lũy kế cùng kỳ (khớp accountTotals.spend bên dưới)
+
+    // ---- dữ liệu quảng cáo (từ export Facebook Ads Manager, lũy kế đến 21/08/2026) ----
+    accountTotals: {
+      spend: 4148010,
+      impressions: 28417,
+      reach: 13404,
+      newContacts: 351,
+      purchases: 19
+    },
+    campaigns: [
+      { name: "Mess | 30Jun",       status: "inactive", spend: 50647,   contacts: 12,  purchases: null, revenue: null,    roas: null },
+      { name: "Mess | 06Jul",       status: "inactive", spend: 1076926, contacts: 124, purchases: 3,    revenue: null,    roas: null },
+      { name: "Mess-GMV | 11Jul",   status: "inactive", spend: 370001,  contacts: 45,  purchases: null, revenue: null,    roas: null },
+      { name: "Mess-GMV | 8Aug",    status: "active",   spend: 1415037, contacts: 88,  purchases: 9,    revenue: 1957000, roas: 1.383003 },
+      { name: "Mess-Inbox | 11Aug", status: "active",   spend: 1179086, contacts: 80,  purchases: 6,    revenue: 1848000, roas: 1.567316 },
+      { name: "Mess-GMV | 20Aug",   status: "active",   spend: 56313,   contacts: 2,   purchases: 1,    revenue: 479000,  roas: 8.506029 }
+    ]
+  };
+
+  /* ============================================================ */
+
+  const NBSP = " ";
+  const vnd = n => n === null || n === undefined
+    ? null
+    : new Intl.NumberFormat("vi-VN").format(Math.round(n)) + NBSP + "₫";
+  const num = n => n === null || n === undefined ? null : new Intl.NumberFormat("vi-VN").format(n);
+  const pct = n => n === null || n === undefined ? null : (n * 100).toLocaleString("vi-VN", { maximumFractionDigits: 1 }) + "%";
+
+  function fmtDate(iso) {
+    const [y, m, d] = iso.split("-");
+    return `${d}/${m}/${y}`;
+  }
+  document.getElementById("updated-pill").textContent = "Cập nhật lần cuối: " + fmtDate(DATA.updatedAt);
+  document.getElementById("period-note").textContent = DATA.period;
+
+  // ---------- Profit calc ----------
+  // GMV ròng = GMV tạo đơn − GMV đơn "Đã hoàn". Mọi đơn khác (Mới/Đóng hàng/Gửi hàng/Đã nhận/Đã thu tiền) đều tính vào GMV ròng.
+  const r = DATA.revenue;
+  const hasRevenue = r.gross !== null && r.gross !== undefined;
+  const netGmv = hasRevenue ? r.gross - r.returnedAmount : null;
+  const cogs = hasRevenue ? netGmv * DATA.cogsRate : null;
+  const ads = DATA.adsSpend;
+  const grossProfit = (hasRevenue && ads !== null) ? netGmv - cogs - ads : null;
+  const margin = (grossProfit !== null && netGmv) ? grossProfit / netGmv : null;
+  const returnRate = (r.ordersTotal && r.ordersReturned !== null) ? r.ordersReturned / r.ordersTotal : null;
+  const ordersKept = (r.ordersTotal && r.ordersReturned !== null) ? r.ordersTotal - r.ordersReturned : null;
+  const aov = (ordersKept && netGmv !== null) ? netGmv / ordersKept : null;
+  const adsToGmv = (ads !== null && netGmv) ? ads / netGmv : null;
+  const unitsSold = (r.unitsGross !== null && r.unitsGross !== undefined && r.unitsReturned !== null && r.unitsReturned !== undefined)
+    ? r.unitsGross - r.unitsReturned : null;
+
+  const heroEl = document.getElementById("hero-profit");
+  if (grossProfit === null) {
+    heroEl.classList.add("empty");
+    heroEl.textContent = "Đang chờ số liệu — nhắn doanh thu & chi phí ads hôm nay để cập nhật";
+  } else {
+    heroEl.innerHTML = (grossProfit < 0 ? '<span class="sign">−</span>' : '') + vnd(Math.abs(grossProfit));
+    if (grossProfit < 0) heroEl.style.color = "var(--critical)";
+  }
+  function chip(label, value, opts) {
+    opts = opts || {};
+    return `<span class="stat-chip${opts.accent ? " accent" : ""}"><span class="chip-label">${label}</span><span class="chip-value">${value}</span></span>`;
+  }
+  let subHtml;
+  if (margin !== null) {
+    subHtml = `
+      <div class="chip-row">
+        ${chip("GMV tạo đơn", vnd(r.gross))}
+        <span class="op">−</span>
+        ${chip("Hoàn", vnd(r.returnedAmount))}
+        <span class="op">=</span>
+        ${chip("GMV ròng", vnd(netGmv), { accent: true })}
+      </div>
+      <div class="chip-row">
+        ${chip("Biên lợi nhuận", pct(margin))}
+        ${chip("Giá vốn (40%)", vnd(cogs))}
+        ${chip("Ads", vnd(ads))}
+      </div>`;
+  } else {
+    subHtml = `<div class="chip-row"><span class="op">Công thức: GMV ròng (đã trừ đơn hoàn) × 60% − Chi phí quảng cáo</span></div>`;
+  }
+  document.getElementById("hero-sub").innerHTML = subHtml;
+
+  const kpis = [
+    { label: "GMV tạo đơn", value: r.gross, accent: "var(--ink-faint)" },
+    { label: "GMV ròng", value: netGmv, accent: "var(--good)" },
+    { label: "Số lượng đã bán", value: unitsSold, unit: NBSP + "cái", accent: "var(--good)" },
+    { label: "Tỷ lệ hoàn hàng", value: returnRate, isPct: true, accent: "var(--critical)" },
+    { label: "AOV sau hoàn", value: aov, accent: "var(--ink-faint)" },
+    { label: "Giá vốn (40%)", value: cogs, accent: "var(--warn)" },
+    { label: "Chi phí Ads", value: ads, accent: "var(--warn)" },
+    { label: "Ads / GMV ròng", value: adsToGmv, isPct: true, accent: "var(--accent)" }
+  ];
+  document.getElementById("kpi-grid").innerHTML = kpis.map(k => {
+    const display = k.isPct ? pct(k.value) : (k.unit ? (k.value === null ? null : num(k.value) + k.unit) : vnd(k.value));
+    return `<div class="kpi" style="--kpi-accent:${k.accent}">
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-value ${display === null ? "empty" : ""}">${display === null ? "Chưa có dữ liệu" : display}</div>
+    </div>`;
+  }).join("");
+
+  // ---------- Ad tiles ----------
+  const at = DATA.accountTotals;
+  const trackedRevenue = DATA.campaigns.reduce((s, c) => s + (c.revenue || 0), 0);
+  const trackedSpend = DATA.campaigns.filter(c => c.revenue).reduce((s, c) => s + c.spend, 0);
+  const blendedRoas = trackedRevenue / trackedSpend;
+  const adTiles = [
+    { label: "Tổng chi tiêu (lũy kế)", value: vnd(at.spend) },
+    { label: "ROAS b.quân (3 CD có ROI)", value: blendedRoas.toLocaleString("vi-VN", { maximumFractionDigits: 2 }) + "x" },
+    { label: "Tổng liên hệ nhắn tin", value: num(at.newContacts) },
+    { label: "Lượt mua ghi nhận", value: num(at.purchases) }
+  ];
+  document.getElementById("ad-tiles").innerHTML = adTiles.map(t =>
+    `<div class="tile"><div class="tile-label">${t.label}</div><div class="tile-value">${t.value}</div></div>`
+  ).join("");
+
+  // ---------- Campaign table ----------
+  document.getElementById("campaign-tbody").innerHTML = DATA.campaigns.map(c => `
+    <tr>
+      <td class="campaign-name">${c.name}</td>
+      <td><span class="status-pill ${c.status}"><span class="dot"></span>${c.status === "active" ? "Đang chạy" : "Tạm dừng"}</span></td>
+      <td class="num">${vnd(c.spend)}</td>
+      <td class="num">${num(c.contacts)}</td>
+      <td class="num">${c.purchases !== null ? num(c.purchases) : '<span class="dim">—</span>'}</td>
+      <td class="num">${c.revenue ? vnd(c.revenue) : '<span class="dim">—</span>'}</td>
+      <td class="num">${c.roas ? `<span class="roas-good">${c.roas.toLocaleString("vi-VN", { maximumFractionDigits: 2 })}x</span>` : '<span class="dim">—</span>'}</td>
+    </tr>
+  `).join("");
+
+  // ---------- Funnel ----------
+  const steps = [
+    { label: "Người tiếp cận (Reach)", value: at.reach },
+    { label: "Liên hệ nhắn tin mới", value: at.newContacts },
+    { label: "Lượt mua ghi nhận", value: at.purchases }
+  ];
+  const maxV = steps[0].value;
+  document.getElementById("funnel").innerHTML = steps.map((s, i) => {
+    const width = (s.value / maxV) * 100;
+    const rate = i > 0 ? ((s.value / steps[i - 1].value) * 100).toLocaleString("vi-VN", { maximumFractionDigits: 1 }) + "% so với bước trước" : "";
+    return `<div class="funnel-row">
+      <div class="funnel-meta"><span class="lbl">${s.label}</span><span class="val">${num(s.value)}</span></div>
+      <div class="funnel-track"><div class="funnel-fill" style="width:${width}%"></div></div>
+      ${rate ? `<div class="funnel-rate">${rate}</div>` : ""}
+    </div>`;
+  }).join("");
+</script>
