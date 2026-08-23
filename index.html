@@ -406,7 +406,7 @@
     <div class="section-head">
       <span class="section-num">02</span>
       <span class="section-title">Hiệu quả quảng cáo</span>
-      <span class="section-note">Lũy kế đến 21/08/2026</span>
+      <span class="section-note">Lũy kế đến 22/08/2026</span>
     </div>
 
     <div class="tile-row" id="ad-tiles"></div>
@@ -444,37 +444,37 @@
      DAILY INPUT — cập nhật các số ở đây mỗi khi có số liệu mới
      ============================================================ */
   const DATA = {
-    updatedAt: "2026-08-22",
+    updatedAt: "2026-08-23",
     period: "Kỳ hiện tại",
 
     revenue: {
-      gross: 10345000,      // GMV tạo đơn — tổng tiền tất cả đơn (22 đơn, lũy kế đến 22/08)
+      gross: 12740000,      // GMV tạo đơn — tổng tiền tất cả đơn (27 đơn, lũy kế đến 23/08)
       returnedAmount: 1868000, // GMV đơn "Đã hoàn" (3 đơn) — đơn duy nhất KHÔNG tính vào GMV ròng
-      ordersTotal: 22,
+      ordersTotal: 27,
       ordersReturned: 3,
       // Quy đổi giá trị đơn -> số cái: 255k=1, 330k/459k/479k=2, 679k=3, 859k=4
-      unitsGross: 45,     // tổng số cái trên tất cả đơn
+      unitsGross: 55,     // tổng số cái trên tất cả đơn
       unitsReturned: 9    // số cái nằm trong các đơn "Đã hoàn"
     },
     cogsRate: 0.40,   // giá vốn = 40% giá bán (tạm thời)
-    adsSpend: 4148010, // chi phí quảng cáo lũy kế cùng kỳ, CHƯA gồm VAT (khớp accountTotals.spend bên dưới)
+    adsSpend: 4403027, // chi phí quảng cáo lũy kế cùng kỳ, CHƯA gồm VAT (khớp accountTotals.spend bên dưới)
     adsVatRate: 0.10, // VAT quảng cáo Facebook — cộng thêm 10% lên chi phí ads khi tính lợi nhuận
 
-    // ---- dữ liệu quảng cáo (từ export Facebook Ads Manager, lũy kế đến 21/08/2026) ----
+    // ---- dữ liệu quảng cáo (từ export Facebook Ads Manager, lũy kế đến 22/08/2026) ----
     accountTotals: {
-      spend: 4148010,
-      impressions: 28417,
-      reach: 13404,
-      newContacts: 351,
-      purchases: 19
+      spend: 4403027,
+      impressions: 30279,
+      reach: 14366,
+      newContacts: 363,
+      purchases: 21
     },
     campaigns: [
       { name: "Mess | 30Jun",       status: "inactive", spend: 50647,   contacts: 12,  purchases: null, revenue: null,    roas: null },
       { name: "Mess | 06Jul",       status: "inactive", spend: 1076926, contacts: 124, purchases: 3,    revenue: null,    roas: null },
       { name: "Mess-GMV | 11Jul",   status: "inactive", spend: 370001,  contacts: 45,  purchases: null, revenue: null,    roas: null },
-      { name: "Mess-GMV | 8Aug",    status: "active",   spend: 1415037, contacts: 88,  purchases: 9,    revenue: 1957000, roas: 1.383003 },
-      { name: "Mess-Inbox | 11Aug", status: "active",   spend: 1179086, contacts: 80,  purchases: 6,    revenue: 1848000, roas: 1.567316 },
-      { name: "Mess-GMV | 20Aug",   status: "active",   spend: 56313,   contacts: 2,   purchases: 1,    revenue: 479000,  roas: 8.506029 }
+      { name: "Mess-GMV | 8Aug",    status: "active",   spend: 1529472, contacts: 95,  purchases: 10,   revenue: 2436000, roas: 1.592707 },
+      { name: "Mess-Inbox | 11Aug", status: "active",   spend: 1285950, contacts: 85,  purchases: 7,    revenue: 2327000, roas: 1.809557 },
+      { name: "Mess-GMV | 20Aug",   status: "active",   spend: 90031,   contacts: 2,   purchases: 1,    revenue: 479000,  roas: 5.32039 }
     ]
   };
 
