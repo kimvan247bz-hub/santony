@@ -321,7 +321,14 @@
   .status-pill.inactive { background: var(--muted-track); color: var(--ink-faint); }
   .status-pill.inactive .dot { background: var(--ink-faint); }
   .roas-good { color: var(--good); font-weight: 600; }
+  .roas-bad { color: var(--critical); font-weight: 600; }
   .dim { color: var(--ink-faint); }
+  .table-footnote {
+    font-size: 11px;
+    color: var(--ink-faint);
+    padding: 12px 14px 14px;
+    border-top: 1px solid var(--border);
+  }
 
   /* ---------- Funnel ---------- */
   .funnel-card {
@@ -361,6 +368,124 @@
     margin-top: 4px;
     font-family: "IBM Plex Mono", monospace;
   }
+
+  /* ---------- Daily bar chart ---------- */
+  .bar-chart-card {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px 14px;
+    box-shadow: var(--shadow);
+  }
+  .bar-chart-card + .bar-chart-card { margin-top: 14px; }
+  .bar-chart-title { font-size: 13px; font-weight: 600; margin-bottom: 16px; }
+  .bar-chart-title-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    margin-bottom: 16px;
+  }
+  .bar-chart-title-row .bar-chart-title { margin-bottom: 0; }
+  .chart-legend { display: flex; gap: 14px; }
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+  }
+  .legend-dot { width: 8px; height: 8px; border-radius: 2px; flex: none; }
+  .bar-chart {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .bar-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 34px;
+    flex: 1 0 auto;
+  }
+  .bar-val {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    margin-bottom: 5px;
+    white-space: nowrap;
+    height: 13px;
+  }
+  .bar-track {
+    height: 110px;
+    display: flex;
+    align-items: flex-end;
+  }
+  .bar-shape {
+    width: 20px;
+    border-radius: 4px 4px 2px 2px;
+    background: var(--bar-color, var(--accent));
+    min-height: 3px;
+    transition: opacity 0.15s ease;
+  }
+  .bar-col:hover .bar-shape { opacity: 0.8; }
+  .bar-col:hover .bar-val { color: var(--ink); }
+  .bar-label {
+    font-size: 10.5px;
+    color: var(--ink-faint);
+    margin-top: 8px;
+    white-space: nowrap;
+  }
+  .bar-col.today .bar-label { color: var(--accent); font-weight: 600; }
+
+  .legend-line {
+    width: 14px;
+    height: 0;
+    border-top: 2px solid var(--ink);
+    flex: none;
+  }
+  .combo-chart-wrap { width: 100%; }
+  #ads-gmv-chart { width: 100%; height: 300px; display: block; overflow: visible; }
+  .combo-bar { transition: opacity 0.15s ease; }
+  .combo-bar:hover { opacity: 0.75; }
+  .combo-axis-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 9px;
+    fill: var(--ink-faint);
+  }
+  .combo-x-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 9px;
+    fill: var(--ink-faint);
+    text-anchor: middle;
+  }
+  .combo-x-label.today { fill: var(--accent); font-weight: 600; }
+  .combo-gridline { stroke: var(--border); stroke-width: 1; }
+  .combo-pct-line { fill: none; stroke: var(--ink); stroke-width: 2; }
+  .combo-breakeven-line { stroke: var(--critical); stroke-width: 1; stroke-dasharray: 4 3; }
+
+  .chart-note {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+  .chart-footnote {
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+  .line-chart-wrap { width: 100%; }
+  #profit-line-chart { width: 100%; height: 170px; display: block; overflow: visible; }
+  .line-path { fill: none; stroke: var(--accent); stroke-width: 2; }
+  .line-zero { stroke: var(--ink-faint); stroke-width: 1; stroke-dasharray: 4 4; }
+  .line-dot { cursor: pointer; }
+  .line-dot-hit { fill: transparent; cursor: pointer; }
 
   footer {
     margin-top: 8px;
@@ -428,11 +553,50 @@
           <tbody id="campaign-tbody"></tbody>
         </table>
       </div>
+      <div class="table-footnote" id="roas-breakeven-note"></div>
     </div>
 
     <div class="funnel-card">
       <div class="funnel-title">Phễu chuyển đổi — toàn tài khoản</div>
       <div id="funnel"></div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 3 — XU HƯỚNG THEO NGÀY ============ -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <span class="section-title">Xu hướng theo ngày</span>
+      <span class="section-note">Đã trừ đơn hoàn</span>
+    </div>
+
+    <div class="bar-chart-card">
+      <div class="bar-chart-title-row">
+        <div class="bar-chart-title">Lợi nhuận lũy kế</div>
+        <div class="chart-note" id="profit-line-note"></div>
+      </div>
+      <div class="line-chart-wrap">
+        <svg id="profit-line-chart" viewBox="0 0 1000 170" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="chart-footnote">Lợi nhuận mỗi ngày = GMV ròng ngày đó × 60% − Chi tiêu Ads (đã VAT) ngày đó, cộng dồn từ 30/06. Số cộng dồn có thể lệch nhẹ so với "Lợi nhuận gộp" ở mục 01 vì hai nguồn ads chốt số ở thời điểm khác nhau.</div>
+    </div>
+    <div class="bar-chart-card">
+      <div class="bar-chart-title">Số lượng bán ra (cái)</div>
+      <div class="bar-chart" id="units-chart"></div>
+    </div>
+    <div class="bar-chart-card">
+      <div class="bar-chart-title-row">
+        <div class="bar-chart-title">Chi tiêu Ads &amp; GMV theo ngày</div>
+        <div class="chart-legend">
+          <span class="legend-item"><span class="legend-dot" style="background:var(--warn)"></span>Ads (đã VAT) — trục trái</span>
+          <span class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span>GMV — trục trái</span>
+          <span class="legend-item"><span class="legend-line"></span>Ads/GMV % — trục phải</span>
+        </div>
+      </div>
+      <div class="combo-chart-wrap">
+        <svg id="ads-gmv-chart" viewBox="0 0 1000 300" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="chart-footnote">Trục trái (₫): cột Ads &amp; GMV theo ngày. Trục phải (%): tỷ lệ Ads/GMV, vẽ dạng đường. Với giá vốn 40%, hoà vốn khi tỷ lệ này chạm <strong>60%</strong> (đường đứt nét) — chấm màu đỏ trên đường là ngày lỗ sau giá vốn.</div>
     </div>
   </div>
 
@@ -448,17 +612,94 @@
     period: "Kỳ hiện tại",
 
     revenue: {
-      gross: 12740000,      // GMV tạo đơn — tổng tiền tất cả đơn (27 đơn, lũy kế đến 23/08)
+      gross: 13250000,      // GMV tạo đơn — tổng tiền tất cả đơn (29 đơn, lũy kế đến 23/08)
       returnedAmount: 1868000, // GMV đơn "Đã hoàn" (3 đơn) — đơn duy nhất KHÔNG tính vào GMV ròng
-      ordersTotal: 27,
+      ordersTotal: 29,
       ordersReturned: 3,
       // Quy đổi giá trị đơn -> số cái: 255k=1, 330k/459k/479k=2, 679k=3, 859k=4
-      unitsGross: 55,     // tổng số cái trên tất cả đơn
+      unitsGross: 57,     // tổng số cái trên tất cả đơn
       unitsReturned: 9    // số cái nằm trong các đơn "Đã hoàn"
     },
     cogsRate: 0.40,   // giá vốn = 40% giá bán (tạm thời)
     adsSpend: 4403027, // chi phí quảng cáo lũy kế cùng kỳ, CHƯA gồm VAT (khớp accountTotals.spend bên dưới)
     adsVatRate: 0.10, // VAT quảng cáo Facebook — cộng thêm 10% lên chi phí ads khi tính lợi nhuận
+
+    // ---- doanh số theo ngày (đã trừ đơn "Đã hoàn"), dựng từ cột "Thời gian tạo" trong Pancake ----
+    // Mỗi khi cập nhật, thêm/ sửa các ngày mới vào mảng này (ngày không có đơn thì bỏ qua, không cần điền 0)
+    dailySales: [
+      { date: "2026-07-09", gmv: 0,       units: 0 },  // đơn duy nhất trong ngày là đơn "Đã hoàn"
+      { date: "2026-07-10", gmv: 255000,  units: 1 },
+      { date: "2026-07-14", gmv: 0,       units: 0 },  // đơn duy nhất trong ngày là đơn "Đã hoàn"
+      { date: "2026-07-15", gmv: 479000,  units: 2 },
+      { date: "2026-08-09", gmv: 859000,  units: 4 },
+      { date: "2026-08-15", gmv: 938000,  units: 4 },
+      { date: "2026-08-16", gmv: 734000,  units: 3 },
+      { date: "2026-08-17", gmv: 1244000, units: 5 },
+      { date: "2026-08-18", gmv: 859000,  units: 4 },
+      { date: "2026-08-21", gmv: 1672000, units: 7 },
+      { date: "2026-08-22", gmv: 1437000, units: 6 },
+      { date: "2026-08-23", gmv: 2905000, units: 12 }
+    ],
+
+    // ---- chi tiêu Ads (đã VAT) & GMV theo ngày, để so % Ads/GMV — nguồn: export "Santony-Daily.xlsx" (báo cáo theo ngày cấp tài khoản) ----
+    // ads = chi tiêu Ads ngày đó × 1.10 (đã VAT, khớp cách tính "Chi phí Ads (đã VAT)" ở mục 01). gmv = GMV ròng ngày đó (khớp dailySales ở trên, 0 nếu không có đơn)
+    dailyAdsGmv: [
+      { date: "2026-06-30", ads: 14601, gmv: 0 },
+      { date: "2026-07-01", ads: 41110, gmv: 0 },
+      { date: "2026-07-02", ads: 0, gmv: 0 },
+      { date: "2026-07-03", ads: 0, gmv: 0 },
+      { date: "2026-07-04", ads: 0, gmv: 0 },
+      { date: "2026-07-05", ads: 0, gmv: 0 },
+      { date: "2026-07-06", ads: 12845, gmv: 0 },
+      { date: "2026-07-07", ads: 69071, gmv: 0 },
+      { date: "2026-07-08", ads: 153032, gmv: 0 },
+      { date: "2026-07-09", ads: 136422, gmv: 0 },
+      { date: "2026-07-10", ads: 122330, gmv: 255000 },
+      { date: "2026-07-11", ads: 115964, gmv: 0 },
+      { date: "2026-07-12", ads: 228951, gmv: 0 },
+      { date: "2026-07-13", ads: 211283, gmv: 0 },
+      { date: "2026-07-14", ads: 168606, gmv: 0 },
+      { date: "2026-07-15", ads: 201087, gmv: 479000 },
+      { date: "2026-07-16", ads: 132022, gmv: 0 },
+      { date: "2026-07-17", ads: 40008, gmv: 0 },
+      { date: "2026-07-18", ads: 0, gmv: 0 },
+      { date: "2026-07-19", ads: 0, gmv: 0 },
+      { date: "2026-07-20", ads: 0, gmv: 0 },
+      { date: "2026-07-21", ads: 0, gmv: 0 },
+      { date: "2026-07-22", ads: 0, gmv: 0 },
+      { date: "2026-07-23", ads: 0, gmv: 0 },
+      { date: "2026-07-24", ads: 0, gmv: 0 },
+      { date: "2026-07-25", ads: 0, gmv: 0 },
+      { date: "2026-07-26", ads: 0, gmv: 0 },
+      { date: "2026-07-27", ads: 0, gmv: 0 },
+      { date: "2026-07-28", ads: 0, gmv: 0 },
+      { date: "2026-07-29", ads: 0, gmv: 0 },
+      { date: "2026-07-30", ads: 0, gmv: 0 },
+      { date: "2026-07-31", ads: 0, gmv: 0 },
+      { date: "2026-08-01", ads: 0, gmv: 0 },
+      { date: "2026-08-02", ads: 0, gmv: 0 },
+      { date: "2026-08-03", ads: 0, gmv: 0 },
+      { date: "2026-08-04", ads: 0, gmv: 0 },
+      { date: "2026-08-05", ads: 0, gmv: 0 },
+      { date: "2026-08-06", ads: 0, gmv: 0 },
+      { date: "2026-08-07", ads: 0, gmv: 0 },
+      { date: "2026-08-08", ads: 36198, gmv: 0 },
+      { date: "2026-08-09", ads: 141192, gmv: 859000 },
+      { date: "2026-08-10", ads: 131574, gmv: 0 },
+      { date: "2026-08-11", ads: 175131, gmv: 0 },
+      { date: "2026-08-12", ads: 33486, gmv: 0 },
+      { date: "2026-08-13", ads: 269592, gmv: 0 },
+      { date: "2026-08-14", ads: 221101, gmv: 0 },
+      { date: "2026-08-15", ads: 147390, gmv: 938000 },
+      { date: "2026-08-16", ads: 293679, gmv: 734000 },
+      { date: "2026-08-17", ads: 389298, gmv: 1244000 },
+      { date: "2026-08-18", ads: 344322, gmv: 859000 },
+      { date: "2026-08-19", ads: 268613, gmv: 0 },
+      { date: "2026-08-20", ads: 169231, gmv: 0 },
+      { date: "2026-08-21", ads: 294672, gmv: 1672000 },
+      { date: "2026-08-22", ads: 280535, gmv: 1437000 },
+      { date: "2026-08-23", ads: 460561, gmv: 2905000 }
+    ],
 
     // ---- dữ liệu quảng cáo (từ export Facebook Ads Manager, lũy kế đến 22/08/2026) ----
     accountTotals: {
@@ -543,15 +784,12 @@
   }
   document.getElementById("hero-sub").innerHTML = subHtml;
 
+  // Chỉ giữ các chỉ số KHÔNG lặp lại với hero-sub phía trên (GMV/Giá vốn/Ads đã hiện ở đó rồi)
   const kpis = [
-    { label: "GMV tạo đơn", value: r.gross, accent: "var(--ink-faint)" },
-    { label: "GMV ròng", value: netGmv, accent: "var(--good)" },
     { label: "Số lượng bán ra", value: hasUnits ? r.unitsGross : null, unit: NBSP + "cái", accent: "var(--ink-faint)" },
     { label: "Số lượng bán ròng (trừ hoàn)", value: unitsSold, unit: NBSP + "cái", accent: "var(--good)" },
     { label: "Tỷ lệ hoàn hàng", value: returnRate, isPct: true, accent: "var(--critical)" },
     { label: "AOV sau hoàn", value: aov, accent: "var(--ink-faint)" },
-    { label: "Giá vốn (40%)", value: cogs, accent: "var(--warn)" },
-    { label: "Chi phí Ads (đã VAT)", value: adsCost, accent: "var(--warn)" },
     { label: "Ads / GMV ròng", value: adsToGmv, isPct: true, accent: "var(--accent)" }
   ];
   document.getElementById("kpi-grid").innerHTML = kpis.map(k => {
@@ -578,6 +816,8 @@
   ).join("");
 
   // ---------- Campaign table ----------
+  // ROAS hoà vốn (đã trừ giá vốn) = 1 / (1 − cogsRate) — dưới ngưỡng này là chiến dịch đang lỗ dù ROAS > 1
+  const breakevenRoas = 1 / (1 - DATA.cogsRate);
   document.getElementById("campaign-tbody").innerHTML = DATA.campaigns.map(c => `
     <tr>
       <td class="campaign-name">${c.name}</td>
@@ -586,9 +826,11 @@
       <td class="num">${num(c.contacts)}</td>
       <td class="num">${c.purchases !== null ? num(c.purchases) : '<span class="dim">—</span>'}</td>
       <td class="num">${c.revenue ? vnd(c.revenue) : '<span class="dim">—</span>'}</td>
-      <td class="num">${c.roas ? `<span class="roas-good">${c.roas.toLocaleString("vi-VN", { maximumFractionDigits: 2 })}x</span>` : '<span class="dim">—</span>'}</td>
+      <td class="num">${c.roas ? `<span class="${c.roas >= breakevenRoas ? "roas-good" : "roas-bad"}">${c.roas.toLocaleString("vi-VN", { maximumFractionDigits: 2 })}x</span>` : '<span class="dim">—</span>'}</td>
     </tr>
   `).join("");
+  document.getElementById("roas-breakeven-note").textContent =
+    `Hoà vốn (sau giá vốn ${pct(DATA.cogsRate)}) ở ROAS ${breakevenRoas.toLocaleString("vi-VN", { maximumFractionDigits: 2 })}x — số đỏ trong bảng là đang lỗ dù ROAS dương.`;
 
   // ---------- Funnel ----------
   const steps = [
@@ -606,4 +848,170 @@
       ${rate ? `<div class="funnel-rate">${rate}</div>` : ""}
     </div>`;
   }).join("");
+
+  // ---------- Daily bar charts ----------
+  function fmtDayLabel(iso) {
+    const [, m, d] = iso.split("-");
+    return `${d}/${m}`;
+  }
+  function renderBarChart(elId, series, valueFmt, color) {
+    const TRACK_PX = 110;
+    const maxV = Math.max(...series.map(d => d.value), 1);
+    document.getElementById(elId).innerHTML = series.map(d => {
+      const h = Math.max(Math.round((d.value / maxV) * TRACK_PX), d.value > 0 ? 3 : 0);
+      const isToday = d.date === DATA.updatedAt;
+      return `<div class="bar-col${isToday ? " today" : ""}" title="${fmtDayLabel(d.date)}: ${valueFmt(d.value)}">
+        <div class="bar-val">${d.value ? valueFmt(d.value) : ""}</div>
+        <div class="bar-track"><div class="bar-shape" style="height:${h}px; --bar-color:${color}"></div></div>
+        <div class="bar-label">${fmtDayLabel(d.date)}</div>
+      </div>`;
+    }).join("");
+  }
+  renderBarChart("units-chart", DATA.dailySales.map(d => ({ date: d.date, value: d.units })), v => num(v), "var(--good)");
+
+  // ---------- Ads vs GMV combo chart (bar = trục trái ₫, line % = trục phải) ----------
+  // Hoà vốn: Ads/GMV hoà vốn = 1 − cogsRate (giá vốn 40% => hoà vốn ở 60%)
+  const breakevenAdsGmv = (1 - DATA.cogsRate) * 100; // tính theo % để khớp trục phải
+  function niceNumber(x) {
+    const exp = Math.floor(Math.log10(x));
+    const f = x / Math.pow(10, exp);
+    const nf = f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10;
+    return nf * Math.pow(10, exp);
+  }
+  function niceTicks(maxVal, count) {
+    const step = niceNumber(Math.max(maxVal, 1e-9) / count);
+    const niceMax = Math.ceil(maxVal / step) * step;
+    const ticks = [];
+    for (let v = 0; v <= niceMax + step * 0.001; v += step) ticks.push(Math.round(v * 100) / 100);
+    return { ticks, niceMax };
+  }
+  function fmtCompactVnd(v) {
+    if (v === 0) return "0";
+    if (Math.abs(v) >= 1e6) return (v / 1e6).toLocaleString("vi-VN", { maximumFractionDigits: 1 }) + "tr";
+    if (Math.abs(v) >= 1e3) return Math.round(v / 1e3) + "k";
+    return String(Math.round(v));
+  }
+  (function renderAdsGmvChart() {
+    const series = DATA.dailyAdsGmv;
+    const n = series.length;
+    const W = 1000, H = 300;
+    const marginLeft = 46, marginRight = 40, marginTop = 10, marginBottom = 26;
+    const plotW = W - marginLeft - marginRight;
+    const plotH = H - marginTop - marginBottom;
+    const plotBottom = marginTop + plotH;
+
+    const maxMoney = Math.max(...series.map(d => Math.max(d.ads, d.gmv)), 1);
+    const { ticks: moneyTicks, niceMax: moneyMax } = niceTicks(maxMoney, 4);
+    const ratios = series.map(d => d.gmv > 0 ? (d.ads / d.gmv) * 100 : null);
+    const maxRatio = Math.max(...ratios.filter(v => v !== null), breakevenAdsGmv);
+    const { ticks: pctTicks, niceMax: pctMax } = niceTicks(maxRatio * 1.15, 4);
+
+    const yLeft = v => plotBottom - (v / moneyMax) * plotH;
+    const yRight = v => plotBottom - (v / pctMax) * plotH;
+    const slotW = plotW / n;
+    const barW = Math.max(slotW * 0.32, 1);
+    const barGap = slotW * 0.06;
+    const xCenter = i => marginLeft + slotW * i + slotW / 2;
+
+    // Gridlines + trục trái (₫)
+    let axisSvg = moneyTicks.map(t => {
+      const y = yLeft(t).toFixed(1);
+      return `<line class="combo-gridline" x1="${marginLeft}" y1="${y}" x2="${W - marginRight}" y2="${y}"></line>` +
+        `<text class="combo-axis-label" x="${marginLeft - 6}" y="${(+y + 3).toFixed(1)}" text-anchor="end">${fmtCompactVnd(t)}</text>`;
+    }).join("");
+    // Trục phải (%)
+    axisSvg += pctTicks.map(t => {
+      const y = yRight(t).toFixed(1);
+      return `<text class="combo-axis-label" x="${W - marginRight + 6}" y="${(+y + 3).toFixed(1)}" text-anchor="start">${Math.round(t)}%</text>`;
+    }).join("");
+
+    // Cột Ads + GMV
+    const barsSvg = series.map((d, i) => {
+      const cx = xCenter(i);
+      const isToday = d.date === DATA.updatedAt;
+      const ratio = ratios[i];
+      const tip = `${fmtDayLabel(d.date)} — Ads: ${vnd(d.ads)} · GMV: ${vnd(d.gmv)}${ratio !== null ? " · Ads/GMV: " + pct(ratio / 100) : ""}`;
+      const adsY = yLeft(d.ads), gmvY = yLeft(d.gmv);
+      const adsH = Math.max(plotBottom - adsY, d.ads > 0 ? 1 : 0);
+      const gmvH = Math.max(plotBottom - gmvY, d.gmv > 0 ? 1 : 0);
+      return `<rect class="combo-bar" x="${(cx - barW - barGap / 2).toFixed(1)}" y="${adsY.toFixed(1)}" width="${barW.toFixed(1)}" height="${adsH.toFixed(1)}" fill="var(--warn)"><title>${tip}</title></rect>` +
+        `<rect class="combo-bar" x="${(cx + barGap / 2).toFixed(1)}" y="${gmvY.toFixed(1)}" width="${barW.toFixed(1)}" height="${gmvH.toFixed(1)}" fill="var(--accent)"><title>${tip}</title></rect>` +
+        (isToday ? `<line x1="${cx.toFixed(1)}" y1="${marginTop}" x2="${cx.toFixed(1)}" y2="${plotBottom}" stroke="var(--accent)" stroke-width="1" stroke-dasharray="2 3" opacity="0.5"></line>` : "");
+    }).join("");
+
+    // Đường % Ads/GMV (trục phải) — ngắt đoạn ở ngày không có GMV
+    let pathD = "";
+    let drawing = false;
+    ratios.forEach((r, i) => {
+      if (r === null) { drawing = false; return; }
+      const cmd = drawing ? "L" : "M";
+      pathD += `${cmd}${xCenter(i).toFixed(1)},${yRight(r).toFixed(1)} `;
+      drawing = true;
+    });
+    const dotsSvg = ratios.map((r, i) => {
+      if (r === null) return "";
+      const isToday = series[i].date === DATA.updatedAt;
+      const color = r > breakevenAdsGmv ? "var(--critical)" : "var(--good)";
+      const rad = isToday ? 4 : 2.4;
+      const tip = `${fmtDayLabel(series[i].date)}: Ads/GMV ${pct(r / 100)}`;
+      return `<circle cx="${xCenter(i).toFixed(1)}" cy="${yRight(r).toFixed(1)}" r="${rad}" fill="${color}" stroke="var(--surface-raised)" stroke-width="1"><title>${tip}</title></circle>`;
+    }).join("");
+
+    const breakevenY = yRight(breakevenAdsGmv).toFixed(1);
+    const breakevenSvg = `<line class="combo-breakeven-line" x1="${marginLeft}" y1="${breakevenY}" x2="${W - marginRight}" y2="${breakevenY}"></line>` +
+      `<text class="combo-axis-label" x="${marginLeft + 4}" y="${(+breakevenY - 4).toFixed(1)}" fill="var(--critical)">Hoà vốn ${Math.round(breakevenAdsGmv)}%</text>`;
+
+    // Nhãn ngày trục X — chỉ hiện mỗi 4 ngày + hôm nay để đỡ rối
+    const xLabelsSvg = series.map((d, i) => {
+      const isToday = d.date === DATA.updatedAt;
+      if (!isToday && i % 4 !== 0) return "";
+      return `<text class="combo-x-label${isToday ? " today" : ""}" x="${xCenter(i).toFixed(1)}" y="${(plotBottom + 14).toFixed(1)}">${fmtDayLabel(d.date)}</text>`;
+    }).join("");
+
+    document.getElementById("ads-gmv-chart").innerHTML = axisSvg + barsSvg + breakevenSvg +
+      `<path class="combo-pct-line" d="${pathD.trim()}"></path>` + dotsSvg + xLabelsSvg;
+  })();
+
+  // ---------- Cumulative profit line chart ----------
+  (function renderProfitLineChart() {
+    const series = DATA.dailyAdsGmv;
+    let cum = 0;
+    const points = series.map(d => {
+      cum += d.gmv * (1 - DATA.cogsRate) - d.ads;
+      return { date: d.date, value: cum };
+    });
+    const values = points.map(p => p.value);
+    const minV = Math.min(...values, 0);
+    const maxV = Math.max(...values, 0);
+    const pad = Math.max((maxV - minV) * 0.1, 1);
+    const rangeMin = minV - pad, rangeMax = maxV + pad;
+    const W = 1000, H = 170, PAD_X = 8;
+    const n = points.length;
+    const xPos = i => n > 1 ? PAD_X + (i / (n - 1)) * (W - PAD_X * 2) : W / 2;
+    const yPos = v => H - ((v - rangeMin) / (rangeMax - rangeMin)) * H;
+    const yZero = yPos(0);
+
+    const linePath = points.map((p, i) => `${i === 0 ? "M" : "L"}${xPos(i).toFixed(1)},${yPos(p.value).toFixed(1)}`).join(" ");
+
+    const dots = points.map((p, i) => {
+      const isToday = p.date === DATA.updatedAt;
+      const color = p.value >= 0 ? "var(--good)" : "var(--critical)";
+      const rad = isToday ? 4 : 2.2;
+      const tip = `${fmtDayLabel(p.date)}: ${vnd(p.value)}`;
+      return `<circle class="line-dot" cx="${xPos(i).toFixed(1)}" cy="${yPos(p.value).toFixed(1)}" r="${rad}" fill="${color}"><title>${tip}</title></circle>` +
+        `<circle class="line-dot-hit" cx="${xPos(i).toFixed(1)}" cy="${yPos(p.value).toFixed(1)}" r="9"><title>${tip}</title></circle>`;
+    }).join("");
+
+    const svg = document.getElementById("profit-line-chart");
+    svg.innerHTML =
+      `<line class="line-zero" x1="0" y1="${yZero.toFixed(1)}" x2="${W}" y2="${yZero.toFixed(1)}"></line>` +
+      `<text x="${W}" y="${(yZero - 6).toFixed(1)}" text-anchor="end" font-size="10" fill="var(--ink-faint)" font-family="IBM Plex Mono, monospace">Hoà vốn</text>` +
+      `<path class="line-path" d="${linePath}"></path>` +
+      dots;
+
+    const last = points[points.length - 1];
+    const note = document.getElementById("profit-line-note");
+    note.textContent = `${fmtDayLabel(last.date)}: ${vnd(last.value)}`;
+    note.style.color = last.value >= 0 ? "var(--good)" : "var(--critical)";
+  })();
 </script>
