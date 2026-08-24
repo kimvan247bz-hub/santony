@@ -448,8 +448,18 @@
     border-top: 2px solid var(--ink);
     flex: none;
   }
-  .combo-chart-wrap { width: 100%; }
-  #ads-gmv-chart { width: 100%; height: 300px; display: block; overflow: visible; }
+  .combo-chart-wrap { width: 100%; overflow-x: auto; overflow-y: hidden; display: flex; }
+  .combo-axis-sticky {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    flex: none;
+    width: 46px;
+    background: var(--surface-raised);
+  }
+  #ads-gmv-axis { width: 46px; height: 300px; display: block; }
+  .combo-chart-scroll { flex: none; }
+  #ads-gmv-chart { width: 1800px; min-width: 1800px; height: 300px; display: block; }
   .combo-bar { transition: opacity 0.15s ease; }
   .combo-bar:hover { opacity: 0.75; }
   .combo-axis-label {
@@ -594,7 +604,12 @@
         </div>
       </div>
       <div class="combo-chart-wrap">
-        <svg id="ads-gmv-chart" viewBox="0 0 1000 300" preserveAspectRatio="none"></svg>
+        <div class="combo-axis-sticky">
+          <svg id="ads-gmv-axis" viewBox="0 0 46 300"></svg>
+        </div>
+        <div class="combo-chart-scroll">
+          <svg id="ads-gmv-chart" viewBox="0 0 1800 300"></svg>
+        </div>
       </div>
       <div class="chart-footnote">Trục trái (₫): cột Ads &amp; GMV theo ngày. Trục phải (%): tỷ lệ Ads/GMV, vẽ dạng đường. Với giá vốn 40%, hoà vốn khi tỷ lệ này chạm <strong>60%</strong> (đường đứt nét) — chấm màu đỏ trên đường là ngày lỗ sau giá vốn.</div>
     </div>
@@ -786,6 +801,7 @@
 
   // Chỉ giữ các chỉ số KHÔNG lặp lại với hero-sub phía trên (GMV/Giá vốn/Ads đã hiện ở đó rồi)
   const kpis = [
+    { label: "Tổng số đơn", value: r.ordersTotal, unit: NBSP + "đơn", accent: "var(--ink-faint)", hint: r.ordersReturned !== null && r.ordersReturned !== undefined ? `Trong đó ${num(r.ordersReturned)} đơn hoàn` : null },
     { label: "Số lượng bán ra", value: hasUnits ? r.unitsGross : null, unit: NBSP + "cái", accent: "var(--ink-faint)" },
     { label: "Số lượng bán ròng (trừ hoàn)", value: unitsSold, unit: NBSP + "cái", accent: "var(--good)" },
     { label: "Tỷ lệ hoàn hàng", value: returnRate, isPct: true, accent: "var(--critical)" },
@@ -797,6 +813,7 @@
     return `<div class="kpi" style="--kpi-accent:${k.accent}">
       <div class="kpi-label">${k.label}</div>
       <div class="kpi-value ${display === null ? "empty" : ""}">${display === null ? "Chưa có dữ liệu" : display}</div>
+      ${k.hint ? `<div class="kpi-hint">${k.hint}</div>` : ""}
     </div>`;
   }).join("");
 
@@ -894,8 +911,8 @@
   (function renderAdsGmvChart() {
     const series = DATA.dailyAdsGmv;
     const n = series.length;
-    const W = 1000, H = 300;
-    const marginLeft = 46, marginRight = 40, marginTop = 10, marginBottom = 26;
+    const W = 1800, H = 300;
+    const marginLeft = 6, marginRight = 44, marginTop = 10, marginBottom = 26;
     const plotW = W - marginLeft - marginRight;
     const plotH = H - marginTop - marginBottom;
     const plotBottom = marginTop + plotH;
@@ -913,13 +930,18 @@
     const barGap = slotW * 0.06;
     const xCenter = i => marginLeft + slotW * i + slotW / 2;
 
-    // Gridlines + trục trái (₫)
+    // Trục trái (₫) — vẽ vào SVG cố định riêng (#ads-gmv-axis) để cuộn ngang vẫn đối chiếu được
+    const AXIS_W = 46;
+    document.getElementById("ads-gmv-axis").innerHTML = moneyTicks.map(t => {
+      const y = yLeft(t).toFixed(1);
+      return `<text class="combo-axis-label" x="${AXIS_W - 6}" y="${(+y + 3).toFixed(1)}" text-anchor="end">${fmtCompactVnd(t)}</text>`;
+    }).join("");
+
+    // Gridlines (theo trục trái, vẽ trong vùng cuộn để luôn thẳng hàng với cột) + trục phải (%)
     let axisSvg = moneyTicks.map(t => {
       const y = yLeft(t).toFixed(1);
-      return `<line class="combo-gridline" x1="${marginLeft}" y1="${y}" x2="${W - marginRight}" y2="${y}"></line>` +
-        `<text class="combo-axis-label" x="${marginLeft - 6}" y="${(+y + 3).toFixed(1)}" text-anchor="end">${fmtCompactVnd(t)}</text>`;
+      return `<line class="combo-gridline" x1="0" y1="${y}" x2="${W - marginRight}" y2="${y}"></line>`;
     }).join("");
-    // Trục phải (%)
     axisSvg += pctTicks.map(t => {
       const y = yRight(t).toFixed(1);
       return `<text class="combo-axis-label" x="${W - marginRight + 6}" y="${(+y + 3).toFixed(1)}" text-anchor="start">${Math.round(t)}%</text>`;
@@ -964,7 +986,7 @@
     // Nhãn ngày trục X — chỉ hiện mỗi 4 ngày + hôm nay để đỡ rối
     const xLabelsSvg = series.map((d, i) => {
       const isToday = d.date === DATA.updatedAt;
-      if (!isToday && i % 4 !== 0) return "";
+      if (!isToday && i % 2 !== 0) return "";
       return `<text class="combo-x-label${isToday ? " today" : ""}" x="${xCenter(i).toFixed(1)}" y="${(plotBottom + 14).toFixed(1)}">${fmtDayLabel(d.date)}</text>`;
     }).join("");
 
