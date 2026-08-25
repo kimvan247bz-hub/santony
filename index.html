@@ -541,7 +541,7 @@
     <div class="section-head">
       <span class="section-num">02</span>
       <span class="section-title">Hiệu quả quảng cáo</span>
-      <span class="section-note">Lũy kế đến 22/08/2026</span>
+      <span class="section-note">Lũy kế đến 25/08/2026</span>
     </div>
 
     <div class="tile-row" id="ad-tiles"></div>
@@ -636,7 +636,7 @@
       unitsReturned: 9    // số cái nằm trong các đơn "Đã hoàn"
     },
     cogsRate: 0.40,   // giá vốn = 40% giá bán (tạm thời)
-    adsSpend: 4403027, // chi phí quảng cáo lũy kế cùng kỳ, CHƯA gồm VAT (khớp accountTotals.spend bên dưới)
+    adsSpend: 5682242, // chi phí quảng cáo lũy kế cùng kỳ, CHƯA gồm VAT (khớp accountTotals.spend bên dưới) — cộng dồn từ "Santony-Daily.xlsx" (cột "Số tiền đã chi tiêu") từ 30/06 đến 25/08
     adsVatRate: 0.10, // VAT quảng cáo Facebook — cộng thêm 10% lên chi phí ads khi tính lợi nhuận
 
     // ---- doanh số theo ngày (đã trừ đơn "Đã hoàn"), dựng từ cột "Thời gian tạo" trong Pancake ----
@@ -720,13 +720,13 @@
       { date: "2026-08-25", ads: 349781, gmv: 499000 }
     ],
 
-    // ---- dữ liệu quảng cáo (từ export Facebook Ads Manager, lũy kế đến 22/08/2026) ----
+    // ---- dữ liệu quảng cáo (spend/impressions/newContacts/purchases cộng dồn từ "Santony-Daily.xlsx" đến 25/08/2026; riêng "reach" GIỮ NGUYÊN số cũ từ export campaign 22/08 vì reach là số duy nhất-theo-ngày, cộng dồn nhiều ngày sẽ bị đếm trùng người dùng — không thể suy ra chính xác từ file daily) ----
     accountTotals: {
-      spend: 4403027,
-      impressions: 30279,
+      spend: 5682242,
+      impressions: 38369,
       reach: 14366,
-      newContacts: 363,
-      purchases: 21
+      newContacts: 442,
+      purchases: 31
     },
     campaigns: [
       { name: "Mess | 30Jun",       status: "inactive", spend: 50647,   contacts: 12,  purchases: null, revenue: null,    roas: null },
