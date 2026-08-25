@@ -623,16 +623,16 @@
      DAILY INPUT — cập nhật các số ở đây mỗi khi có số liệu mới
      ============================================================ */
   const DATA = {
-    updatedAt: "2026-08-23",
+    updatedAt: "2026-08-25",
     period: "Kỳ hiện tại",
 
     revenue: {
-      gross: 13250000,      // GMV tạo đơn — tổng tiền tất cả đơn (29 đơn, lũy kế đến 23/08)
+      gross: 14004000,      // GMV tạo đơn — tổng tiền tất cả đơn (31 đơn, lũy kế đến 25/08)
       returnedAmount: 1868000, // GMV đơn "Đã hoàn" (3 đơn) — đơn duy nhất KHÔNG tính vào GMV ròng
-      ordersTotal: 29,
+      ordersTotal: 31,
       ordersReturned: 3,
-      // Quy đổi giá trị đơn -> số cái: 255k=1, 330k/459k/479k=2, 679k=3, 859k=4
-      unitsGross: 57,     // tổng số cái trên tất cả đơn
+      // Quy đổi giá trị đơn -> số cái: 255k/269k=1, 330k/459k/479k/499k=2, 679k/699k=3, 859k/899k=4
+      unitsGross: 60,     // tổng số cái trên tất cả đơn
       unitsReturned: 9    // số cái nằm trong các đơn "Đã hoàn"
     },
     cogsRate: 0.40,   // giá vốn = 40% giá bán (tạm thời)
@@ -653,7 +653,9 @@
       { date: "2026-08-18", gmv: 859000,  units: 4 },
       { date: "2026-08-21", gmv: 1672000, units: 7 },
       { date: "2026-08-22", gmv: 1437000, units: 6 },
-      { date: "2026-08-23", gmv: 2905000, units: 12 }
+      { date: "2026-08-23", gmv: 2905000, units: 12 },
+      { date: "2026-08-24", gmv: 255000,  units: 1 },
+      { date: "2026-08-25", gmv: 499000,  units: 2 }
     ],
 
     // ---- chi tiêu Ads (đã VAT) & GMV theo ngày, để so % Ads/GMV — nguồn: export "Santony-Daily.xlsx" (báo cáo theo ngày cấp tài khoản) ----
@@ -713,7 +715,9 @@
       { date: "2026-08-20", ads: 169231, gmv: 0 },
       { date: "2026-08-21", ads: 294672, gmv: 1672000 },
       { date: "2026-08-22", ads: 280535, gmv: 1437000 },
-      { date: "2026-08-23", ads: 460561, gmv: 2905000 }
+      { date: "2026-08-23", ads: 471711, gmv: 2905000 },
+      { date: "2026-08-24", ads: 585628, gmv: 255000 },
+      { date: "2026-08-25", ads: 349781, gmv: 499000 }
     ],
 
     // ---- dữ liệu quảng cáo (từ export Facebook Ads Manager, lũy kế đến 22/08/2026) ----
