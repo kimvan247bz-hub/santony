@@ -588,7 +588,7 @@
       <div class="line-chart-wrap">
         <svg id="profit-line-chart" viewBox="0 0 1000 170" preserveAspectRatio="none"></svg>
       </div>
-      <div class="chart-footnote">Lợi nhuận mỗi ngày = GMV ròng ngày đó × 60% − Chi tiêu Ads (đã VAT) ngày đó, cộng dồn từ 30/06. Số cộng dồn có thể lệch nhẹ so với "Lợi nhuận gộp" ở mục 01 vì hai nguồn ads chốt số ở thời điểm khác nhau.</div>
+      <div class="chart-footnote">Lợi nhuận mỗi ngày = GMV ròng ngày đó × 50% − Chi tiêu Ads (đã VAT) ngày đó, cộng dồn từ 30/06. Số cộng dồn có thể lệch nhẹ so với "Lợi nhuận gộp" ở mục 01 vì hai nguồn ads chốt số ở thời điểm khác nhau.</div>
     </div>
     <div class="bar-chart-card">
       <div class="bar-chart-title">Số lượng bán ra (cái)</div>
@@ -611,7 +611,7 @@
           <svg id="ads-gmv-chart" viewBox="0 0 1800 300"></svg>
         </div>
       </div>
-      <div class="chart-footnote">Trục trái (₫): cột Ads &amp; GMV theo ngày. Trục phải (%): tỷ lệ Ads/GMV, vẽ dạng đường. Với giá vốn 40%, hoà vốn khi tỷ lệ này chạm <strong>60%</strong> (đường đứt nét) — chấm màu đỏ trên đường là ngày lỗ sau giá vốn.</div>
+      <div class="chart-footnote">Trục trái (₫): cột Ads &amp; GMV theo ngày. Trục phải (%): tỷ lệ Ads/GMV, vẽ dạng đường. Với giá vốn 50%, hoà vốn khi tỷ lệ này chạm <strong>50%</strong> (đường đứt nét) — chấm màu đỏ trên đường là ngày lỗ sau giá vốn.</div>
     </div>
   </div>
 
@@ -635,7 +635,7 @@
       unitsGross: 60,     // tổng số cái trên tất cả đơn
       unitsReturned: 9    // số cái nằm trong các đơn "Đã hoàn"
     },
-    cogsRate: 0.40,   // giá vốn = 40% giá bán (tạm thời)
+    cogsRate: 0.50,   // giá vốn = 50% giá bán (tạm thời)
     adsSpend: 5682242, // chi phí quảng cáo lũy kế cùng kỳ, CHƯA gồm VAT (khớp accountTotals.spend bên dưới) — cộng dồn từ "Santony-Daily.xlsx" (cột "Số tiền đã chi tiêu") từ 30/06 đến 25/08
     adsVatRate: 0.10, // VAT quảng cáo Facebook — cộng thêm 10% lên chi phí ads khi tính lợi nhuận
 
@@ -795,11 +795,11 @@
       </div>
       <div class="chip-row">
         ${chip("Biên lợi nhuận", pct(margin))}
-        ${chip("Giá vốn (40%)", vnd(cogs))}
+        ${chip("Giá vốn (50%)", vnd(cogs))}
         ${chip("Ads (đã VAT)", vnd(adsCost))}
       </div>`;
   } else {
-    subHtml = `<div class="chip-row"><span class="op">Công thức: GMV ròng (đã trừ đơn hoàn) × 60% − Chi phí quảng cáo</span></div>`;
+    subHtml = `<div class="chip-row"><span class="op">Công thức: GMV ròng (đã trừ đơn hoàn) × 50% − Chi phí quảng cáo</span></div>`;
   }
   document.getElementById("hero-sub").innerHTML = subHtml;
 
@@ -891,7 +891,7 @@
   renderBarChart("units-chart", DATA.dailySales.map(d => ({ date: d.date, value: d.units })), v => num(v), "var(--good)");
 
   // ---------- Ads vs GMV combo chart (bar = trục trái ₫, line % = trục phải) ----------
-  // Hoà vốn: Ads/GMV hoà vốn = 1 − cogsRate (giá vốn 40% => hoà vốn ở 60%)
+  // Hoà vốn: Ads/GMV hoà vốn = 1 − cogsRate (giá vốn 50% => hoà vốn ở 50%)
   const breakevenAdsGmv = (1 - DATA.cogsRate) * 100; // tính theo % để khớp trục phải
   function niceNumber(x) {
     const exp = Math.floor(Math.log10(x));
