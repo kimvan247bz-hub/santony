@@ -323,6 +323,14 @@
   .roas-good { color: var(--good); font-weight: 600; }
   .roas-bad { color: var(--critical); font-weight: 600; }
   .dim { color: var(--ink-faint); }
+  tfoot td {
+    padding: 12px 14px;
+    font-size: 13.5px;
+    font-weight: 600;
+    background: var(--surface);
+    border-top: 2px solid var(--border);
+  }
+  tfoot td.num { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
   .table-footnote {
     font-size: 11px;
     color: var(--ink-faint);
@@ -541,7 +549,7 @@
     <div class="section-head">
       <span class="section-num">02</span>
       <span class="section-title">Hiệu quả quảng cáo</span>
-      <span class="section-note">Lũy kế đến 25/08/2026</span>
+      <span class="section-note">Lũy kế đến 26/08/2026</span>
     </div>
 
     <div class="tile-row" id="ad-tiles"></div>
@@ -555,12 +563,16 @@
               <th>Trạng thái</th>
               <th class="num">Chi tiêu</th>
               <th class="num">Liên hệ mới</th>
+              <th class="num">CPI</th>
               <th class="num">Lượt mua</th>
+              <th class="num">CPA</th>
               <th class="num">Doanh thu (Ads)</th>
+              <th class="num">ACOS</th>
               <th class="num">ROAS</th>
             </tr>
           </thead>
           <tbody id="campaign-tbody"></tbody>
+          <tfoot><tr id="campaign-total-row"></tr></tfoot>
         </table>
       </div>
       <div class="table-footnote" id="roas-breakeven-note"></div>
@@ -615,6 +627,34 @@
     </div>
   </div>
 
+  <!-- ============ SECTION 4 — THANH TOÁN QUẢNG CÁO (LUỒNG TIỀN) ============ -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <span class="section-title">Thanh toán quảng cáo</span>
+      <span class="section-note">Luồng tiền thực trả — chỉ tính giao dịch "Đã thanh toán"</span>
+    </div>
+
+    <div class="tile-row" id="payment-tiles"></div>
+
+    <div class="table-card">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Ngày</th>
+              <th class="num">Số tiền</th>
+              <th>Phương thức</th>
+              <th>Trạng thái</th>
+            </tr>
+          </thead>
+          <tbody id="payment-tbody"></tbody>
+        </table>
+      </div>
+      <div class="table-footnote">Chỉ giao dịch "Đã thanh toán" được cộng vào tổng lũy kế ở trên; "Không thành công" hiển thị để đối chiếu, không tính vào luồng tiền.</div>
+    </div>
+  </div>
+
   <footer>Số liệu quảng cáo lấy từ file xuất Facebook Ads Manager · Số liệu doanh thu/đơn hàng cập nhật thủ công mỗi ngày</footer>
 </div>
 
@@ -623,39 +663,40 @@
      DAILY INPUT — cập nhật các số ở đây mỗi khi có số liệu mới
      ============================================================ */
   const DATA = {
-    updatedAt: "2026-08-25",
+    updatedAt: "2026-08-26",
     period: "Kỳ hiện tại",
 
     revenue: {
-      gross: 14004000,      // GMV tạo đơn — tổng tiền tất cả đơn (31 đơn, lũy kế đến 25/08)
-      returnedAmount: 1868000, // GMV đơn "Đã hoàn" (3 đơn) — đơn duy nhất KHÔNG tính vào GMV ròng
-      ordersTotal: 31,
-      ordersReturned: 3,
+      gross: 16160000,      // GMV tạo đơn — tổng tiền tất cả đơn (35 đơn, lũy kế đến 26/08)
+      returnedAmount: 2347000, // GMV đơn "Đã hoàn" (4 đơn: AUF_30327, AUF_21571, AUF_20495, AUF_20026) — đơn duy nhất KHÔNG tính vào GMV ròng
+      ordersTotal: 35,
+      ordersReturned: 4,
       // Quy đổi giá trị đơn -> số cái: 255k/269k=1, 330k/459k/479k/499k=2, 679k/699k=3, 859k/899k=4
-      unitsGross: 60,     // tổng số cái trên tất cả đơn
-      unitsReturned: 9    // số cái nằm trong các đơn "Đã hoàn"
+      unitsGross: 69,     // tổng số cái trên tất cả đơn
+      unitsReturned: 11   // số cái nằm trong các đơn "Đã hoàn"
     },
     cogsRate: 0.50,   // giá vốn = 50% giá bán (tạm thời)
-    adsSpend: 5682242, // chi phí quảng cáo lũy kế cùng kỳ, CHƯA gồm VAT (khớp accountTotals.spend bên dưới) — cộng dồn từ "Santony-Daily.xlsx" (cột "Số tiền đã chi tiêu") từ 30/06 đến 25/08
+    adsSpend: 5879169, // chi phí quảng cáo lũy kế cùng kỳ, CHƯA gồm VAT (khớp accountTotals.spend bên dưới) — cộng dồn từ "Santony-Daily.xlsx" (cột "Số tiền đã chi tiêu") từ 30/06 đến 26/08
     adsVatRate: 0.10, // VAT quảng cáo Facebook — cộng thêm 10% lên chi phí ads khi tính lợi nhuận
 
     // ---- doanh số theo ngày (đã trừ đơn "Đã hoàn"), dựng từ cột "Thời gian tạo" trong Pancake ----
     // Mỗi khi cập nhật, thêm/ sửa các ngày mới vào mảng này (ngày không có đơn thì bỏ qua, không cần điền 0)
     dailySales: [
       { date: "2026-07-09", gmv: 0,       units: 0 },  // đơn duy nhất trong ngày là đơn "Đã hoàn"
-      { date: "2026-07-10", gmv: 255000,  units: 1 },
+      { date: "2026-07-10", gmv: 255000,  units: 1 },  // AUF_20308 (255k, đã thu tiền); AUF_20495 (679k) là đơn "Đã hoàn" cùng ngày nên loại trừ
       { date: "2026-07-14", gmv: 0,       units: 0 },  // đơn duy nhất trong ngày là đơn "Đã hoàn"
       { date: "2026-07-15", gmv: 479000,  units: 2 },
       { date: "2026-08-09", gmv: 859000,  units: 4 },
       { date: "2026-08-15", gmv: 938000,  units: 4 },
       { date: "2026-08-16", gmv: 734000,  units: 3 },
-      { date: "2026-08-17", gmv: 1244000, units: 5 },
+      { date: "2026-08-17", gmv: 765000,  units: 3 },
       { date: "2026-08-18", gmv: 859000,  units: 4 },
       { date: "2026-08-21", gmv: 1672000, units: 7 },
       { date: "2026-08-22", gmv: 1437000, units: 6 },
       { date: "2026-08-23", gmv: 2905000, units: 12 },
       { date: "2026-08-24", gmv: 255000,  units: 1 },
-      { date: "2026-08-25", gmv: 499000,  units: 2 }
+      { date: "2026-08-25", gmv: 978000,  units: 4 },
+      { date: "2026-08-26", gmv: 1677000, units: 7 }
     ],
 
     // ---- chi tiêu Ads (đã VAT) & GMV theo ngày, để so % Ads/GMV — nguồn: export "Santony-Daily.xlsx" (báo cáo theo ngày cấp tài khoản) ----
@@ -709,32 +750,58 @@
       { date: "2026-08-14", ads: 221101, gmv: 0 },
       { date: "2026-08-15", ads: 147390, gmv: 938000 },
       { date: "2026-08-16", ads: 293679, gmv: 734000 },
-      { date: "2026-08-17", ads: 389298, gmv: 1244000 },
+      { date: "2026-08-17", ads: 389298, gmv: 765000 },
       { date: "2026-08-18", ads: 344322, gmv: 859000 },
       { date: "2026-08-19", ads: 268613, gmv: 0 },
       { date: "2026-08-20", ads: 169231, gmv: 0 },
       { date: "2026-08-21", ads: 294672, gmv: 1672000 },
       { date: "2026-08-22", ads: 280535, gmv: 1437000 },
       { date: "2026-08-23", ads: 471711, gmv: 2905000 },
-      { date: "2026-08-24", ads: 585628, gmv: 255000 },
-      { date: "2026-08-25", ads: 349781, gmv: 499000 }
+      { date: "2026-08-24", ads: 585925, gmv: 255000 },
+      { date: "2026-08-25", ads: 433323, gmv: 978000 },
+      { date: "2026-08-26", ads: 132781, gmv: 1677000 }
     ],
 
-    // ---- dữ liệu quảng cáo (spend/impressions/newContacts/purchases cộng dồn từ "Santony-Daily.xlsx" đến 25/08/2026; riêng "reach" GIỮ NGUYÊN số cũ từ export campaign 22/08 vì reach là số duy nhất-theo-ngày, cộng dồn nhiều ngày sẽ bị đếm trùng người dùng — không thể suy ra chính xác từ file daily) ----
+    // ---- dữ liệu quảng cáo (spend/impressions/newContacts/purchases cộng dồn từ "Santony-Daily.xlsx" đến 26/08/2026; riêng "reach" lấy từ export campaign mới nhất (KimVan_Santony-Chiến-dịch..., 26/08) vì reach là số duy nhất-theo-ngày, cộng dồn nhiều ngày sẽ bị đếm trùng người dùng — không thể suy ra chính xác từ file daily, phải lấy từ export campaign mỗi lần có bản mới) ----
     accountTotals: {
-      spend: 5682242,
-      impressions: 38369,
-      reach: 14366,
-      newContacts: 442,
-      purchases: 31
+      spend: 5879169,
+      impressions: 39497,
+      reach: 18121,
+      newContacts: 445,
+      purchases: 34
     },
+    // ---- bảng chiến dịch — nguồn: export "KimVan_Santony-Chiến-dịch-...xlsx" (per-campaign, lũy kế từ đầu) ----
     campaigns: [
       { name: "Mess | 30Jun",       status: "inactive", spend: 50647,   contacts: 12,  purchases: null, revenue: null,    roas: null },
       { name: "Mess | 06Jul",       status: "inactive", spend: 1076926, contacts: 124, purchases: 3,    revenue: null,    roas: null },
       { name: "Mess-GMV | 11Jul",   status: "inactive", spend: 370001,  contacts: 45,  purchases: null, revenue: null,    roas: null },
-      { name: "Mess-GMV | 8Aug",    status: "active",   spend: 1529472, contacts: 95,  purchases: 10,   revenue: 2436000, roas: 1.592707 },
-      { name: "Mess-Inbox | 11Aug", status: "active",   spend: 1285950, contacts: 85,  purchases: 7,    revenue: 2327000, roas: 1.809557 },
-      { name: "Mess-GMV | 20Aug",   status: "active",   spend: 90031,   contacts: 2,   purchases: 1,    revenue: 479000,  roas: 5.32039 }
+      { name: "Mess-GMV | 8Aug",    status: "active",   spend: 2063432, contacts: 121, purchases: 16,   revenue: 5550000, roas: 2.689694 },
+      { name: "Mess-Inbox | 11Aug", status: "active",   spend: 1834441, contacts: 123, purchases: 13,   revenue: 4773000, roas: 2.601883 },
+      { name: "Mess-GMV | 20Aug",   status: "active",   spend: 355035,  contacts: 10,  purchases: 2,    revenue: 734000,  roas: 2.067402 },
+      { name: "Mess-Inbox | 24Aug", status: "active",   spend: 137950,  contacts: 5,   purchases: null, revenue: null,    roas: null }
+    ],
+
+    // ---- luồng tiền thanh toán quảng cáo (Meta Ads Manager > Thanh toán), mới nhất trước ----
+    // status: "paid" (Đã thanh toán, cộng vào tổng) | "failed" (Không thành công, chỉ hiển thị, không cộng)
+    // Mỗi lần cập nhật: thêm các giao dịch mới lên đầu mảng, giữ nguyên các giao dịch cũ
+    payments: [
+      { date: "2026-08-24", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
+      { date: "2026-08-22", amount: 496331,  method: "MasterCard •••• 4375", status: "paid" },
+      { date: "2026-08-20", amount: 496331,  method: "MasterCard •••• 4375", status: "paid" },
+      { date: "2026-08-18", amount: 496331,  method: "MasterCard •••• 4375", status: "paid" },
+      { date: "2026-08-17", amount: 496331,  method: "MasterCard •••• 4375", status: "paid" },
+      { date: "2026-08-14", amount: 496331,  method: "MasterCard •••• 4375", status: "paid" },
+      { date: "2026-08-12", amount: 496647,  method: "MasterCard •••• 4375", status: "paid" },
+      { date: "2026-08-12", amount: 496331,  method: "MasterCard •••• 4375", status: "failed" },
+      { date: "2026-07-30", amount: 158830,  method: "Visa •••• 5075",       status: "paid" },
+      { date: "2026-07-16", amount: 496331,  method: "Visa •••• 5075",       status: "paid" },
+      { date: "2026-07-13", amount: 365376,  method: "Visa •••• 5075",       status: "paid" },
+      { date: "2026-07-11", amount: 290011,  method: "Visa •••• 5075",       status: "paid" },
+      { date: "2026-07-09", amount: 79811,   method: "Visa •••• 5075",       status: "paid" },
+      { date: "2026-07-08", amount: 79811,   method: "Visa •••• 5075",       status: "paid" },
+      { date: "2026-07-08", amount: 61299,   method: "Visa •••• 5075",       status: "paid" },
+      { date: "2026-07-07", amount: 58114,   method: "Visa •••• 5075",       status: "paid" },
+      { date: "2026-07-06", amount: 57750,   method: "Visa •••• 5075",       status: "paid" }
     ]
   };
 
@@ -833,25 +900,60 @@
     { label: "Lượt mua ghi nhận", value: num(at.purchases) }
   ];
   document.getElementById("ad-tiles").innerHTML = adTiles.map(t =>
-    `<div class="tile"><div class="tile-label">${t.label}</div><div class="tile-value">${t.value}</div></div>`
+    `<div class="tile"><div class="tile-label">${t.label}</div><div class="tile-value">${t.value}</div>${t.hint ? `<div class="kpi-hint">${t.hint}</div>` : ""}</div>`
   ).join("");
 
   // ---------- Campaign table ----------
   // ROAS hoà vốn (đã trừ giá vốn) = 1 / (1 − cogsRate) — dưới ngưỡng này là chiến dịch đang lỗ dù ROAS > 1
   const breakevenRoas = 1 / (1 - DATA.cogsRate);
-  document.getElementById("campaign-tbody").innerHTML = DATA.campaigns.map(c => `
+  // CPI = chi tiêu / liên hệ mới. CPA = chi tiêu / lượt mua. ACOS = chi tiêu / doanh thu (ads) — hoà vốn khi ACOS = 1 − cogsRate (khớp ngưỡng breakevenRoas)
+  const breakevenAcos = 1 - DATA.cogsRate;
+  document.getElementById("campaign-tbody").innerHTML = DATA.campaigns.map(c => {
+    const cpi = c.contacts ? c.spend / c.contacts : null;
+    const cpa = c.purchases ? c.spend / c.purchases : null;
+    const acos = c.revenue ? c.spend / c.revenue : null;
+    return `
     <tr>
       <td class="campaign-name">${c.name}</td>
       <td><span class="status-pill ${c.status}"><span class="dot"></span>${c.status === "active" ? "Đang chạy" : "Tạm dừng"}</span></td>
       <td class="num">${vnd(c.spend)}</td>
       <td class="num">${num(c.contacts)}</td>
+      <td class="num">${cpi !== null ? vnd(cpi) : '<span class="dim">—</span>'}</td>
       <td class="num">${c.purchases !== null ? num(c.purchases) : '<span class="dim">—</span>'}</td>
+      <td class="num">${cpa !== null ? vnd(cpa) : '<span class="dim">—</span>'}</td>
       <td class="num">${c.revenue ? vnd(c.revenue) : '<span class="dim">—</span>'}</td>
+      <td class="num">${acos !== null ? `<span class="${acos <= breakevenAcos ? "roas-good" : "roas-bad"}">${pct(acos)}</span>` : '<span class="dim">—</span>'}</td>
       <td class="num">${c.roas ? `<span class="${c.roas >= breakevenRoas ? "roas-good" : "roas-bad"}">${c.roas.toLocaleString("vi-VN", { maximumFractionDigits: 2 })}x</span>` : '<span class="dim">—</span>'}</td>
     </tr>
-  `).join("");
+  `;
+  }).join("");
   document.getElementById("roas-breakeven-note").textContent =
-    `Hoà vốn (sau giá vốn ${pct(DATA.cogsRate)}) ở ROAS ${breakevenRoas.toLocaleString("vi-VN", { maximumFractionDigits: 2 })}x — số đỏ trong bảng là đang lỗ dù ROAS dương.`;
+    `Hoà vốn (sau giá vốn ${pct(DATA.cogsRate)}) ở ROAS ${breakevenRoas.toLocaleString("vi-VN", { maximumFractionDigits: 2 })}x (ACOS ${pct(breakevenAcos)}) — số đỏ trong bảng là đang lỗ dù ROAS dương. CPI = chi tiêu / liên hệ mới · CPA = chi tiêu / lượt mua · ACOS = chi tiêu / doanh thu (ads).`;
+
+  // ---------- Campaign total row (để đối chiếu với các tile/accountTotals ở trên) ----------
+  (function renderCampaignTotals() {
+    const totalSpend = DATA.campaigns.reduce((s, c) => s + c.spend, 0);
+    const totalContacts = DATA.campaigns.reduce((s, c) => s + c.contacts, 0);
+    const totalPurchases = DATA.campaigns.reduce((s, c) => s + (c.purchases || 0), 0);
+    const totalRevenue = DATA.campaigns.reduce((s, c) => s + (c.revenue || 0), 0);
+    const totalCpi = totalContacts ? totalSpend / totalContacts : null;
+    const totalCpa = totalPurchases ? totalSpend / totalPurchases : null;
+    // ACOS/ROAS tổng chỉ tính trên phần chi tiêu của các CD có doanh thu (khớp cách tính "ROAS b.quân" ở tile trên) — dùng totalSpend (toàn bộ) sẽ làm ACOS bị pha loãng sai lệch
+    const totalAcos = trackedRevenue ? trackedSpend / trackedRevenue : null;
+    const totalRoas = trackedRevenue ? blendedRoas : null;
+    document.getElementById("campaign-total-row").innerHTML = `
+      <td>Tổng cộng</td>
+      <td></td>
+      <td class="num">${vnd(totalSpend)}</td>
+      <td class="num">${num(totalContacts)}</td>
+      <td class="num">${vnd(totalCpi)}</td>
+      <td class="num">${num(totalPurchases)}</td>
+      <td class="num">${totalCpa !== null ? vnd(totalCpa) : '<span class="dim">—</span>'}</td>
+      <td class="num">${vnd(totalRevenue)}</td>
+      <td class="num">${totalAcos !== null ? pct(totalAcos) : '<span class="dim">—</span>'}</td>
+      <td class="num">${totalRoas !== null ? totalRoas.toLocaleString("vi-VN", { maximumFractionDigits: 2 }) + "x" : '<span class="dim">—</span>'}</td>
+    `;
+  })();
 
   // ---------- Funnel ----------
   const steps = [
@@ -1039,5 +1141,31 @@
     const note = document.getElementById("profit-line-note");
     note.textContent = `${fmtDayLabel(last.date)}: ${vnd(last.value)}`;
     note.style.color = last.value >= 0 ? "var(--good)" : "var(--critical)";
+  })();
+
+  // ---------- Payments (luồng tiền thanh toán) ----------
+  (function renderPayments() {
+    const payments = DATA.payments || [];
+    const paid = payments.filter(p => p.status === "paid");
+    const totalPaid = paid.reduce((s, p) => s + p.amount, 0);
+    const lastPaid = paid[0];
+
+    const tiles = [
+      { label: "Tổng đã thanh toán (lũy kế)", value: vnd(totalPaid) },
+      { label: "Số giao dịch đã thanh toán", value: num(paid.length) },
+      { label: "Giao dịch gần nhất", value: lastPaid ? `${vnd(lastPaid.amount)}` : "—", hint: lastPaid ? fmtDate(lastPaid.date) : null }
+    ];
+    document.getElementById("payment-tiles").innerHTML = tiles.map(t =>
+      `<div class="tile"><div class="tile-label">${t.label}</div><div class="tile-value">${t.value}</div>${t.hint ? `<div class="kpi-hint">${t.hint}</div>` : ""}</div>`
+    ).join("");
+
+    document.getElementById("payment-tbody").innerHTML = payments.map(p => `
+      <tr>
+        <td>${fmtDate(p.date)}</td>
+        <td class="num" style="${p.status === "failed" ? "color:var(--ink-faint);text-decoration:line-through" : ""}">${vnd(p.amount)}</td>
+        <td>${p.method}</td>
+        <td><span class="status-pill ${p.status === "paid" ? "active" : "inactive"}"><span class="dot"></span>${p.status === "paid" ? "Đã thanh toán" : "Không thành công"}</span></td>
+      </tr>
+    `).join("");
   })();
 </script>
