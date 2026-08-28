@@ -549,7 +549,7 @@
     <div class="section-head">
       <span class="section-num">02</span>
       <span class="section-title">Hiệu quả quảng cáo</span>
-      <span class="section-note">Lũy kế đến 26/08/2026</span>
+      <span class="section-note">Lũy kế đến 28/08/2026</span>
     </div>
 
     <div class="tile-row" id="ad-tiles"></div>
@@ -663,20 +663,20 @@
      DAILY INPUT — cập nhật các số ở đây mỗi khi có số liệu mới
      ============================================================ */
   const DATA = {
-    updatedAt: "2026-08-26",
+    updatedAt: "2026-08-28",
     period: "Kỳ hiện tại",
 
     revenue: {
-      gross: 16160000,      // GMV tạo đơn — tổng tiền tất cả đơn (35 đơn, lũy kế đến 26/08)
-      returnedAmount: 2347000, // GMV đơn "Đã hoàn" (4 đơn: AUF_30327, AUF_21571, AUF_20495, AUF_20026) — đơn duy nhất KHÔNG tính vào GMV ròng
-      ordersTotal: 35,
+      gross: 17817000,      // GMV tạo đơn — tổng tiền tất cả đơn (38 đơn, lũy kế đến 28/08 — dựng lại từ đầu từ toàn bộ 38 dòng "Tất cả" trong Pancake, không cộng dồn theo delta)
+      returnedAmount: 2347000, // GMV đơn "Đã hoàn" (4 đơn: AUF_30327, AUF_21571, AUF_20495, AUF_20026, không đổi so với lần trước) — đơn duy nhất KHÔNG tính vào GMV ròng
+      ordersTotal: 38,
       ordersReturned: 4,
       // Quy đổi giá trị đơn -> số cái: 255k/269k=1, 330k/459k/479k/499k=2, 679k/699k=3, 859k/899k=4
-      unitsGross: 69,     // tổng số cái trên tất cả đơn
+      unitsGross: 76,     // tổng số cái trên tất cả đơn
       unitsReturned: 11   // số cái nằm trong các đơn "Đã hoàn"
     },
     cogsRate: 0.50,   // giá vốn = 50% giá bán (tạm thời)
-    adsSpend: 5879169, // chi phí quảng cáo lũy kế cùng kỳ, CHƯA gồm VAT (khớp accountTotals.spend bên dưới) — cộng dồn từ "Santony-Daily.xlsx" (cột "Số tiền đã chi tiêu") từ 30/06 đến 26/08
+    adsSpend: 6872688, // chi phí quảng cáo lũy kế cùng kỳ, CHƯA gồm VAT (khớp accountTotals.spend bên dưới) — cộng dồn từ "Santony-Daily.xlsx" (cột "Số tiền đã chi tiêu") từ 30/06 đến 28/08
     adsVatRate: 0.10, // VAT quảng cáo Facebook — cộng thêm 10% lên chi phí ads khi tính lợi nhuận
 
     // ---- doanh số theo ngày (đã trừ đơn "Đã hoàn"), dựng từ cột "Thời gian tạo" trong Pancake ----
@@ -696,7 +696,9 @@
       { date: "2026-08-23", gmv: 2905000, units: 12 },
       { date: "2026-08-24", gmv: 255000,  units: 1 },
       { date: "2026-08-25", gmv: 978000,  units: 4 },
-      { date: "2026-08-26", gmv: 1677000, units: 7 }
+      { date: "2026-08-26", gmv: 0,       units: 0 },  // SỬA: rà lại toàn bộ 38 đơn hiện có trong Pancake không thấy đơn nào tạo ngày 26/08 — entry 1.677.000đ/7 cái từng ghi cho ngày này ở lần cập nhật trước thực chất là dữ liệu của 27/08 (trùng khớp tuyệt đối với số của 27/08 bên dưới), đã dời đúng ngày
+      { date: "2026-08-27", gmv: 1677000, units: 7 },
+      { date: "2026-08-28", gmv: 1657000, units: 7 }   // trong ngày, còn có thể tăng thêm nếu có đơn mới sau giờ cập nhật
     ],
 
     // ---- chi tiêu Ads (đã VAT) & GMV theo ngày, để so % Ads/GMV — nguồn: export "Santony-Daily.xlsx" (báo cáo theo ngày cấp tài khoản) ----
@@ -758,27 +760,30 @@
       { date: "2026-08-22", ads: 280535, gmv: 1437000 },
       { date: "2026-08-23", ads: 471711, gmv: 2905000 },
       { date: "2026-08-24", ads: 585925, gmv: 255000 },
-      { date: "2026-08-25", ads: 433323, gmv: 978000 },
-      { date: "2026-08-26", ads: 132781, gmv: 1677000 }
+      { date: "2026-08-25", ads: 435446, gmv: 978000 },
+      { date: "2026-08-26", ads: 461467, gmv: 0 },
+      { date: "2026-08-27", ads: 710085, gmv: 1677000 },
+      { date: "2026-08-28", ads: 51977,  gmv: 1657000 }
     ],
 
-    // ---- dữ liệu quảng cáo (spend/impressions/newContacts/purchases cộng dồn từ "Santony-Daily.xlsx" đến 26/08/2026; riêng "reach" lấy từ export campaign mới nhất (KimVan_Santony-Chiến-dịch..., 26/08) vì reach là số duy nhất-theo-ngày, cộng dồn nhiều ngày sẽ bị đếm trùng người dùng — không thể suy ra chính xác từ file daily, phải lấy từ export campaign mỗi lần có bản mới) ----
+    // ---- dữ liệu quảng cáo (spend/impressions/newContacts/purchases cộng dồn từ "Santony-Daily.xlsx" đến 28/08/2026; riêng "reach" lấy từ export campaign mới nhất (KimVan_Santony-Chiến-dịch..., 27/08) vì reach là số duy nhất-theo-ngày, cộng dồn nhiều ngày sẽ bị đếm trùng người dùng — không thể suy ra chính xác từ file daily, phải lấy từ export campaign mỗi lần có bản mới) ----
     accountTotals: {
-      spend: 5879169,
-      impressions: 39497,
-      reach: 18121,
-      newContacts: 445,
-      purchases: 34
+      spend: 6872688,
+      impressions: 45619,
+      reach: 19926,
+      newContacts: 470,
+      purchases: 36
     },
     // ---- bảng chiến dịch — nguồn: export "KimVan_Santony-Chiến-dịch-...xlsx" (per-campaign, lũy kế từ đầu) ----
     campaigns: [
       { name: "Mess | 30Jun",       status: "inactive", spend: 50647,   contacts: 12,  purchases: null, revenue: null,    roas: null },
       { name: "Mess | 06Jul",       status: "inactive", spend: 1076926, contacts: 124, purchases: 3,    revenue: null,    roas: null },
       { name: "Mess-GMV | 11Jul",   status: "inactive", spend: 370001,  contacts: 45,  purchases: null, revenue: null,    roas: null },
-      { name: "Mess-GMV | 8Aug",    status: "active",   spend: 2063432, contacts: 121, purchases: 16,   revenue: 5550000, roas: 2.689694 },
-      { name: "Mess-Inbox | 11Aug", status: "active",   spend: 1834441, contacts: 123, purchases: 13,   revenue: 4773000, roas: 2.601883 },
-      { name: "Mess-GMV | 20Aug",   status: "active",   spend: 355035,  contacts: 10,  purchases: 2,    revenue: 734000,  roas: 2.067402 },
-      { name: "Mess-Inbox | 24Aug", status: "active",   spend: 137950,  contacts: 5,   purchases: null, revenue: null,    roas: null }
+      { name: "Mess-GMV | 8Aug",    status: "active",   spend: 2408059, contacts: 128, purchases: 17,   revenue: 6049000, roas: 2.511982 },
+      { name: "Mess-Inbox | 11Aug", status: "active",   spend: 2133496, contacts: 133, purchases: 14,   revenue: 5951000, roas: 2.789319 },
+      { name: "Mess-GMV | 20Aug",   status: "active",   spend: 498892,  contacts: 11,  purchases: 2,    revenue: 734000,  roas: 1.47126 },
+      { name: "Mess-Inbox | 24Aug", status: "active",   spend: 236109,  contacts: 8,   purchases: null, revenue: null,    roas: null },
+      { name: "Mess-Inbox | 26Aug", status: "active",   spend: 99339,   contacts: 2,   purchases: null, revenue: null,    roas: null }
     ],
 
     // ---- luồng tiền thanh toán quảng cáo (Meta Ads Manager > Thanh toán), mới nhất trước ----
