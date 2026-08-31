@@ -549,7 +549,7 @@
     <div class="section-head">
       <span class="section-num">02</span>
       <span class="section-title">Hiệu quả quảng cáo</span>
-      <span class="section-note">Lũy kế đến 28/08/2026</span>
+      <span class="section-note">Lũy kế đến 31/08/2026</span>
     </div>
 
     <div class="tile-row" id="ad-tiles"></div>
@@ -655,6 +655,44 @@
     </div>
   </div>
 
+  <!-- ============ SECTION 5 — HÀNH VI MUA HÀNG (INSIGHT CHẠY ADS) ============ -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">05</span>
+      <span class="section-title">Hành vi mua hàng</span>
+      <span class="section-note">Insight cho lịch chạy Ads — dựa trên toàn bộ đơn hiện có</span>
+    </div>
+
+    <div class="tile-row" id="behavior-tiles"></div>
+
+    <div class="bar-chart-card">
+      <div class="bar-chart-title">Đơn hàng theo giờ trong ngày</div>
+      <div class="bar-chart" id="hour-chart"></div>
+      <div class="chart-footnote" id="hour-chart-note"></div>
+    </div>
+    <div class="bar-chart-card">
+      <div class="bar-chart-title">Đơn hàng theo ngày trong tuần</div>
+      <div class="bar-chart" id="weekday-chart"></div>
+      <div class="chart-footnote" id="weekday-chart-note"></div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Tỉnh/Thành</th>
+              <th class="num">Số đơn</th>
+              <th class="num">GMV ròng</th>
+            </tr>
+          </thead>
+          <tbody id="province-tbody"></tbody>
+        </table>
+      </div>
+      <div class="table-footnote">Mẫu còn nhỏ (45 đơn trải trên 25 tỉnh/thành) — chỉ mang tính tham khảo, chưa đủ để quyết định loại trừ/ưu tiên khu vực khi target Ads. Sẽ đáng tin hơn khi có nhiều đơn hơn.</div>
+    </div>
+  </div>
+
   <footer>Số liệu quảng cáo lấy từ file xuất Facebook Ads Manager · Số liệu doanh thu/đơn hàng cập nhật thủ công mỗi ngày</footer>
 </div>
 
@@ -663,23 +701,24 @@
      DAILY INPUT — cập nhật các số ở đây mỗi khi có số liệu mới
      ============================================================ */
   const DATA = {
-    updatedAt: "2026-08-28",
+    updatedAt: "2026-08-31",
     period: "Kỳ hiện tại",
 
     revenue: {
-      gross: 17817000,      // GMV tạo đơn — tổng tiền tất cả đơn (38 đơn, lũy kế đến 28/08 — dựng lại từ đầu từ toàn bộ 38 dòng "Tất cả" trong Pancake, không cộng dồn theo delta)
+      gross: 21830000,      // GMV tạo đơn — tổng tiền tất cả đơn (45 đơn, lũy kế đến 31/08 — dựng lại từ đầu từ toàn bộ 45 dòng trong file export "orders (2).xlsx", không cộng dồn theo delta)
       returnedAmount: 2347000, // GMV đơn "Đã hoàn" (4 đơn: AUF_30327, AUF_21571, AUF_20495, AUF_20026, không đổi so với lần trước) — đơn duy nhất KHÔNG tính vào GMV ròng
-      ordersTotal: 38,
+      ordersTotal: 45,
       ordersReturned: 4,
-      // Quy đổi giá trị đơn -> số cái: 255k/269k=1, 330k/459k/479k/499k=2, 679k/699k=3, 859k/899k=4
-      unitsGross: 76,     // tổng số cái trên tất cả đơn
+      // Quy đổi giá trị đơn -> số cái: 255k/269k=1, 330k/459k/479k/499k=2, 649k/679k/699k=3, 859k/899k=4
+      // (649k thêm 31/08 — đối chiếu với số lượng dòng "Áo lót" trong từng đơn của file export, khớp đúng tier 3 cái)
+      unitsGross: 93,     // tổng số cái trên tất cả đơn
       unitsReturned: 11   // số cái nằm trong các đơn "Đã hoàn"
     },
     cogsRate: 0.50,   // giá vốn = 50% giá bán (tạm thời)
-    adsSpend: 6872688, // chi phí quảng cáo lũy kế cùng kỳ, CHƯA gồm VAT (khớp accountTotals.spend bên dưới) — cộng dồn từ "Santony-Daily.xlsx" (cột "Số tiền đã chi tiêu") từ 30/06 đến 28/08
+    adsSpend: 8853396, // chi phí quảng cáo lũy kế cùng kỳ, CHƯA gồm VAT (khớp accountTotals.spend bên dưới) — cộng dồn từ "Santony-Daily.xlsx" (cột "Số tiền đã chi tiêu") từ 30/06 đến 31/08
     adsVatRate: 0.10, // VAT quảng cáo Facebook — cộng thêm 10% lên chi phí ads khi tính lợi nhuận
 
-    // ---- doanh số theo ngày (đã trừ đơn "Đã hoàn"), dựng từ cột "Thời gian tạo" trong Pancake ----
+    // ---- doanh số theo ngày (đã trừ đơn "Đã hoàn"), dựng từ cột "Ngày tạo đơn" trong file export Pancake (orders.xlsx) ----
     // Mỗi khi cập nhật, thêm/ sửa các ngày mới vào mảng này (ngày không có đơn thì bỏ qua, không cần điền 0)
     dailySales: [
       { date: "2026-07-09", gmv: 0,       units: 0 },  // đơn duy nhất trong ngày là đơn "Đã hoàn"
@@ -696,9 +735,12 @@
       { date: "2026-08-23", gmv: 2905000, units: 12 },
       { date: "2026-08-24", gmv: 255000,  units: 1 },
       { date: "2026-08-25", gmv: 978000,  units: 4 },
-      { date: "2026-08-26", gmv: 0,       units: 0 },  // SỬA: rà lại toàn bộ 38 đơn hiện có trong Pancake không thấy đơn nào tạo ngày 26/08 — entry 1.677.000đ/7 cái từng ghi cho ngày này ở lần cập nhật trước thực chất là dữ liệu của 27/08 (trùng khớp tuyệt đối với số của 27/08 bên dưới), đã dời đúng ngày
-      { date: "2026-08-27", gmv: 1677000, units: 7 },
-      { date: "2026-08-28", gmv: 1657000, units: 7 }   // trong ngày, còn có thể tăng thêm nếu có đơn mới sau giờ cập nhật
+      { date: "2026-08-26", gmv: 1677000, units: 7 },  // SỬA LẠI: file "orders.xlsx" (31/08) có cột "Ngày tạo đơn" thật, xác nhận batch 1.677.000đ/7 cái này đúng là ngày 26/08 — lần "sửa" trước (28/08, dời từ 26 sang 27) hoá ra SAI, dựa theo suy luận gián tiếp chứ chưa có cột ngày gốc
+      { date: "2026-08-27", gmv: 1657000, units: 7 },  // đúng là dữ liệu riêng của 27/08 (trước đây bị gán nhầm cho 28/08)
+      { date: "2026-08-28", gmv: 499000,  units: 2 },
+      { date: "2026-08-29", gmv: 899000,  units: 4 },
+      { date: "2026-08-30", gmv: 1148000, units: 5 },
+      { date: "2026-08-31", gmv: 1467000, units: 6 }
     ],
 
     // ---- chi tiêu Ads (đã VAT) & GMV theo ngày, để so % Ads/GMV — nguồn: export "Santony-Daily.xlsx" (báo cáo theo ngày cấp tài khoản) ----
@@ -761,35 +803,42 @@
       { date: "2026-08-23", ads: 471711, gmv: 2905000 },
       { date: "2026-08-24", ads: 585925, gmv: 255000 },
       { date: "2026-08-25", ads: 435446, gmv: 978000 },
-      { date: "2026-08-26", ads: 461467, gmv: 0 },
-      { date: "2026-08-27", ads: 710085, gmv: 1677000 },
-      { date: "2026-08-28", ads: 51977,  gmv: 1657000 }
+      { date: "2026-08-26", ads: 461467, gmv: 1677000 }, // SỬA: gmv dời đúng về 26/08 (xem comment ở dailySales)
+      { date: "2026-08-27", ads: 712824, gmv: 1657000 }, // Facebook revise nhẹ số cũ (710085 → 712824), theo quy ước ghi đè toàn chuỗi
+      { date: "2026-08-28", ads: 581126, gmv: 499000 },
+      { date: "2026-08-29", ads: 437313, gmv: 899000 },  // tách lại từ entry gộp 29-31/08 trước đây, giờ có ngày chính xác từ orders.xlsx
+      { date: "2026-08-30", ads: 809139, gmv: 1148000 },
+      { date: "2026-08-31", ads: 400440, gmv: 1467000 }
     ],
 
-    // ---- dữ liệu quảng cáo (spend/impressions/newContacts/purchases cộng dồn từ "Santony-Daily.xlsx" đến 28/08/2026; riêng "reach" lấy từ export campaign mới nhất (KimVan_Santony-Chiến-dịch..., 27/08) vì reach là số duy nhất-theo-ngày, cộng dồn nhiều ngày sẽ bị đếm trùng người dùng — không thể suy ra chính xác từ file daily, phải lấy từ export campaign mỗi lần có bản mới) ----
+    // ---- dữ liệu quảng cáo (spend/impressions/newContacts/purchases cộng dồn từ "Santony-Daily.xlsx" đến 31/08/2026; riêng "reach" lấy từ export campaign mới nhất (KimVan_Santony-Chiến-dịch..., 31/08) vì reach là số duy nhất-theo-ngày, cộng dồn nhiều ngày sẽ bị đếm trùng người dùng — không thể suy ra chính xác từ file daily, phải lấy từ export campaign mỗi lần có bản mới) ----
     accountTotals: {
-      spend: 6872688,
-      impressions: 45619,
-      reach: 19926,
-      newContacts: 470,
-      purchases: 36
+      spend: 8853396,
+      impressions: 58347,
+      reach: 24160,
+      newContacts: 534,
+      purchases: 47
     },
     // ---- bảng chiến dịch — nguồn: export "KimVan_Santony-Chiến-dịch-...xlsx" (per-campaign, lũy kế từ đầu) ----
     campaigns: [
       { name: "Mess | 30Jun",       status: "inactive", spend: 50647,   contacts: 12,  purchases: null, revenue: null,    roas: null },
       { name: "Mess | 06Jul",       status: "inactive", spend: 1076926, contacts: 124, purchases: 3,    revenue: null,    roas: null },
       { name: "Mess-GMV | 11Jul",   status: "inactive", spend: 370001,  contacts: 45,  purchases: null, revenue: null,    roas: null },
-      { name: "Mess-GMV | 8Aug",    status: "active",   spend: 2408059, contacts: 128, purchases: 17,   revenue: 6049000, roas: 2.511982 },
-      { name: "Mess-Inbox | 11Aug", status: "active",   spend: 2133496, contacts: 133, purchases: 14,   revenue: 5951000, roas: 2.789319 },
-      { name: "Mess-GMV | 20Aug",   status: "active",   spend: 498892,  contacts: 11,  purchases: 2,    revenue: 734000,  roas: 1.47126 },
-      { name: "Mess-Inbox | 24Aug", status: "active",   spend: 236109,  contacts: 8,   purchases: null, revenue: null,    roas: null },
-      { name: "Mess-Inbox | 26Aug", status: "active",   spend: 99339,   contacts: 2,   purchases: null, revenue: null,    roas: null }
+      { name: "Mess-GMV | 8Aug",    status: "active",   spend: 2948136, contacts: 141, purchases: 18,   revenue: 6049000, roas: 2.051805 },
+      { name: "Mess-Inbox | 11Aug", status: "active",   spend: 2684892, contacts: 156, purchases: 20,   revenue: 7218000, roas: 2.688376 },
+      { name: "Mess-GMV | 20Aug",   status: "active",   spend: 770308,  contacts: 17,  purchases: 4,    revenue: 2332000, roas: 3.02736 },
+      { name: "Mess-Inbox | 24Aug", status: "active",   spend: 496987,  contacts: 18,  purchases: 1,    revenue: 649000,  roas: 1.305869 },
+      { name: "Mess-Inbox | 26Aug", status: "active",   spend: 452169,  contacts: 10,  purchases: 1,    revenue: 499000,  roas: 1.10357 }
     ],
 
     // ---- luồng tiền thanh toán quảng cáo (Meta Ads Manager > Thanh toán), mới nhất trước ----
     // status: "paid" (Đã thanh toán, cộng vào tổng) | "failed" (Không thành công, chỉ hiển thị, không cộng)
     // Mỗi lần cập nhật: thêm các giao dịch mới lên đầu mảng, giữ nguyên các giao dịch cũ
     payments: [
+      { date: "2026-08-31", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
+      { date: "2026-08-30", amount: 933076,  method: "MasterCard •••• 4375", status: "paid" },
+      { date: "2026-08-28", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
+      { date: "2026-08-26", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
       { date: "2026-08-24", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
       { date: "2026-08-22", amount: 496331,  method: "MasterCard •••• 4375", status: "paid" },
       { date: "2026-08-20", amount: 496331,  method: "MasterCard •••• 4375", status: "paid" },
@@ -807,7 +856,50 @@
       { date: "2026-07-08", amount: 61299,   method: "Visa •••• 5075",       status: "paid" },
       { date: "2026-07-07", amount: 58114,   method: "Visa •••• 5075",       status: "paid" },
       { date: "2026-07-06", amount: 57750,   method: "Visa •••• 5075",       status: "paid" }
-    ]
+    ],
+
+    // ---- hành vi mua hàng (giờ/ngày tạo đơn, tỉnh/thành) — nguồn: cột "Thời điểm tạo đơn" + "Tỉnh/Thành phố" trong file export "orders.xlsx" ----
+    // orders = số đơn tạo trong khung đó (tính TẤT CẢ đơn kể cả "Đã hoàn", vì đây là thời điểm khách bấm mua, không phải giá trị cuối); gmv = GMV ròng (đã trừ đơn hoàn) trong khung đó
+    // Khi cập nhật: dựng lại toàn bộ từ đầu (giống cách làm dailySales) mỗi khi có file "orders.xlsx" mới, KHÔNG cộng dồn delta
+    orderBehavior: {
+      hourly: [
+        { hour: 0, orders: 0, gmv: 0 }, { hour: 1, orders: 0, gmv: 0 }, { hour: 2, orders: 0, gmv: 0 },
+        { hour: 3, orders: 0, gmv: 0 }, { hour: 4, orders: 0, gmv: 0 }, { hour: 5, orders: 0, gmv: 0 },
+        { hour: 6, orders: 1, gmv: 479000 }, { hour: 7, orders: 0, gmv: 0 }, { hour: 8, orders: 2, gmv: 714000 },
+        { hour: 9, orders: 1, gmv: 899000 }, { hour: 10, orders: 4, gmv: 1258000 }, { hour: 11, orders: 4, gmv: 1677000 },
+        { hour: 12, orders: 6, gmv: 2391000 }, { hour: 13, orders: 2, gmv: 499000 }, { hour: 14, orders: 2, gmv: 1198000 },
+        { hour: 15, orders: 2, gmv: 978000 }, { hour: 16, orders: 1, gmv: 859000 }, { hour: 17, orders: 0, gmv: 0 },
+        { hour: 18, orders: 1, gmv: 859000 }, { hour: 19, orders: 3, gmv: 1437000 }, { hour: 20, orders: 6, gmv: 2446000 },
+        { hour: 21, orders: 6, gmv: 2341000 }, { hour: 22, orders: 3, gmv: 989000 }, { hour: 23, orders: 1, gmv: 459000 }
+      ],
+      // Thứ tự Việt Nam: T2 (thứ Hai) -> CN (Chủ nhật)
+      weekday: [
+        { label: "T2", orders: 8,  gmv: 2487000 },
+        { label: "T3", orders: 4,  gmv: 1837000 },
+        { label: "T4", orders: 4,  gmv: 2156000 },
+        { label: "T5", orders: 4,  gmv: 1657000 },
+        { label: "T6", orders: 7,  gmv: 2426000 },
+        { label: "T7", orders: 6,  gmv: 3274000 },
+        { label: "CN", orders: 12, gmv: 5646000 }
+      ],
+      // top tỉnh/thành theo số đơn (đủ dữ liệu để liệt kê hết 25 tỉnh, nhưng dashboard chỉ hiện top 6 + gộp phần còn lại vào "Khác")
+      topProvinces: [
+        { name: "Hà Nội",            orders: 6, gmv: 3090000 },
+        { name: "Bình Dương",        orders: 4, gmv: 2176000 },
+        { name: "An Giang",          orders: 3, gmv: 1837000 },
+        { name: "Bà Rịa-Vũng Tàu",   orders: 3, gmv: 1457000 },
+        { name: "Đà Nẵng",           orders: 3, gmv: 989000 },
+        { name: "Bắc Ninh",          orders: 2, gmv: 1128000 }
+      ],
+      otherProvinces: { count: 19, orders: 24, gmv: 8806000 }, // 19 tỉnh còn lại, gộp chung — mỗi tỉnh chỉ 1-2 đơn
+      // "Số đơn của khách" (cột 10 trong orders.xlsx) là TỔNG số đơn trọn đời của khách đó, lặp lại y hệt trên mọi đơn của họ (KHÔNG phải số thứ tự tăng dần 1,2,3) —
+      // đã verify bằng cách đối chiếu trùng địa chỉ: 3 đơn AUF_32909/32110/31211 đều ghi "3", cùng chung địa chỉ "91 Hồ Quý Ly, Đà Nẵng" (1 khách mua 3 lần);
+      // 2 đơn AUF_31213/29997 đều ghi "2", cùng chung địa chỉ "xóm 1, Xã Hải Lộc, Nam Định" (1 khách mua 2 lần). Tổng 45 đơn = 40 khách mua 1 lần + 2 khách mua lại (3+2 đơn).
+      repeatCustomers: 2,       // số khách hàng có ≥2 đơn (unique customer, verify qua trùng địa chỉ)
+      uniqueCustomers: 42,      // 40 khách mua 1 lần + 2 khách mua lại = 42 khách cho 45 đơn
+      repeatOrders: 5,          // tổng số đơn đến từ 2 khách mua lại đó (3 đơn Đà Nẵng + 2 đơn Nam Định)
+      incrementalRepeatOrders: 3 // số đơn "phát sinh thêm" nhờ mua lại, KHÔNG tính đơn đầu tiên của mỗi khách (= repeatOrders - repeatCustomers = (3-1)+(2-1))
+    }
   };
 
   /* ============================================================ */
@@ -1172,5 +1264,62 @@
         <td><span class="status-pill ${p.status === "paid" ? "active" : "inactive"}"><span class="dot"></span>${p.status === "paid" ? "Đã thanh toán" : "Không thành công"}</span></td>
       </tr>
     `).join("");
+  })();
+
+  // ---------- Order behavior (giờ/ngày tạo đơn) — insight cho lịch chạy Ads ----------
+  (function renderOrderBehavior() {
+    const ob = DATA.orderBehavior;
+    if (!ob) return;
+    const ordersTotal = r.ordersTotal;
+
+    function renderCategoryBars(elId, items, color) {
+      const maxV = Math.max(...items.map(d => d.orders), 1);
+      const TRACK_PX = 110;
+      document.getElementById(elId).innerHTML = items.map(d => {
+        const h = Math.max(Math.round((d.orders / maxV) * TRACK_PX), d.orders > 0 ? 3 : 0);
+        const isPeak = d.orders === maxV && maxV > 0;
+        const label = d.label !== undefined ? d.label : `${d.hour}h`;
+        const tip = `${label}: ${num(d.orders)} đơn · ${vnd(d.gmv)}`;
+        return `<div class="bar-col${isPeak ? " today" : ""}" title="${tip}">
+          <div class="bar-val">${d.orders ? num(d.orders) : ""}</div>
+          <div class="bar-track"><div class="bar-shape" style="height:${h}px; --bar-color:${color}"></div></div>
+          <div class="bar-label">${label}</div>
+        </div>`;
+      }).join("");
+    }
+    renderCategoryBars("hour-chart", ob.hourly, "var(--accent)");
+    renderCategoryBars("weekday-chart", ob.weekday, "var(--good)");
+
+    // Khung giờ vàng = các giờ có số đơn bằng mức cao nhất (có thể hoà nhiều giờ)
+    const maxHourOrders = Math.max(...ob.hourly.map(d => d.orders));
+    const peakHours = ob.hourly.filter(d => d.orders === maxHourOrders);
+    const peakHoursLabel = peakHours.map(d => `${d.hour}h`).join(", ");
+    const peakHoursShare = peakHours.reduce((s, d) => s + d.orders, 0) / ordersTotal;
+    document.getElementById("hour-chart-note").textContent =
+      `Khung giờ nhiều đơn nhất: ${peakHoursLabel} (mỗi khung ${maxHourOrders} đơn) — cộng lại chiếm ${pct(peakHoursShare)} tổng số đơn. Khung 0h-5h gần như không có đơn nào. Cân nhắc tăng ngân sách/tần suất Ads vào các khung giờ cao điểm và giảm vào khung đêm khuya.`;
+
+    const WD_FULL = { T2: "Thứ Hai", T3: "Thứ Ba", T4: "Thứ Tư", T5: "Thứ Năm", T6: "Thứ Sáu", T7: "Thứ Bảy", CN: "Chủ nhật" };
+    const peakDay = ob.weekday.reduce((a, b) => (b.orders > a.orders ? b : a));
+    const minDay = ob.weekday.reduce((a, b) => (b.orders < a.orders ? b : a));
+    const dayRatio = minDay.orders > 0 ? (peakDay.orders / minDay.orders) : null;
+    document.getElementById("weekday-chart-note").textContent =
+      `${WD_FULL[peakDay.label]} là ngày nhiều đơn nhất (${num(peakDay.orders)} đơn, GMV ròng ${vnd(peakDay.gmv)}) — chiếm ${pct(peakDay.orders / ordersTotal)} tổng số đơn trong tuần${dayRatio ? `, gấp ${dayRatio.toLocaleString("vi-VN", { maximumFractionDigits: 1 })}x ngày thấp nhất (${WD_FULL[minDay.label]})` : ""}. Cân nhắc tăng ngân sách Ads vào cuối tuần, đặc biệt Chủ nhật.`;
+
+    const repeatCustomerRate = ob.repeatCustomers / ob.uniqueCustomers;
+    const tiles = [
+      { label: "Khung giờ vàng", value: peakHoursLabel, hint: `${pct(peakHoursShare)} tổng đơn rơi vào các khung này` },
+      { label: "Ngày cao điểm", value: WD_FULL[peakDay.label], hint: `${num(peakDay.orders)} đơn — ${pct(peakDay.orders / ordersTotal)} tổng đơn` },
+      { label: "Khách mua lại", value: `${num(ob.repeatCustomers)}/${num(ob.uniqueCustomers)} khách`, hint: `${pct(repeatCustomerRate)} khách — đóng góp ${num(ob.repeatOrders)}/${num(ordersTotal)} đơn (${num(ob.incrementalRepeatOrders)} đơn phát sinh thêm nhờ mua lại). Còn thấp, có thể đẩy mạnh retargeting.` }
+    ];
+    document.getElementById("behavior-tiles").innerHTML = tiles.map(t =>
+      `<div class="tile"><div class="tile-label">${t.label}</div><div class="tile-value">${t.value}</div>${t.hint ? `<div class="kpi-hint">${t.hint}</div>` : ""}</div>`
+    ).join("");
+
+    const provRows = ob.topProvinces.map(p => `
+      <tr><td>${p.name}</td><td class="num">${num(p.orders)}</td><td class="num">${vnd(p.gmv)}</td></tr>
+    `).join("");
+    const other = ob.otherProvinces;
+    const otherRow = `<tr><td class="dim">Khác (${num(other.count)} tỉnh/thành)</td><td class="num dim">${num(other.orders)}</td><td class="num dim">${vnd(other.gmv)}</td></tr>`;
+    document.getElementById("province-tbody").innerHTML = provRows + otherRow;
   })();
 </script>
