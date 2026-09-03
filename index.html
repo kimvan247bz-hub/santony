@@ -1,4 +1,5 @@
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Santony Profit</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -271,6 +272,96 @@
     font-size: 19px;
     margin-top: 4px;
   }
+
+  /* ---------- Section subheading (dùng để chia nhỏ trong 1 section) ---------- */
+  .subsection-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    margin-bottom: 10px;
+  }
+  .subsection-label:not(:first-child) { margin-top: 22px; }
+
+  /* ---------- Account comparison cards ---------- */
+  .account-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  @media (min-width: 620px) {
+    .account-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .account-card {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    border-top: 3px solid var(--acc-color, var(--accent));
+    box-shadow: var(--shadow);
+  }
+  .account-card-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .account-name {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: 15.5px;
+  }
+  .account-period {
+    font-size: 11px;
+    color: var(--ink-faint);
+    font-family: "IBM Plex Mono", monospace;
+    white-space: nowrap;
+  }
+  .account-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 16px;
+  }
+  .account-stat-label { font-size: 11.5px; color: var(--ink-soft); }
+  .account-stat-value {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 15px;
+    margin-top: 3px;
+    color: var(--acc-color, var(--ink));
+  }
+  .account-stat-value.dim { color: var(--ink-faint); font-weight: 500; }
+
+  /* ---------- Account badge (trong bảng chiến dịch) ---------- */
+  .acc-badge {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .acc-badge.acc1 { background: var(--accent-soft); color: var(--accent); }
+  .acc-badge.acc2 { background: var(--good-soft); color: var(--good); }
+
+  /* ---------- Funnel grid (song song theo tài khoản) ---------- */
+  .funnel-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 14px;
+  }
+  @media (min-width: 620px) {
+    .funnel-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .funnel-grid .funnel-card { margin-top: 0; }
 
   /* ---------- Table ---------- */
   .table-card {
@@ -549,9 +640,13 @@
     <div class="section-head">
       <span class="section-num">02</span>
       <span class="section-title">Hiệu quả quảng cáo</span>
-      <span class="section-note">Lũy kế đến 01/09/2026</span>
+      <span class="section-note">Lũy kế đến 03/09/2026</span>
     </div>
 
+    <div class="subsection-label">So sánh theo tài khoản</div>
+    <div class="account-grid" id="account-grid"></div>
+
+    <div class="subsection-label">Tổng hợp cả 2 tài khoản</div>
     <div class="tile-row" id="ad-tiles"></div>
 
     <div class="table-card">
@@ -578,10 +673,8 @@
       <div class="table-footnote" id="roas-breakeven-note"></div>
     </div>
 
-    <div class="funnel-card">
-      <div class="funnel-title">Phễu chuyển đổi — toàn tài khoản</div>
-      <div id="funnel"></div>
-    </div>
+    <div class="subsection-label">Phễu chuyển đổi — theo từng tài khoản</div>
+    <div class="funnel-grid" id="funnel-grid"></div>
   </div>
 
   <!-- ============ SECTION 3 — XU HƯỚNG THEO NGÀY ============ -->
@@ -610,7 +703,7 @@
       <div class="bar-chart-title-row">
         <div class="bar-chart-title">Chi tiêu Ads &amp; GMV theo ngày</div>
         <div class="chart-legend">
-          <span class="legend-item"><span class="legend-dot" style="background:var(--warn)"></span>Ads (đã VAT) — trục trái</span>
+          <span class="legend-item"><span class="legend-dot" style="background:var(--warn)"></span>Ads (đã VAT, gộp 2 TK) — trục trái</span>
           <span class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span>GMV — trục trái</span>
           <span class="legend-item"><span class="legend-line"></span>Ads/GMV % — trục phải</span>
         </div>
@@ -623,7 +716,7 @@
           <svg id="ads-gmv-chart" viewBox="0 0 1800 300"></svg>
         </div>
       </div>
-      <div class="chart-footnote">Trục trái (₫): cột Ads &amp; GMV theo ngày. Trục phải (%): tỷ lệ Ads/GMV, vẽ dạng đường. Với giá vốn 50%, hoà vốn khi tỷ lệ này chạm <strong>50%</strong> (đường đứt nét) — chấm màu đỏ trên đường là ngày lỗ sau giá vốn.</div>
+      <div class="chart-footnote">Trục trái (₫): cột Ads &amp; GMV theo ngày. Trục phải (%): tỷ lệ Ads/GMV, vẽ dạng đường. Với giá vốn 50%, hoà vốn khi tỷ lệ này chạm <strong>50%</strong> (đường đứt nét) — chấm màu đỏ trên đường là ngày lỗ sau giá vốn. Cột Ads ở đây là <strong>gộp cả 2 tài khoản</strong> (chưa có số Ads theo ngày tách riêng từng acc) — xem so sánh lũy kế từng acc ở mục 02.</div>
     </div>
   </div>
 
@@ -689,7 +782,7 @@
           <tbody id="province-tbody"></tbody>
         </table>
       </div>
-      <div class="table-footnote">Mẫu còn nhỏ (49 đơn trải trên 26 tỉnh/thành) — chỉ mang tính tham khảo, chưa đủ để quyết định loại trừ/ưu tiên khu vực khi target Ads. Sẽ đáng tin hơn khi có nhiều đơn hơn.</div>
+      <div class="table-footnote">Mẫu còn nhỏ (61 đơn trải trên 31 tỉnh/thành) — chỉ mang tính tham khảo, chưa đủ để quyết định loại trừ/ưu tiên khu vực khi target Ads. Sẽ đáng tin hơn khi có nhiều đơn hơn.</div>
     </div>
   </div>
 
@@ -701,20 +794,29 @@
      DAILY INPUT — cập nhật các số ở đây mỗi khi có số liệu mới
      ============================================================ */
   const DATA = {
-    updatedAt: "2026-09-01",
+    updatedAt: "2026-09-03",
     period: "Kỳ hiện tại",
 
     revenue: {
-      gross: 23826000,      // GMV tạo đơn — tổng tiền tất cả đơn (49 đơn, lũy kế đến 01/09 — dựng lại từ đầu từ toàn bộ 49 đơn trong file export "orders (1).xlsx", không cộng dồn theo delta)
-      returnedAmount: 2826000, // GMV đơn "Đã hoàn" (5 đơn: AUF_30327, AUF_21571, AUF_20495, AUF_20026, AUF_31812 — AUF_31812 (479k, tạo 23/08) mới đổi sang "Đã hoàn" trong lần cập nhật này) — đơn duy nhất KHÔNG tính vào GMV ròng
-      ordersTotal: 49,
+      gross: 29924000,      // GMV tạo đơn — tổng tiền tất cả đơn (61 đơn, lũy kế đến 03/09 — dựng lại từ đầu từ toàn bộ 61 đơn trong file export "orders.xlsx", không cộng dồn theo delta)
+      returnedAmount: 2826000, // GMV đơn "Đã hoàn" (vẫn 5 đơn như lần trước: AUF_30327, AUF_21571, AUF_20495, AUF_20026, AUF_31812) — không có đơn hoàn mới trong lần này
+      ordersTotal: 61,
       ordersReturned: 5,
       // Quy đổi giá trị đơn -> số cái: 255k/269k=1, 330k/459k/479k/499k=2, 649k/679k/699k=3, 859k/899k=4
-      unitsGross: 101,     // tổng số cái trên tất cả đơn
+      unitsGross: 126,     // tổng số cái trên tất cả đơn
       unitsReturned: 13   // số cái nằm trong các đơn "Đã hoàn"
     },
-    cogsRate: 0.50,   // giá vốn = 50% giá bán (tạm thời)
-    adsSpend: 9331174, // chi phí quảng cáo lũy kế cùng kỳ, CHƯA gồm VAT (khớp accountTotals.spend bên dưới) — cộng dồn từ "Santony-Daily (1).xlsx" (cột "Số tiền đã chi tiêu") từ 30/06 đến 01/09
+    // cogsRate giữ 50% cố định theo yêu cầu user (03/09/2026) — file orders.xlsx lần này có cột "Giá vốn đơn hàng" thực tế
+    // (Pancake tính sẵn theo từng đơn), cộng dồn ra chỉ ~34,4% GMV ròng (9.327.500đ/27.098.000đ) — thấp hơn nhiều so với 50%,
+    // nhưng user chọn giữ nguyên giả định 50% lần này, KHÔNG chuyển sang giá vốn thực tế. Không tự ý đổi ở lần cập nhật sau
+    // trừ khi user yêu cầu lại.
+    cogsRate: 0.50,
+    // adsSpend: từ 03/09/2026, Santony chạy SONG SONG 2 tài khoản quảng cáo — số này = tổng chi tiêu (CHƯA VAT) cộng dồn từ
+    // 30/06 đến 03/09 của CẢ 2 tài khoản, gộp theo từng ngày rồi cộng lại: "Santony-Daily (1).xlsx" (acc chính, 30/06-03/09)
+    // + "Santony-Daily (2).xlsx" (acc phụ mới, chỉ có chi tiêu 2 ngày 01-02/09, đúng bằng chiến dịch "Inbox | 1Sep").
+    // (File "Báo cáo chưa đặt tên...xlsx" nhận trước đó thực ra CŨNG là 2 acc này nhưng chọn range "toàn thời gian" nên
+    // dính chi tiêu từ 2023 của acc trước khi đổi sang chạy Santony — không dùng file đó, dùng 2 file "Santony-Daily" mới.)
+    adsSpend: 11256435,
     adsVatRate: 0.10, // VAT quảng cáo Facebook — cộng thêm 10% lên chi phí ads khi tính lợi nhuận
 
     // ---- doanh số theo ngày (đã trừ đơn "Đã hoàn"), dựng từ cột "Ngày tạo đơn" trong file export Pancake (orders.xlsx) ----
@@ -739,12 +841,17 @@
       { date: "2026-08-28", gmv: 499000,  units: 2 },
       { date: "2026-08-29", gmv: 899000,  units: 4 },
       { date: "2026-08-30", gmv: 1148000, units: 5 },
-      { date: "2026-08-31", gmv: 1966000, units: 8 },  // dựng lại từ file export mới, dựa trên cột "Ngày tạo đơn" thật — khác số cũ 1.467.000/6 (nay đầy đủ hơn nhờ toàn bộ 49 đơn thay vì 45)
-      { date: "2026-09-01", gmv: 1497000, units: 6 }
+      { date: "2026-08-31", gmv: 1966000, units: 8 },
+      { date: "2026-09-01", gmv: 2465000, units: 10 }, // SỬA: tăng so với lần trước (1.497.000/6) — dựng lại từ toàn bộ 61 đơn của file "orders.xlsx" mới, nhiều đơn hơn thuộc ngày này so với lần cập nhật trước
+      { date: "2026-09-02", gmv: 2366000, units: 10 },
+      { date: "2026-09-03", gmv: 2764000, units: 11 }
     ],
 
-    // ---- chi tiêu Ads (đã VAT) & GMV theo ngày, để so % Ads/GMV — nguồn: export "Santony-Daily.xlsx" (báo cáo theo ngày cấp tài khoản) ----
-    // ads = chi tiêu Ads ngày đó × 1.10 (đã VAT, khớp cách tính "Chi phí Ads (đã VAT)" ở mục 01). gmv = GMV ròng ngày đó (khớp dailySales ở trên, 0 nếu không có đơn)
+    // ---- chi tiêu Ads (đã VAT) & GMV theo ngày, để so % Ads/GMV — nguồn: gộp "Santony-Daily (1).xlsx" (acc chính) +
+    // "Santony-Daily (2).xlsx" (acc phụ, chỉ có 01-02/09) THEO TỪNG NGÀY rồi mới nhân VAT (từ 03/09/2026, chạy song song 2 acc) ----
+    // ads = (chi tiêu acc1 + acc2 ngày đó) × 1.10 (đã VAT). gmv = GMV ròng ngày đó (khớp dailySales ở trên, 0 nếu không có đơn)
+    // Lưu ý: acc2 chưa có số cho 03/09 (file chỉ export đến 02/09) — ads ngày 03/09 dưới đây MỚI CHỈ CÓ acc1, có thể thiếu
+    // một phần chi tiêu acc2 hôm đó, sẽ bù lại ở lần cập nhật sau khi acc2 có file mới.
     dailyAdsGmv: [
       { date: "2026-06-30", ads: 14601, gmv: 0 },
       { date: "2026-07-01", ads: 41110, gmv: 0 },
@@ -808,28 +915,39 @@
       { date: "2026-08-28", ads: 581126, gmv: 499000 },
       { date: "2026-08-29", ads: 437313, gmv: 899000 },
       { date: "2026-08-30", ads: 809478, gmv: 1148000 }, // Facebook revise nhẹ số cũ (809139 → 809478)
-      { date: "2026-08-31", ads: 682619, gmv: 1966000 }, // ads tăng mạnh so với lần trước (400440 → 682619): hôm 31/08 là "hôm nay" lúc cập nhật lần trước nên số liệu còn dở dang (attribution window chưa đóng), nay đã chốt đủ ngày
-      { date: "2026-09-01", ads: 243037, gmv: 1497000 }
+      { date: "2026-08-31", ads: 682647, gmv: 1966000 },
+      { date: "2026-09-01", ads: 655958, gmv: 2465000 }, // từ đây gồm cả acc phụ mới (chiến dịch "Inbox | 1Sep")
+      { date: "2026-09-02", ads: 1021622, gmv: 2366000 },
+      { date: "2026-09-03", ads: 683218, gmv: 2764000 } // MỚI CHỈ CÓ acc1 (acc2 chưa export đến ngày này) — xem lưu ý ở trên
     ],
 
-    // ---- dữ liệu quảng cáo (spend/impressions/newContacts/purchases cộng dồn từ "Santony-Daily.xlsx" đến 01/09/2026; riêng "reach" lấy từ export campaign mới nhất (KimVan_Santony-Chiến-dịch..., 01/09) vì reach là số duy nhất-theo-ngày, cộng dồn nhiều ngày sẽ bị đếm trùng người dùng — không thể suy ra chính xác từ file daily, phải lấy từ export campaign mỗi lần có bản mới) ----
-    accountTotals: {
-      spend: 9331174,
-      impressions: 61704,
-      reach: 25336,
-      newContacts: 548,
-      purchases: 51
-    },
-    // ---- bảng chiến dịch — nguồn: export "KimVan_Santony-Chiến-dịch-...xlsx" (per-campaign, lũy kế từ đầu) ----
+    // ---- dữ liệu quảng cáo TÁCH RIÊNG THEO TỪNG TÀI KHOẢN (từ 01/09/2026, Santony chạy song song 2 acc) — mỗi acc lấy
+    // trực tiếp từ file export riêng của acc đó, nên reach ở đây KHÔNG còn bị double-count như cách gộp cũ:
+    // acc1 ("Santony-Daily (1).xlsx" + "KimVan_Santony-Chiến-dịch...xlsx", chạy từ 30/06) — reach 29.480 lấy từ dòng tổng
+    // (đã dedup unique reach của 8 chiến dịch acc chính).
+    // acc2 ("Santony-Daily (2).xlsx" + "Kim-Vân-I-FLC-Chiến-dịch...xlsx", chạy từ 01/09, hiện chỉ có 1 chiến dịch
+    // "Inbox | 1Sep") — reach 2.015 lấy trực tiếp từ export riêng của chiến dịch này.
+    // Tổng lũy kế cả 2 acc (dùng ở mục "Tổng hợp") được TÍNH RA bằng cách cộng 2 acc dưới đây ở phần render — luôn khớp,
+    // không còn cần số xấp xỉ dedup như trước (spend 10.810.926+445.509=11.256.435 = đúng adsSpend ở trên).
+    accounts: [
+      { id: "acc1", name: "TK chính", period: "chạy từ 30/06", spend: 10810926, reach: 29480, newContacts: 601, purchases: 60 },
+      { id: "acc2", name: "TK phụ",   period: "chạy từ 01/09", spend: 445509,   reach: 2015,  newContacts: 14,  purchases: 1 }
+    ],
+    // ---- bảng chiến dịch — nguồn: export "KimVan_Santony-Chiến-dịch-...xlsx" (8 chiến dịch cũ, per-campaign lũy kế từ đầu,
+    // thuộc acc1) + "Kim-Vân-I-FLC-Chiến-dịch...xlsx" (1 chiến dịch mới "Inbox | 1Sep", thuộc acc2, export riêng,
+    // revenue/roas chưa có vì file này không có cột "Giá trị chuyển đổi từ lượt mua"). Tên chiến dịch gốc
+    // "Santony I Inbox I 1Sep" dùng ký tự "I" thay cho dấu "|" — đã quy đổi lại về đúng format hiển thị cũ.
+    // account: "acc1" | "acc2" — khớp với id trong DATA.accounts ở trên, dùng để gắn badge + gom nhóm trong bảng.
     campaigns: [
-      { name: "Mess | 30Jun",       status: "inactive", spend: 50647,   contacts: 12,  purchases: null, revenue: null,    roas: null },
-      { name: "Mess | 06Jul",       status: "inactive", spend: 1076926, contacts: 124, purchases: 3,    revenue: null,    roas: null },
-      { name: "Mess-GMV | 11Jul",   status: "inactive", spend: 370001,  contacts: 45,  purchases: null, revenue: null,    roas: null },
-      { name: "Mess-GMV | 8Aug",    status: "active",   spend: 3094638, contacts: 145, purchases: 19,   revenue: 6548000, roas: 2.115918 },
-      { name: "Mess-Inbox | 11Aug", status: "active",   spend: 2815969, contacts: 163, purchases: 22,   revenue: 8216000, roas: 2.917646 },
-      { name: "Mess-GMV | 20Aug",   status: "active",   spend: 841217,  contacts: 17,  purchases: 4,    revenue: 2332000, roas: 2.772174 },
-      { name: "Mess-Inbox | 24Aug", status: "active",   spend: 549160,  contacts: 19,  purchases: 1,    revenue: 649000,  roas: 1.181805 },
-      { name: "Mess-Inbox | 26Aug", status: "active",   spend: 536979,  contacts: 12,  purchases: 2,    revenue: 499000,  roas: 0.929273 }
+      { name: "Mess | 30Jun",  account: "acc1", status: "inactive", spend: 50647,   contacts: 12,  purchases: null, revenue: null,     roas: null },
+      { name: "Mess | 06Jul",  account: "acc1", status: "inactive", spend: 1076926, contacts: 124, purchases: 3,    revenue: null,     roas: null },
+      { name: "GMV | 11Jul",   account: "acc1", status: "inactive", spend: 370001,  contacts: 45,  purchases: null, revenue: null,     roas: null },
+      { name: "GMV | 8Aug",    account: "acc1", status: "active",   spend: 3453110, contacts: 155, purchases: 20,   revenue: 7447000,  roas: 2.156607 },
+      { name: "Inbox | 11Aug", account: "acc1", status: "active",   spend: 3346370, contacts: 189, purchases: 26,   revenue: 10332000, roas: 3.087525 },
+      { name: "GMV | 20Aug",   account: "acc1", status: "active",   spend: 1074406, contacts: 24,  purchases: 7,    revenue: 3799000,  roas: 3.535907 },
+      { name: "Inbox | 24Aug", account: "acc1", status: "active",   spend: 702716,  contacts: 26,  purchases: 2,    revenue: 649000,   roas: 0.923559 },
+      { name: "Inbox | 26Aug", account: "acc1", status: "active",   spend: 731115,  contacts: 14,  purchases: 2,    revenue: 499000,   roas: 0.682519 },
+      { name: "Inbox | 1Sep",  account: "acc2", status: "active",   spend: 445509,  contacts: 14,  purchases: 1,    revenue: null,     roas: null }
     ],
 
     // ---- luồng tiền thanh toán quảng cáo (Meta Ads Manager > Thanh toán), mới nhất trước ----
@@ -866,38 +984,38 @@
       hourly: [
         { hour: 0, orders: 0, gmv: 0 }, { hour: 1, orders: 0, gmv: 0 }, { hour: 2, orders: 0, gmv: 0 },
         { hour: 3, orders: 0, gmv: 0 }, { hour: 4, orders: 0, gmv: 0 }, { hour: 5, orders: 0, gmv: 0 },
-        { hour: 6, orders: 1, gmv: 479000 }, { hour: 7, orders: 0, gmv: 0 }, { hour: 8, orders: 2, gmv: 714000 },
-        { hour: 9, orders: 1, gmv: 899000 }, { hour: 10, orders: 4, gmv: 1258000 }, { hour: 11, orders: 4, gmv: 1677000 },
-        { hour: 12, orders: 6, gmv: 2391000 }, { hour: 13, orders: 3, gmv: 998000 }, { hour: 14, orders: 4, gmv: 2196000 },
-        { hour: 15, orders: 2, gmv: 978000 }, { hour: 16, orders: 1, gmv: 859000 }, { hour: 17, orders: 1, gmv: 499000 },
-        { hour: 18, orders: 1, gmv: 859000 }, { hour: 19, orders: 3, gmv: 958000 }, { hour: 20, orders: 6, gmv: 2446000 },
+        { hour: 6, orders: 1, gmv: 479000 }, { hour: 7, orders: 1, gmv: 269000 }, { hour: 8, orders: 4, gmv: 1712000 },
+        { hour: 9, orders: 2, gmv: 1398000 }, { hour: 10, orders: 4, gmv: 1258000 }, { hour: 11, orders: 4, gmv: 1677000 },
+        { hour: 12, orders: 6, gmv: 2391000 }, { hour: 13, orders: 5, gmv: 2396000 }, { hour: 14, orders: 4, gmv: 2196000 },
+        { hour: 15, orders: 3, gmv: 1477000 }, { hour: 16, orders: 3, gmv: 1627000 }, { hour: 17, orders: 1, gmv: 499000 },
+        { hour: 18, orders: 1, gmv: 859000 }, { hour: 19, orders: 3, gmv: 958000 }, { hour: 20, orders: 9, gmv: 4113000 },
         { hour: 21, orders: 6, gmv: 2341000 }, { hour: 22, orders: 3, gmv: 989000 }, { hour: 23, orders: 1, gmv: 459000 }
       ],
       // Thứ tự Việt Nam: T2 (thứ Hai) -> CN (Chủ nhật)
       weekday: [
         { label: "T2", orders: 9,  gmv: 2986000 },
-        { label: "T3", orders: 7,  gmv: 3334000 },
-        { label: "T4", orders: 4,  gmv: 2156000 },
-        { label: "T5", orders: 4,  gmv: 1657000 },
+        { label: "T3", orders: 9,  gmv: 4302000 },
+        { label: "T4", orders: 8,  gmv: 4522000 },
+        { label: "T5", orders: 10, gmv: 4421000 },
         { label: "T6", orders: 7,  gmv: 2426000 },
         { label: "T7", orders: 6,  gmv: 3274000 },
         { label: "CN", orders: 12, gmv: 5167000 }
       ],
-      // top tỉnh/thành theo số đơn (đủ dữ liệu để liệt kê hết 26 tỉnh, nhưng dashboard chỉ hiện top 6 + gộp phần còn lại vào "Khác"); hoà số đơn thì xếp theo GMV cao hơn
+      // top tỉnh/thành theo số đơn (đủ dữ liệu để liệt kê hết 31 tỉnh, nhưng dashboard chỉ hiện top 6 + gộp phần còn lại vào "Khác"); hoà số đơn thì xếp theo GMV cao hơn
       topProvinces: [
         { name: "Hà Nội",            orders: 7, gmv: 3589000 },
-        { name: "Bình Dương",        orders: 4, gmv: 2176000 },
-        { name: "An Giang",          orders: 3, gmv: 1837000 },
+        { name: "An Giang",          orders: 5, gmv: 2805000 },
+        { name: "Bình Dương",        orders: 5, gmv: 2675000 },
+        { name: "Hồ Chí Minh",       orders: 4, gmv: 1502000 },
         { name: "Bà Rịa-Vũng Tàu",   orders: 3, gmv: 1457000 },
-        { name: "Đà Nẵng",           orders: 3, gmv: 989000 },
-        { name: "Tiền Giang",        orders: 2, gmv: 1358000 }
+        { name: "Thanh Hóa",         orders: 3, gmv: 1253000 }
       ],
-      otherProvinces: { count: 20, orders: 27, gmv: 9594000 }, // 20 tỉnh còn lại, gộp chung — mỗi tỉnh chỉ 1-2 đơn
+      otherProvinces: { count: 25, orders: 34, gmv: 13817000 }, // 25 tỉnh còn lại, gộp chung — mỗi tỉnh chỉ 1-2 đơn
       // "Số đơn của khách" (cột 10 trong orders.xlsx) là TỔNG số đơn trọn đời của khách đó, lặp lại y hệt trên mọi đơn của họ (KHÔNG phải số thứ tự tăng dần 1,2,3) —
       // đã verify bằng cách đối chiếu trùng địa chỉ: 3 đơn AUF_32909/32110/31211 đều ghi "3", cùng chung địa chỉ "91 Hồ Quý Ly, Đà Nẵng" (1 khách mua 3 lần);
-      // 2 đơn AUF_31213/29997 đều ghi "2", cùng chung địa chỉ "xóm 1, Xã Hải Lộc, Nam Định" (1 khách mua 2 lần). Tổng 49 đơn = 44 khách mua 1 lần + 2 khách mua lại (3+2 đơn).
+      // 2 đơn AUF_31213/29997 đều ghi "2", cùng chung địa chỉ "xóm 1, Xã Hải Lộc, Nam Định" (1 khách mua 2 lần). Tổng 61 đơn = 56 khách mua 1 lần + 2 khách mua lại (3+2 đơn) — không có khách mua lại mới trong lần này.
       repeatCustomers: 2,       // số khách hàng có ≥2 đơn (unique customer, verify qua trùng địa chỉ)
-      uniqueCustomers: 46,      // 44 khách mua 1 lần + 2 khách mua lại = 46 khách cho 49 đơn
+      uniqueCustomers: 58,      // 56 khách mua 1 lần + 2 khách mua lại = 58 khách cho 61 đơn
       repeatOrders: 5,          // tổng số đơn đến từ 2 khách mua lại đó (3 đơn Đà Nẵng + 2 đơn Nam Định)
       incrementalRepeatOrders: 3 // số đơn "phát sinh thêm" nhờ mua lại, KHÔNG tính đơn đầu tiên của mỗi khách (= repeatOrders - repeatCustomers = (3-1)+(2-1))
     }
@@ -986,8 +1104,40 @@
     </div>`;
   }).join("");
 
-  // ---------- Ad tiles ----------
-  const at = DATA.accountTotals;
+  // ---------- Account comparison cards (mỗi acc quảng cáo theo dõi riêng) ----------
+  const ACC_COLOR = { acc1: "var(--accent)", acc2: "var(--good)" };
+  function blendedRoasFor(campaignList) {
+    const rev = campaignList.reduce((s, c) => s + (c.revenue || 0), 0);
+    const spend = campaignList.filter(c => c.revenue).reduce((s, c) => s + c.spend, 0);
+    return spend ? rev / spend : null;
+  }
+  document.getElementById("account-grid").innerHTML = DATA.accounts.map(acc => {
+    const accCampaigns = DATA.campaigns.filter(c => c.account === acc.id);
+    const roas = blendedRoasFor(accCampaigns);
+    const stats = [
+      { label: "Chi tiêu", value: vnd(acc.spend) },
+      { label: "Liên hệ mới", value: num(acc.newContacts) },
+      { label: "Lượt mua", value: num(acc.purchases) },
+      { label: "ROAS b.quân", value: roas !== null ? roas.toLocaleString("vi-VN", { maximumFractionDigits: 2 }) + "x" : null }
+    ];
+    return `<div class="account-card" style="--acc-color:${ACC_COLOR[acc.id]}">
+      <div class="account-card-head">
+        <span class="account-name">${acc.name}</span>
+        <span class="account-period">${acc.period}</span>
+      </div>
+      <div class="account-stats">
+        ${stats.map(s => `<div><div class="account-stat-label">${s.label}</div><div class="account-stat-value${s.value === null ? " dim" : ""}">${s.value === null ? "Chưa có ROI" : s.value}</div></div>`).join("")}
+      </div>
+    </div>`;
+  }).join("");
+
+  // ---------- Ad tiles (tổng hợp cả 2 acc) ----------
+  const at = DATA.accounts.reduce((s, a) => ({
+    spend: s.spend + a.spend,
+    reach: s.reach + a.reach,
+    newContacts: s.newContacts + a.newContacts,
+    purchases: s.purchases + a.purchases
+  }), { spend: 0, reach: 0, newContacts: 0, purchases: 0 });
   const trackedRevenue = DATA.campaigns.reduce((s, c) => s + (c.revenue || 0), 0);
   const trackedSpend = DATA.campaigns.filter(c => c.revenue).reduce((s, c) => s + c.spend, 0);
   const blendedRoas = trackedRevenue / trackedSpend;
@@ -1012,7 +1162,7 @@
     const acos = c.revenue ? c.spend / c.revenue : null;
     return `
     <tr>
-      <td class="campaign-name">${c.name}</td>
+      <td class="campaign-name">${c.name}<span class="acc-badge ${c.account}">${c.account === "acc1" ? "TK chính" : "TK phụ"}</span></td>
       <td><span class="status-pill ${c.status}"><span class="dot"></span>${c.status === "active" ? "Đang chạy" : "Tạm dừng"}</span></td>
       <td class="num">${vnd(c.spend)}</td>
       <td class="num">${num(c.contacts)}</td>
@@ -1053,22 +1203,30 @@
     `;
   })();
 
-  // ---------- Funnel ----------
-  const steps = [
-    { label: "Người tiếp cận (Reach)", value: at.reach },
-    { label: "Liên hệ nhắn tin mới", value: at.newContacts },
-    { label: "Lượt mua ghi nhận", value: at.purchases }
-  ];
-  const maxV = steps[0].value;
-  document.getElementById("funnel").innerHTML = steps.map((s, i) => {
-    const width = (s.value / maxV) * 100;
-    const rate = i > 0 ? ((s.value / steps[i - 1].value) * 100).toLocaleString("vi-VN", { maximumFractionDigits: 1 }) + "% so với bước trước" : "";
-    return `<div class="funnel-row">
-      <div class="funnel-meta"><span class="lbl">${s.label}</span><span class="val">${num(s.value)}</span></div>
-      <div class="funnel-track"><div class="funnel-fill" style="width:${width}%"></div></div>
-      ${rate ? `<div class="funnel-rate">${rate}</div>` : ""}
-    </div>`;
-  }).join("");
+  // ---------- Funnel (riêng từng tài khoản — reach ở đây lấy trực tiếp từ export của từng acc, không bị double-count) ----------
+  function funnelHtml(reach, newContacts, purchases) {
+    const steps = [
+      { label: "Người tiếp cận (Reach)", value: reach },
+      { label: "Liên hệ nhắn tin mới", value: newContacts },
+      { label: "Lượt mua ghi nhận", value: purchases }
+    ];
+    const maxV = steps[0].value;
+    return steps.map((s, i) => {
+      const width = maxV ? (s.value / maxV) * 100 : 0;
+      const rate = i > 0 && steps[i - 1].value ? ((s.value / steps[i - 1].value) * 100).toLocaleString("vi-VN", { maximumFractionDigits: 1 }) + "% so với bước trước" : "";
+      return `<div class="funnel-row">
+        <div class="funnel-meta"><span class="lbl">${s.label}</span><span class="val">${num(s.value)}</span></div>
+        <div class="funnel-track"><div class="funnel-fill" style="width:${width}%; background:var(--acc-color, var(--accent))"></div></div>
+        ${rate ? `<div class="funnel-rate">${rate}</div>` : ""}
+      </div>`;
+    }).join("");
+  }
+  document.getElementById("funnel-grid").innerHTML = DATA.accounts.map(acc => `
+    <div class="funnel-card" style="--acc-color:${ACC_COLOR[acc.id]}">
+      <div class="funnel-title">${acc.name} <span style="color:var(--ink-faint); font-weight:400;">(${acc.period})</span></div>
+      ${funnelHtml(acc.reach, acc.newContacts, acc.purchases)}
+    </div>
+  `).join("");
 
   // ---------- Daily bar charts ----------
   function fmtDayLabel(iso) {
