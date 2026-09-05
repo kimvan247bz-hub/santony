@@ -182,6 +182,55 @@
     font-family: "IBM Plex Sans", sans-serif;
   }
   .hero-figure .sign { color: var(--ink-faint); font-weight: 500; margin-right: 2px; }
+  .hero-top-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .hero-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 13px;
+    border-radius: 100px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+  .hero-status-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: none; }
+  .hero-status-badge.good { background: var(--good-soft); color: var(--good); }
+  .hero-status-badge.bad { background: var(--critical-soft); color: var(--critical); }
+  .hero-status-badge.warn { background: var(--warn-soft); color: var(--warn); }
+  .hero-trend {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .hero-sparkline { width: 150px; height: 34px; flex: none; display: block; }
+  .hero-deltas { display: flex; gap: 16px; flex-wrap: wrap; }
+  .hero-delta { font-size: 12px; white-space: nowrap; }
+  .hero-delta .lbl { color: var(--ink-soft); margin-right: 5px; }
+  .hero-delta .val { font-family: "IBM Plex Mono", monospace; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .hero-delta .val.good { color: var(--good); }
+  .hero-delta .val.bad { color: var(--critical); }
+  .hero-delta .val.flat { color: var(--ink-faint); }
+  .hero-caveat {
+    margin-top: 14px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--warn);
+    background: var(--warn-soft);
+    border-radius: 8px;
+    padding: 9px 13px;
+  }
+  .hero-caveat + .hero-caveat { margin-top: 8px; }
   .hero-sub { margin-top: 14px; }
   .chip-row {
     display: flex;
@@ -627,20 +676,81 @@
     </div>
 
     <div class="hero">
-      <div class="hero-label">Lợi nhuận gộp</div>
-      <div class="hero-figure" id="hero-profit">—</div>
+      <div class="hero-top-row">
+        <div>
+          <div class="hero-label">Lợi nhuận gộp</div>
+          <div class="hero-figure" id="hero-profit">—</div>
+        </div>
+        <span class="hero-status-badge" id="hero-status"></span>
+      </div>
+      <div class="hero-trend" id="hero-trend"></div>
       <div class="hero-sub" id="hero-sub"></div>
+      <div id="hero-caveats"></div>
     </div>
 
     <div class="kpi-grid" id="kpi-grid"></div>
   </div>
 
-  <!-- ============ SECTION 2 — HIỆU QUẢ QUẢNG CÁO ============ -->
+  <!-- ============ SECTION 2 — XU HƯỚNG THEO NGÀY (đổi lên trước mục Hiệu quả quảng cáo 05/09/2026 — "sếp" cần thấy xu
+       hướng tổng quan ngay sau con số lợi nhuận, trước khi đi vào chi tiết từng chiến dịch) ============ -->
   <div class="section">
     <div class="section-head">
       <span class="section-num">02</span>
+      <span class="section-title">Xu hướng theo ngày</span>
+      <span class="section-note">Đã trừ đơn hoàn</span>
+    </div>
+
+    <div class="bar-chart-card">
+      <div class="bar-chart-title-row">
+        <div class="bar-chart-title">Lợi nhuận lũy kế</div>
+        <div class="chart-note" id="profit-line-note"></div>
+      </div>
+      <div class="line-chart-wrap">
+        <svg id="profit-line-chart" viewBox="0 0 1000 170" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="chart-footnote">Lợi nhuận mỗi ngày = GMV ròng ngày đó × 50% − Chi tiêu Ads (đã VAT) ngày đó, cộng dồn từ 30/06. Chart này dùng số Ads <strong>theo ngày</strong> chưa lọc (nghi có lẫn chi tiêu ngoài Santony một số ngày) nên số cộng dồn ở đây có thể <strong>thấp hơn đáng kể</strong> so với "Lợi nhuận gộp" ở mục 01 (vốn đã dùng số Ads campaign-level đã lọc sạch hơn) — xem chi tiết trong code.</div>
+    </div>
+    <div class="bar-chart-card">
+      <div class="bar-chart-title">Số lượng bán ra (cái)</div>
+      <div class="bar-chart" id="units-chart"></div>
+    </div>
+    <div class="bar-chart-card">
+      <div class="bar-chart-title-row">
+        <div class="bar-chart-title">Chi tiêu Ads &amp; GMV theo ngày</div>
+        <div class="chart-legend">
+          <span class="legend-item"><span class="legend-dot" style="background:var(--warn)"></span>Ads (đã VAT, gộp 2 TK) — trục trái</span>
+          <span class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span>GMV — trục trái</span>
+          <span class="legend-item"><span class="legend-line"></span>Ads/GMV % — trục phải</span>
+        </div>
+      </div>
+      <div class="combo-chart-wrap">
+        <div class="combo-axis-sticky">
+          <svg id="ads-gmv-axis" viewBox="0 0 46 300"></svg>
+        </div>
+        <div class="combo-chart-scroll">
+          <svg id="ads-gmv-chart" viewBox="0 0 1800 300"></svg>
+        </div>
+      </div>
+      <div class="chart-footnote">Trục trái (₫): cột Ads &amp; GMV theo ngày. Trục phải (%): tỷ lệ Ads/GMV, vẽ dạng đường. Với giá vốn 50%, hoà vốn khi tỷ lệ này chạm <strong>50%</strong> (đường đứt nét) — chấm màu đỏ trên đường là ngày lỗ sau giá vốn. Cột Ads ở đây là <strong>gộp cả 2 tài khoản</strong> (chưa có số Ads theo ngày tách riêng từng acc) — xem so sánh lũy kế từng acc ở mục 03.</div>
+    </div>
+    <div class="bar-chart-card">
+      <div class="bar-chart-title-row">
+        <div class="bar-chart-title">ACOS lũy kế theo ngày</div>
+        <div class="chart-note" id="acos-line-note"></div>
+      </div>
+      <div class="line-chart-wrap">
+        <svg id="acos-line-chart" viewBox="0 0 1000 190" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="chart-footnote">ACOS lũy kế đến từng ngày = tổng Chi phí Ads (đã VAT, gộp 2 TK) cộng dồn từ 30/06 ÷ tổng GMV ròng (từ Pancake, đã trừ đơn hoàn) cộng dồn cùng kỳ. Đường đứt nét là ngưỡng hoà vốn (giá vốn 50%) — xuống dưới ngưỡng này là đang có lãi sau giá vốn. Chart này dùng số Ads <strong>theo ngày</strong> chưa lọc nên ACOS cuối kỳ ở đây có thể <strong>cao hơn</strong> "ACOS lũy kế" ở mục 03 (đã dùng số campaign-level sạch hơn).</div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 3 — HIỆU QUẢ QUẢNG CÁO ============ -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">03</span>
       <span class="section-title">Hiệu quả quảng cáo</span>
-      <span class="section-note">Lũy kế đến 03/09/2026</span>
+      <span class="section-note">Lũy kế đến 05/09/2026</span>
     </div>
 
     <div class="subsection-label">So sánh theo tài khoản</div>
@@ -675,49 +785,6 @@
 
     <div class="subsection-label">Phễu chuyển đổi — theo từng tài khoản</div>
     <div class="funnel-grid" id="funnel-grid"></div>
-  </div>
-
-  <!-- ============ SECTION 3 — XU HƯỚNG THEO NGÀY ============ -->
-  <div class="section">
-    <div class="section-head">
-      <span class="section-num">03</span>
-      <span class="section-title">Xu hướng theo ngày</span>
-      <span class="section-note">Đã trừ đơn hoàn</span>
-    </div>
-
-    <div class="bar-chart-card">
-      <div class="bar-chart-title-row">
-        <div class="bar-chart-title">Lợi nhuận lũy kế</div>
-        <div class="chart-note" id="profit-line-note"></div>
-      </div>
-      <div class="line-chart-wrap">
-        <svg id="profit-line-chart" viewBox="0 0 1000 170" preserveAspectRatio="none"></svg>
-      </div>
-      <div class="chart-footnote">Lợi nhuận mỗi ngày = GMV ròng ngày đó × 50% − Chi tiêu Ads (đã VAT) ngày đó, cộng dồn từ 30/06. Số cộng dồn có thể lệch nhẹ so với "Lợi nhuận gộp" ở mục 01 vì hai nguồn ads chốt số ở thời điểm khác nhau.</div>
-    </div>
-    <div class="bar-chart-card">
-      <div class="bar-chart-title">Số lượng bán ra (cái)</div>
-      <div class="bar-chart" id="units-chart"></div>
-    </div>
-    <div class="bar-chart-card">
-      <div class="bar-chart-title-row">
-        <div class="bar-chart-title">Chi tiêu Ads &amp; GMV theo ngày</div>
-        <div class="chart-legend">
-          <span class="legend-item"><span class="legend-dot" style="background:var(--warn)"></span>Ads (đã VAT, gộp 2 TK) — trục trái</span>
-          <span class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span>GMV — trục trái</span>
-          <span class="legend-item"><span class="legend-line"></span>Ads/GMV % — trục phải</span>
-        </div>
-      </div>
-      <div class="combo-chart-wrap">
-        <div class="combo-axis-sticky">
-          <svg id="ads-gmv-axis" viewBox="0 0 46 300"></svg>
-        </div>
-        <div class="combo-chart-scroll">
-          <svg id="ads-gmv-chart" viewBox="0 0 1800 300"></svg>
-        </div>
-      </div>
-      <div class="chart-footnote">Trục trái (₫): cột Ads &amp; GMV theo ngày. Trục phải (%): tỷ lệ Ads/GMV, vẽ dạng đường. Với giá vốn 50%, hoà vốn khi tỷ lệ này chạm <strong>50%</strong> (đường đứt nét) — chấm màu đỏ trên đường là ngày lỗ sau giá vốn. Cột Ads ở đây là <strong>gộp cả 2 tài khoản</strong> (chưa có số Ads theo ngày tách riêng từng acc) — xem so sánh lũy kế từng acc ở mục 02.</div>
-    </div>
   </div>
 
   <!-- ============ SECTION 4 — THANH TOÁN QUẢNG CÁO (LUỒNG TIỀN) ============ -->
@@ -782,7 +849,7 @@
           <tbody id="province-tbody"></tbody>
         </table>
       </div>
-      <div class="table-footnote">Mẫu còn nhỏ (61 đơn trải trên 31 tỉnh/thành) — chỉ mang tính tham khảo, chưa đủ để quyết định loại trừ/ưu tiên khu vực khi target Ads. Sẽ đáng tin hơn khi có nhiều đơn hơn.</div>
+      <div class="table-footnote">Mẫu còn nhỏ (72 đơn trải trên 33 tỉnh/thành) — chỉ mang tính tham khảo, chưa đủ để quyết định loại trừ/ưu tiên khu vực khi target Ads. Sẽ đáng tin hơn khi có nhiều đơn hơn.</div>
     </div>
   </div>
 
@@ -794,16 +861,23 @@
      DAILY INPUT — cập nhật các số ở đây mỗi khi có số liệu mới
      ============================================================ */
   const DATA = {
-    updatedAt: "2026-09-03",
+    updatedAt: "2026-09-05",
     period: "Kỳ hiện tại",
 
+    // ---- Cảnh báo hiển thị ngay trên hero (mảng string, rỗng thì ẩn) — dùng cho các lưu ý quan trọng ảnh hưởng độ tin
+    // cậy của số Lợi nhuận, để người xem nhanh (sếp) thấy ngay mà không cần đọc code/comment bên dưới. Xoá bớt khi vấn đề
+    // không còn liên quan (vd đã xin được file export sạch hơn).
+    caveats: [
+      "Chi phí Ads dùng để tính lợi nhuận đã đổi sang tính theo campaign-level (05/09/2026) để loại một khoản ~2,77tr chi tiêu nghi ngờ không thuộc Santony, phát hiện trong file export theo tài khoản. 2 chart cộng dồn theo ngày ở mục 02 vẫn dùng số theo-ngày chưa lọc nên có thể cho số cuối kỳ khác với mục này."
+    ],
+
     revenue: {
-      gross: 29924000,      // GMV tạo đơn — tổng tiền tất cả đơn (61 đơn, lũy kế đến 03/09 — dựng lại từ đầu từ toàn bộ 61 đơn trong file export "orders.xlsx", không cộng dồn theo delta)
+      gross: 35573000,      // GMV tạo đơn — tổng tiền tất cả đơn (72 đơn, lũy kế đến 05/09 — dựng lại từ đầu từ toàn bộ 72 đơn trong file export "orders.xlsx", không cộng dồn theo delta)
       returnedAmount: 2826000, // GMV đơn "Đã hoàn" (vẫn 5 đơn như lần trước: AUF_30327, AUF_21571, AUF_20495, AUF_20026, AUF_31812) — không có đơn hoàn mới trong lần này
-      ordersTotal: 61,
+      ordersTotal: 72,
       ordersReturned: 5,
       // Quy đổi giá trị đơn -> số cái: 255k/269k=1, 330k/459k/479k/499k=2, 649k/679k/699k=3, 859k/899k=4
-      unitsGross: 126,     // tổng số cái trên tất cả đơn
+      unitsGross: 149,     // tổng số cái trên tất cả đơn
       unitsReturned: 13   // số cái nằm trong các đơn "Đã hoàn"
     },
     // cogsRate giữ 50% cố định theo yêu cầu user (03/09/2026) — file orders.xlsx lần này có cột "Giá vốn đơn hàng" thực tế
@@ -811,20 +885,24 @@
     // nhưng user chọn giữ nguyên giả định 50% lần này, KHÔNG chuyển sang giá vốn thực tế. Không tự ý đổi ở lần cập nhật sau
     // trừ khi user yêu cầu lại.
     cogsRate: 0.50,
-    // adsSpend: từ 03/09/2026, Santony chạy SONG SONG 2 tài khoản quảng cáo — số này = tổng chi tiêu (CHƯA VAT) cộng dồn từ
-    // 30/06 đến 03/09 của CẢ 2 tài khoản, gộp theo từng ngày rồi cộng lại: "Santony-Daily (1).xlsx" (acc chính, 30/06-03/09)
-    // + "Santony-Daily (2).xlsx" (acc phụ mới, chỉ có chi tiêu 2 ngày 01-02/09, đúng bằng chiến dịch "Inbox | 1Sep").
-    // (File "Báo cáo chưa đặt tên...xlsx" nhận trước đó thực ra CŨNG là 2 acc này nhưng chọn range "toàn thời gian" nên
-    // dính chi tiêu từ 2023 của acc trước khi đổi sang chạy Santony — không dùng file đó, dùng 2 file "Santony-Daily" mới.)
-    adsSpend: 11256435,
+    // adsSpend: SỬA LẠI (05/09/2026, cùng ngày, sau khi user phát hiện tile "Tổng chi tiêu" mục 03 không khớp dòng
+    // "Tổng cộng" bảng chiến dịch) — đổi từ tổng account-level (Santony-Daily, có lẫn chi tiêu ngoài Santony, xem cảnh báo
+    // cũ bên dưới) sang tổng CAMPAIGN-LEVEL đáng tin hơn: = tổng spend của toàn bộ 9 chiến dịch trong DATA.campaigns
+    // (12.911.025đ = 12.031.615đ acc1 + 879.410đ acc2) — mỗi số đều lấy từ export campaign, vốn tự động chỉ tính đúng
+    // các chiến dịch Santony nên không dính chi tiêu lạ. Nhờ vậy DATA.accounts[].spend cộng lại LUÔN khớp đúng con số
+    // này (không còn lệch với "Tổng cộng" bảng chiến dịch nữa).
+    // Lịch sử: sáng 05/09 từng dùng thẳng tổng account "Santony-Daily (1).xlsx" (15.682.990đ) sau khi hỏi và user chọn
+    // "cứ dùng nguyên Daily file" — nhưng phát hiện thêm (từ câu hỏi so sánh 2 tile) khiến user đổi ý, quyết định cuối
+    // cùng là dùng số campaign-level 12.911.025đ như trên. Bằng chứng chi tiết về khoản chênh ~2,77tr (chi tiêu 01-07/08
+    // không gắn được vào chiến dịch Santony nào) vẫn giữ nguyên giá trị tham khảo — nếu sau này xin được file
+    // Santony-Daily đã lọc đúng phạm vi, có thể quay lại dùng tổng account-level.
+    adsSpend: 12911025,
     adsVatRate: 0.10, // VAT quảng cáo Facebook — cộng thêm 10% lên chi phí ads khi tính lợi nhuận
 
     // ---- doanh số theo ngày (đã trừ đơn "Đã hoàn"), dựng từ cột "Ngày tạo đơn" trong file export Pancake (orders.xlsx) ----
     // Mỗi khi cập nhật, thêm/ sửa các ngày mới vào mảng này (ngày không có đơn thì bỏ qua, không cần điền 0)
     dailySales: [
-      { date: "2026-07-09", gmv: 0,       units: 0 },  // đơn duy nhất trong ngày là đơn "Đã hoàn"
       { date: "2026-07-10", gmv: 255000,  units: 1 },  // AUF_20308 (255k, đã thu tiền); AUF_20495 (679k) là đơn "Đã hoàn" cùng ngày nên loại trừ
-      { date: "2026-07-14", gmv: 0,       units: 0 },  // đơn duy nhất trong ngày là đơn "Đã hoàn"
       { date: "2026-07-15", gmv: 479000,  units: 2 },
       { date: "2026-08-09", gmv: 859000,  units: 4 },
       { date: "2026-08-15", gmv: 938000,  units: 4 },
@@ -833,7 +911,7 @@
       { date: "2026-08-18", gmv: 859000,  units: 4 },
       { date: "2026-08-21", gmv: 1672000, units: 7 },
       { date: "2026-08-22", gmv: 1437000, units: 6 },
-      { date: "2026-08-23", gmv: 2426000, units: 10 }, // SỬA: giảm so với lần trước (2.905.000/12) vì AUF_31812 (479k, tạo 23/08) mới chuyển sang "Đã hoàn" trong lần cập nhật này (01/09), nên bị loại khỏi GMV ròng ngày 23/08
+      { date: "2026-08-23", gmv: 2426000, units: 10 }, // giảm so với lần trước (2.905.000/12) vì AUF_31812 (479k, tạo 23/08) chuyển sang "Đã hoàn" (01/09), loại khỏi GMV ròng ngày 23/08
       { date: "2026-08-24", gmv: 255000,  units: 1 },
       { date: "2026-08-25", gmv: 978000,  units: 4 },
       { date: "2026-08-26", gmv: 1677000, units: 7 },
@@ -842,16 +920,26 @@
       { date: "2026-08-29", gmv: 899000,  units: 4 },
       { date: "2026-08-30", gmv: 1148000, units: 5 },
       { date: "2026-08-31", gmv: 1966000, units: 8 },
-      { date: "2026-09-01", gmv: 2465000, units: 10 }, // SỬA: tăng so với lần trước (1.497.000/6) — dựng lại từ toàn bộ 61 đơn của file "orders.xlsx" mới, nhiều đơn hơn thuộc ngày này so với lần cập nhật trước
-      { date: "2026-09-02", gmv: 2366000, units: 10 },
-      { date: "2026-09-03", gmv: 2764000, units: 11 }
+      { date: "2026-09-01", gmv: 2465000, units: 10 },
+      { date: "2026-09-02", gmv: 2655000, units: 11 }, // SỬA: tăng so với lần trước (2.366.000/10) — dựng lại từ toàn bộ 72 đơn của file "orders.xlsx" mới, thêm 1 đơn thuộc ngày này so với lần cập nhật trước
+      { date: "2026-09-03", gmv: 2764000, units: 11 },
+      { date: "2026-09-04", gmv: 4362000, units: 18 },
+      { date: "2026-09-05", gmv: 998000,  units: 4 }
     ],
 
-    // ---- chi tiêu Ads (đã VAT) & GMV theo ngày, để so % Ads/GMV — nguồn: gộp "Santony-Daily (1).xlsx" (acc chính) +
-    // "Santony-Daily (2).xlsx" (acc phụ, chỉ có 01-02/09) THEO TỪNG NGÀY rồi mới nhân VAT (từ 03/09/2026, chạy song song 2 acc) ----
-    // ads = (chi tiêu acc1 + acc2 ngày đó) × 1.10 (đã VAT). gmv = GMV ròng ngày đó (khớp dailySales ở trên, 0 nếu không có đơn)
-    // Lưu ý: acc2 chưa có số cho 03/09 (file chỉ export đến 02/09) — ads ngày 03/09 dưới đây MỚI CHỈ CÓ acc1, có thể thiếu
-    // một phần chi tiêu acc2 hôm đó, sẽ bù lại ở lần cập nhật sau khi acc2 có file mới.
+    // ---- chi tiêu Ads (đã VAT) & GMV theo ngày, để so % Ads/GMV — nguồn: "Santony-Daily (1).xlsx" (acc chính) ----
+    // ads = chi tiêu acc1 ngày đó × 1.10 (đã VAT). gmv = GMV ròng ngày đó (khớp dailySales ở trên, 0 nếu không có đơn)
+    // Lưu ý (05/09/2026): KHÔNG có file "Santony-Daily (2).xlsx" (acc phụ) lần này, nên toàn bộ chuỗi dưới đây CHỈ PHẢN
+    // ÁNH acc1 — phần chi tiêu acc2 (879.410đ lifetime, xem accounts[] bên dưới) chưa tách được theo ngày, sẽ bù lại khi
+    // có file Daily (2) mới.
+    // CẢNH BÁO QUAN TRỌNG (sửa 05/09/2026, cùng ngày): mảng này vẫn lấy nguyên số RAW từ "Santony-Daily (1).xlsx" theo
+    // NGÀY (nghi có lẫn chi tiêu ngoài Santony từ ~08/08 trở đi, xem chi tiết ở comment adsSpend phía trên), trong khi
+    // `DATA.adsSpend`/`accounts[]` đã đổi sang dùng số campaign-level KHÔNG có phần nghi vấn đó. Vì vậy tổng cộng dồn
+    // cột `ads` ở đây (~14,8tr, chỉ riêng acc1) sẽ CAO HƠN đáng kể so với adsSpend/accounts[0].spend chính thức
+    // (12.031.615đ) — 2 chart dùng mảng này ("Chi tiêu Ads & GMV theo ngày" và "ACOS lũy kế theo ngày" ở section 02) vì
+    // vậy sẽ cho số cuối kỳ CAO hơn số ở mục 01/03, không phải lỗi tính toán. Lý do giữ nguyên: chưa có cách tách chi
+    // tiêu "sạch" theo TỪNG NGÀY (chỉ có tổng lifetime theo từng campaign, không tách được ai chi ngày nào) — nếu muốn
+    // 2 chart này khớp tuyệt đối với mục 01/03, cần xin lại file Santony-Daily đã lọc đúng phạm vi Santony.
     dailyAdsGmv: [
       { date: "2026-06-30", ads: 14601, gmv: 0 },
       { date: "2026-07-01", ads: 41110, gmv: 0 },
@@ -885,75 +973,85 @@
       { date: "2026-07-29", ads: 0, gmv: 0 },
       { date: "2026-07-30", ads: 0, gmv: 0 },
       { date: "2026-07-31", ads: 0, gmv: 0 },
-      { date: "2026-08-01", ads: 0, gmv: 0 },
-      { date: "2026-08-02", ads: 0, gmv: 0 },
-      { date: "2026-08-03", ads: 0, gmv: 0 },
-      { date: "2026-08-04", ads: 0, gmv: 0 },
-      { date: "2026-08-05", ads: 0, gmv: 0 },
-      { date: "2026-08-06", ads: 0, gmv: 0 },
-      { date: "2026-08-07", ads: 0, gmv: 0 },
-      { date: "2026-08-08", ads: 36198, gmv: 0 },
-      { date: "2026-08-09", ads: 141192, gmv: 859000 },
-      { date: "2026-08-10", ads: 131574, gmv: 0 },
-      { date: "2026-08-11", ads: 175131, gmv: 0 },
-      { date: "2026-08-12", ads: 33486, gmv: 0 },
-      { date: "2026-08-13", ads: 269592, gmv: 0 },
-      { date: "2026-08-14", ads: 221101, gmv: 0 },
+      { date: "2026-08-01", ads: 36939, gmv: 0 },
+      { date: "2026-08-02", ads: 56318, gmv: 0 },
+      { date: "2026-08-03", ads: 77978, gmv: 0 },
+      { date: "2026-08-04", ads: 124087, gmv: 0 },
+      { date: "2026-08-05", ads: 131618, gmv: 0 },
+      { date: "2026-08-06", ads: 158064, gmv: 0 },
+      { date: "2026-08-07", ads: 103110, gmv: 0 }, // từ đây (01-07/08) có ~625k chi tiêu dù không campaign Santony nào chạy — nghi vấn lẫn chi tiêu ngoài Santony, xem cảnh báo ở comment adsSpend
+      { date: "2026-08-08", ads: 145166, gmv: 0 },
+      { date: "2026-08-09", ads: 275059, gmv: 859000 },
+      { date: "2026-08-10", ads: 204160, gmv: 0 },
+      { date: "2026-08-11", ads: 291928, gmv: 0 },
+      { date: "2026-08-12", ads: 62602, gmv: 0 },
+      { date: "2026-08-13", ads: 440991, gmv: 0 },
+      { date: "2026-08-14", ads: 349602, gmv: 0 },
       { date: "2026-08-15", ads: 147390, gmv: 938000 },
       { date: "2026-08-16", ads: 293679, gmv: 734000 },
-      { date: "2026-08-17", ads: 389298, gmv: 765000 },
-      { date: "2026-08-18", ads: 344322, gmv: 859000 },
-      { date: "2026-08-19", ads: 268613, gmv: 0 },
-      { date: "2026-08-20", ads: 169231, gmv: 0 },
-      { date: "2026-08-21", ads: 294672, gmv: 1672000 },
-      { date: "2026-08-22", ads: 280535, gmv: 1437000 },
-      { date: "2026-08-23", ads: 471711, gmv: 2426000 }, // gmv giảm so với lần trước — AUF_31812 mới chuyển "Đã hoàn" (xem comment ở dailySales)
-      { date: "2026-08-24", ads: 585925, gmv: 255000 },
+      { date: "2026-08-17", ads: 445046, gmv: 765000 },
+      { date: "2026-08-18", ads: 431308, gmv: 859000 },
+      { date: "2026-08-19", ads: 324316, gmv: 0 },
+      { date: "2026-08-20", ads: 237114, gmv: 0 },
+      { date: "2026-08-21", ads: 367312, gmv: 1672000 },
+      { date: "2026-08-22", ads: 401625, gmv: 1437000 },
+      { date: "2026-08-23", ads: 526772, gmv: 2426000 },
+      { date: "2026-08-24", ads: 604559, gmv: 255000 },
       { date: "2026-08-25", ads: 435446, gmv: 978000 },
       { date: "2026-08-26", ads: 461467, gmv: 1677000 },
       { date: "2026-08-27", ads: 712824, gmv: 1657000 },
       { date: "2026-08-28", ads: 581126, gmv: 499000 },
       { date: "2026-08-29", ads: 437313, gmv: 899000 },
-      { date: "2026-08-30", ads: 809478, gmv: 1148000 }, // Facebook revise nhẹ số cũ (809139 → 809478)
+      { date: "2026-08-30", ads: 809478, gmv: 1148000 },
       { date: "2026-08-31", ads: 682647, gmv: 1966000 },
-      { date: "2026-09-01", ads: 655958, gmv: 2465000 }, // từ đây gồm cả acc phụ mới (chiến dịch "Inbox | 1Sep")
-      { date: "2026-09-02", ads: 1021622, gmv: 2366000 },
-      { date: "2026-09-03", ads: 683218, gmv: 2764000 } // MỚI CHỈ CÓ acc1 (acc2 chưa export đến ngày này) — xem lưu ý ở trên
+      { date: "2026-09-01", ads: 655958, gmv: 2465000 },
+      { date: "2026-09-02", ads: 1022731, gmv: 2655000 },
+      { date: "2026-09-03", ads: 1307006, gmv: 2764000 },
+      { date: "2026-09-04", ads: 829364, gmv: 4362000 },
+      { date: "2026-09-05", ads: 464506, gmv: 998000 }
     ],
 
-    // ---- dữ liệu quảng cáo TÁCH RIÊNG THEO TỪNG TÀI KHOẢN (từ 01/09/2026, Santony chạy song song 2 acc) — mỗi acc lấy
-    // trực tiếp từ file export riêng của acc đó, nên reach ở đây KHÔNG còn bị double-count như cách gộp cũ:
-    // acc1 ("Santony-Daily (1).xlsx" + "KimVan_Santony-Chiến-dịch...xlsx", chạy từ 30/06) — reach 29.480 lấy từ dòng tổng
-    // (đã dedup unique reach của 8 chiến dịch acc chính).
-    // acc2 ("Santony-Daily (2).xlsx" + "Kim-Vân-I-FLC-Chiến-dịch...xlsx", chạy từ 01/09, hiện chỉ có 1 chiến dịch
-    // "Inbox | 1Sep") — reach 2.015 lấy trực tiếp từ export riêng của chiến dịch này.
-    // Tổng lũy kế cả 2 acc (dùng ở mục "Tổng hợp") được TÍNH RA bằng cách cộng 2 acc dưới đây ở phần render — luôn khớp,
-    // không còn cần số xấp xỉ dedup như trước (spend 10.810.926+445.509=11.256.435 = đúng adsSpend ở trên).
+    // ---- dữ liệu quảng cáo TÁCH RIÊNG THEO TỪNG TÀI KHOẢN — SỬA LẠI (05/09/2026, cùng ngày) để khớp với adsSpend
+    // campaign-level ở trên: spend/newContacts/purchases của MỖI acc giờ = tổng cộng đúng các chiến dịch của acc đó
+    // trong DATA.campaigns bên dưới (không còn lấy account-level "Santony-Daily.xlsx" nữa, vì số đó có lẫn chi tiêu
+    // ngoài Santony — xem lịch sử ở comment adsSpend). reach vẫn lấy riêng từ dòng tổng file export campaign (nguồn
+    // DUY NHẤT đáng tin cho reach, không đổi):
+    // acc1 (8 chiến dịch trong KimVan_Santony-Chiến-dịch-....xlsx, chạy từ 30/06) — spend 12.031.615đ = tổng 8 dòng
+    // campaign; newContacts 639 = tổng contacts 8 campaign; purchases 72 = tổng purchases 8 campaign (bỏ qua 2 campaign
+    // có purchases=null); reach 32.385 lấy từ dòng tổng toàn tài khoản trong file.
+    // acc2 (1 chiến dịch "Inbox | 1Sep" trong Kim-Vân-I-FLC-...xlsx, chạy từ 01/09) — không đổi, vì acc2 chỉ có đúng 1
+    // chiến dịch nên số campaign luôn = số account, không có gì để lệch.
+    // Tổng lũy kế cả 2 acc (dùng ở mục "Tổng hợp") được TÍNH RA bằng cách cộng 2 acc dưới đây ở phần render — LUÔN khớp
+    // với dòng "Tổng cộng" của bảng chiến dịch (spend 12.031.615+879.410=12.911.025 = đúng adsSpend ở trên; contacts
+    // 639+32=671; purchases 72+4=76 — cả 2 đều khớp tổng bảng chiến dịch).
     accounts: [
-      { id: "acc1", name: "TK chính", period: "chạy từ 30/06", spend: 10810926, reach: 29480, newContacts: 601, purchases: 60 },
-      { id: "acc2", name: "TK phụ",   period: "chạy từ 01/09", spend: 445509,   reach: 2015,  newContacts: 14,  purchases: 1 }
+      { id: "acc1", name: "TK chính", period: "chạy từ 30/06", spend: 12031615, reach: 32385, newContacts: 639, purchases: 72 },
+      { id: "acc2", name: "TK phụ",   period: "chạy từ 01/09", spend: 879410,   reach: 4237,  newContacts: 32,  purchases: 4 }
     ],
-    // ---- bảng chiến dịch — nguồn: export "KimVan_Santony-Chiến-dịch-...xlsx" (8 chiến dịch cũ, per-campaign lũy kế từ đầu,
-    // thuộc acc1) + "Kim-Vân-I-FLC-Chiến-dịch...xlsx" (1 chiến dịch mới "Inbox | 1Sep", thuộc acc2, export riêng,
-    // revenue/roas chưa có vì file này không có cột "Giá trị chuyển đổi từ lượt mua"). Tên chiến dịch gốc
-    // "Santony I Inbox I 1Sep" dùng ký tự "I" thay cho dấu "|" — đã quy đổi lại về đúng format hiển thị cũ.
+    // ---- bảng chiến dịch — nguồn: export "KimVan_Santony-Chiến-dịch-5-Tháng-8-2023-5-Tháng-9-2026.xlsx" (8 chiến dịch
+    // acc1, per-campaign lũy kế từ đầu) + "Kim-Vân-I-FLC-Chiến-dịch-6-Tháng-8-2026-4-Tháng-9-2026.xlsx" (1 chiến dịch
+    // "Inbox | 1Sep", thuộc acc2). Tên chiến dịch gốc "Santony I Inbox I 1Sep" dùng ký tự "I" thay cho dấu "|" — đã quy
+    // đổi lại về đúng format hiển thị cũ.
     // account: "acc1" | "acc2" — khớp với id trong DATA.accounts ở trên, dùng để gắn badge + gom nhóm trong bảng.
     campaigns: [
       { name: "Mess | 30Jun",  account: "acc1", status: "inactive", spend: 50647,   contacts: 12,  purchases: null, revenue: null,     roas: null },
       { name: "Mess | 06Jul",  account: "acc1", status: "inactive", spend: 1076926, contacts: 124, purchases: 3,    revenue: null,     roas: null },
       { name: "GMV | 11Jul",   account: "acc1", status: "inactive", spend: 370001,  contacts: 45,  purchases: null, revenue: null,     roas: null },
-      { name: "GMV | 8Aug",    account: "acc1", status: "active",   spend: 3453110, contacts: 155, purchases: 20,   revenue: 7447000,  roas: 2.156607 },
-      { name: "Inbox | 11Aug", account: "acc1", status: "active",   spend: 3346370, contacts: 189, purchases: 26,   revenue: 10332000, roas: 3.087525 },
-      { name: "GMV | 20Aug",   account: "acc1", status: "active",   spend: 1074406, contacts: 24,  purchases: 7,    revenue: 3799000,  roas: 3.535907 },
-      { name: "Inbox | 24Aug", account: "acc1", status: "active",   spend: 702716,  contacts: 26,  purchases: 2,    revenue: 649000,   roas: 0.923559 },
-      { name: "Inbox | 26Aug", account: "acc1", status: "active",   spend: 731115,  contacts: 14,  purchases: 2,    revenue: 499000,   roas: 0.682519 },
-      { name: "Inbox | 1Sep",  account: "acc2", status: "active",   spend: 445509,  contacts: 14,  purchases: 1,    revenue: null,     roas: null }
+      { name: "GMV | 8Aug",    account: "acc1", status: "active",   spend: 3680705, contacts: 159, purchases: 20,   revenue: 7447000,  roas: 2.023254 },
+      { name: "Inbox | 11Aug", account: "acc1", status: "active",   spend: 3857164, contacts: 219, purchases: 29,   revenue: 11330000, roas: 2.937391 },
+      { name: "GMV | 20Aug",   account: "acc1", status: "active",   spend: 1320603, contacts: 30,  purchases: 13,   revenue: 6333000,  roas: 4.795537 },
+      { name: "Inbox | 24Aug", account: "acc1", status: "active",   spend: 809603,  contacts: 30,  purchases: 3,    revenue: 938000,   roas: 1.158593 },
+      { name: "Inbox | 26Aug", account: "acc1", status: "active",   spend: 865966,  contacts: 20,  purchases: 4,    revenue: 1897000,  roas: 2.190617 },
+      { name: "Inbox | 1Sep",  account: "acc2", status: "active",   spend: 879410,  contacts: 32,  purchases: 4,    revenue: 2196000,  roas: 2.497129 }
     ],
 
     // ---- luồng tiền thanh toán quảng cáo (Meta Ads Manager > Thanh toán), mới nhất trước ----
     // status: "paid" (Đã thanh toán, cộng vào tổng) | "failed" (Không thành công, chỉ hiển thị, không cộng)
     // Mỗi lần cập nhật: thêm các giao dịch mới lên đầu mảng, giữ nguyên các giao dịch cũ
     payments: [
+      { date: "2026-09-04", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
+      { date: "2026-09-03", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
+      { date: "2026-09-02", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
       { date: "2026-08-31", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
       { date: "2026-08-30", amount: 933076,  method: "MasterCard •••• 4375", status: "paid" },
       { date: "2026-08-28", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
@@ -984,38 +1082,38 @@
       hourly: [
         { hour: 0, orders: 0, gmv: 0 }, { hour: 1, orders: 0, gmv: 0 }, { hour: 2, orders: 0, gmv: 0 },
         { hour: 3, orders: 0, gmv: 0 }, { hour: 4, orders: 0, gmv: 0 }, { hour: 5, orders: 0, gmv: 0 },
-        { hour: 6, orders: 1, gmv: 479000 }, { hour: 7, orders: 1, gmv: 269000 }, { hour: 8, orders: 4, gmv: 1712000 },
-        { hour: 9, orders: 2, gmv: 1398000 }, { hour: 10, orders: 4, gmv: 1258000 }, { hour: 11, orders: 4, gmv: 1677000 },
-        { hour: 12, orders: 6, gmv: 2391000 }, { hour: 13, orders: 5, gmv: 2396000 }, { hour: 14, orders: 4, gmv: 2196000 },
+        { hour: 6, orders: 1, gmv: 479000 }, { hour: 7, orders: 1, gmv: 269000 }, { hour: 8, orders: 5, gmv: 2211000 },
+        { hour: 9, orders: 5, gmv: 2895000 }, { hour: 10, orders: 6, gmv: 2026000 }, { hour: 11, orders: 4, gmv: 1677000 },
+        { hour: 12, orders: 7, gmv: 2680000 }, { hour: 13, orders: 5, gmv: 2396000 }, { hour: 14, orders: 5, gmv: 3095000 },
         { hour: 15, orders: 3, gmv: 1477000 }, { hour: 16, orders: 3, gmv: 1627000 }, { hour: 17, orders: 1, gmv: 499000 },
-        { hour: 18, orders: 1, gmv: 859000 }, { hour: 19, orders: 3, gmv: 958000 }, { hour: 20, orders: 9, gmv: 4113000 },
-        { hour: 21, orders: 6, gmv: 2341000 }, { hour: 22, orders: 3, gmv: 989000 }, { hour: 23, orders: 1, gmv: 459000 }
+        { hour: 18, orders: 1, gmv: 859000 }, { hour: 19, orders: 4, gmv: 1457000 }, { hour: 20, orders: 9, gmv: 4113000 },
+        { hour: 21, orders: 7, gmv: 3040000 }, { hour: 22, orders: 4, gmv: 1488000 }, { hour: 23, orders: 1, gmv: 459000 }
       ],
       // Thứ tự Việt Nam: T2 (thứ Hai) -> CN (Chủ nhật)
       weekday: [
         { label: "T2", orders: 9,  gmv: 2986000 },
         { label: "T3", orders: 9,  gmv: 4302000 },
-        { label: "T4", orders: 8,  gmv: 4522000 },
+        { label: "T4", orders: 9,  gmv: 4811000 },
         { label: "T5", orders: 10, gmv: 4421000 },
-        { label: "T6", orders: 7,  gmv: 2426000 },
-        { label: "T7", orders: 6,  gmv: 3274000 },
+        { label: "T6", orders: 15, gmv: 6788000 },
+        { label: "T7", orders: 8,  gmv: 4272000 },
         { label: "CN", orders: 12, gmv: 5167000 }
       ],
-      // top tỉnh/thành theo số đơn (đủ dữ liệu để liệt kê hết 31 tỉnh, nhưng dashboard chỉ hiện top 6 + gộp phần còn lại vào "Khác"); hoà số đơn thì xếp theo GMV cao hơn
+      // top tỉnh/thành theo số đơn (đủ dữ liệu để liệt kê hết 33 tỉnh, nhưng dashboard chỉ hiện top 6 + gộp phần còn lại vào "Khác"); hoà số đơn thì xếp theo GMV cao hơn
       topProvinces: [
-        { name: "Hà Nội",            orders: 7, gmv: 3589000 },
+        { name: "Hà Nội",            orders: 8, gmv: 4088000 },
+        { name: "Bình Dương",        orders: 6, gmv: 3374000 },
+        { name: "Hồ Chí Minh",       orders: 6, gmv: 2270000 },
         { name: "An Giang",          orders: 5, gmv: 2805000 },
-        { name: "Bình Dương",        orders: 5, gmv: 2675000 },
-        { name: "Hồ Chí Minh",       orders: 4, gmv: 1502000 },
-        { name: "Bà Rịa-Vũng Tàu",   orders: 3, gmv: 1457000 },
+        { name: "Bà Rịa-Vũng Tàu",   orders: 4, gmv: 1956000 },
         { name: "Thanh Hóa",         orders: 3, gmv: 1253000 }
       ],
-      otherProvinces: { count: 25, orders: 34, gmv: 13817000 }, // 25 tỉnh còn lại, gộp chung — mỗi tỉnh chỉ 1-2 đơn
+      otherProvinces: { count: 27, orders: 40, gmv: 17001000 }, // 27 tỉnh còn lại, gộp chung — mỗi tỉnh chỉ 1-2 đơn
       // "Số đơn của khách" (cột 10 trong orders.xlsx) là TỔNG số đơn trọn đời của khách đó, lặp lại y hệt trên mọi đơn của họ (KHÔNG phải số thứ tự tăng dần 1,2,3) —
       // đã verify bằng cách đối chiếu trùng địa chỉ: 3 đơn AUF_32909/32110/31211 đều ghi "3", cùng chung địa chỉ "91 Hồ Quý Ly, Đà Nẵng" (1 khách mua 3 lần);
-      // 2 đơn AUF_31213/29997 đều ghi "2", cùng chung địa chỉ "xóm 1, Xã Hải Lộc, Nam Định" (1 khách mua 2 lần). Tổng 61 đơn = 56 khách mua 1 lần + 2 khách mua lại (3+2 đơn) — không có khách mua lại mới trong lần này.
+      // 2 đơn AUF_31213/29997 đều ghi "2", cùng chung địa chỉ "xóm 1, Xã Hải Lộc, Nam Định" (1 khách mua 2 lần). Tổng 72 đơn = 67 khách mua 1 lần + 2 khách mua lại (3+2 đơn) — không có khách mua lại mới trong lần này.
       repeatCustomers: 2,       // số khách hàng có ≥2 đơn (unique customer, verify qua trùng địa chỉ)
-      uniqueCustomers: 58,      // 56 khách mua 1 lần + 2 khách mua lại = 58 khách cho 61 đơn
+      uniqueCustomers: 69,      // 67 khách mua 1 lần + 2 khách mua lại = 69 khách cho 72 đơn
       repeatOrders: 5,          // tổng số đơn đến từ 2 khách mua lại đó (3 đơn Đà Nẵng + 2 đơn Nam Định)
       incrementalRepeatOrders: 3 // số đơn "phát sinh thêm" nhờ mua lại, KHÔNG tính đơn đầu tiên của mỗi khách (= repeatOrders - repeatCustomers = (3-1)+(2-1))
     }
@@ -1054,6 +1152,16 @@
   const hasUnits = r.unitsGross !== null && r.unitsGross !== undefined && r.unitsReturned !== null && r.unitsReturned !== undefined;
   const unitsSold = hasUnits ? r.unitsGross - r.unitsReturned : null;
 
+  // Chuỗi lợi nhuận cộng dồn theo ngày (dùng chung cho sparkline ở hero VÀ chart "Lợi nhuận lũy kế" mục 02, đỡ tính 2 lần)
+  function computeCumulativeProfitSeries() {
+    let cum = 0;
+    return DATA.dailyAdsGmv.map(d => {
+      cum += d.gmv * (1 - DATA.cogsRate) - d.ads;
+      return { date: d.date, value: cum };
+    });
+  }
+  const cumulativeProfitSeries = computeCumulativeProfitSeries();
+
   const heroEl = document.getElementById("hero-profit");
   if (grossProfit === null) {
     heroEl.classList.add("empty");
@@ -1062,6 +1170,65 @@
     heroEl.innerHTML = (grossProfit < 0 ? '<span class="sign">−</span>' : '') + vnd(Math.abs(grossProfit));
     if (grossProfit < 0) heroEl.style.color = "var(--critical)";
   }
+
+  // ---------- Hero status badge (LÃI / SÁT HOÀ VỐN / LỖ) — để "sếp" nhìn 1 giây là hiểu tình trạng ----------
+  (function renderHeroStatus() {
+    const el = document.getElementById("hero-status");
+    if (margin === null) { el.remove(); return; }
+    let cls, label;
+    if (margin >= 0.03) { cls = "good"; label = "ĐANG CÓ LÃI"; }
+    else if (margin <= -0.03) { cls = "bad"; label = "ĐANG LỖ"; }
+    else { cls = "warn"; label = "SÁT HOÀ VỐN"; }
+    el.className = "hero-status-badge " + cls;
+    el.innerHTML = `<span class="dot"></span>${label}`;
+  })();
+
+  // ---------- Hero trend (sparkline lũy kế + so hôm qua / 7 ngày trước) ----------
+  (function renderHeroTrend() {
+    const el = document.getElementById("hero-trend");
+    const series = cumulativeProfitSeries;
+    if (series.length < 2) { el.remove(); return; }
+
+    const W = 150, H = 34, PAD = 2;
+    const n = series.length;
+    const values = series.map(p => p.value);
+    const minV = Math.min(...values, 0), maxV = Math.max(...values, 0);
+    const range = Math.max(maxV - minV, 1);
+    const xPos = i => PAD + (i / (n - 1)) * (W - PAD * 2);
+    const yPos = v => H - PAD - ((v - minV) / range) * (H - PAD * 2);
+    const last = values[n - 1];
+    const lineColor = last >= 0 ? "var(--good)" : "var(--critical)";
+    const path = series.map((p, i) => `${i === 0 ? "M" : "L"}${xPos(i).toFixed(1)},${yPos(p.value).toFixed(1)}`).join(" ");
+    const zeroY = yPos(0).toFixed(1);
+    const sparkSvg = `<svg class="hero-sparkline" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+      <line x1="0" y1="${zeroY}" x2="${W}" y2="${zeroY}" stroke="var(--ink-faint)" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"></line>
+      <path d="${path}" fill="none" stroke="${lineColor}" stroke-width="2"></path>
+      <circle cx="${xPos(n - 1).toFixed(1)}" cy="${yPos(last).toFixed(1)}" r="3" fill="${lineColor}"></circle>
+    </svg>`;
+
+    function deltaChip(label, from) {
+      if (from === undefined || from === null) return "";
+      const d = last - from;
+      const cls = Math.abs(d) < 1 ? "flat" : d > 0 ? "good" : "bad";
+      const arrow = Math.abs(d) < 1 ? "→" : d > 0 ? "▲" : "▼";
+      return `<div class="hero-delta"><span class="lbl">${label}</span><span class="val ${cls}">${arrow} ${vnd(Math.abs(d))}</span></div>`;
+    }
+    const deltas = [
+      deltaChip("So với hôm qua", n >= 2 ? values[n - 2] : undefined),
+      deltaChip("So với 7 ngày trước", n >= 8 ? values[n - 8] : undefined)
+    ].join("");
+
+    el.innerHTML = sparkSvg + `<div class="hero-deltas">${deltas}</div>`;
+  })();
+
+  // ---------- Hero caveats (cảnh báo dữ liệu quan trọng, nếu có) ----------
+  (function renderHeroCaveats() {
+    const el = document.getElementById("hero-caveats");
+    const caveats = DATA.caveats || [];
+    if (!caveats.length) { el.remove(); return; }
+    el.innerHTML = caveats.map(c => `<div class="hero-caveat">⚠ ${c}</div>`).join("");
+  })();
+
   function chip(label, value, opts) {
     opts = opts || {};
     return `<span class="stat-chip${opts.accent ? " accent" : ""}"><span class="chip-label">${label}</span><span class="chip-value">${value}</span></span>`;
@@ -1132,6 +1299,10 @@
   }).join("");
 
   // ---------- Ad tiles (tổng hợp cả 2 acc) ----------
+  // ROAS hoà vốn (đã trừ giá vốn) = 1 / (1 − cogsRate) — dưới ngưỡng này là chiến dịch đang lỗ dù ROAS > 1
+  const breakevenRoas = 1 / (1 - DATA.cogsRate);
+  // CPI = chi tiêu / liên hệ mới. CPA = chi tiêu / lượt mua. ACOS = chi tiêu / doanh thu (ads) — hoà vốn khi ACOS = 1 − cogsRate (khớp ngưỡng breakevenRoas)
+  const breakevenAcos = 1 - DATA.cogsRate;
   const at = DATA.accounts.reduce((s, a) => ({
     spend: s.spend + a.spend,
     reach: s.reach + a.reach,
@@ -1141,9 +1312,11 @@
   const trackedRevenue = DATA.campaigns.reduce((s, c) => s + (c.revenue || 0), 0);
   const trackedSpend = DATA.campaigns.filter(c => c.revenue).reduce((s, c) => s + c.spend, 0);
   const blendedRoas = trackedRevenue / trackedSpend;
+  const blendedAcos = trackedRevenue ? trackedSpend / trackedRevenue : null; // = 1/blendedRoas, tính trên cùng phần chi tiêu có doanh thu
   const adTiles = [
     { label: "Tổng chi tiêu (lũy kế)", value: vnd(at.spend) },
     { label: "ROAS b.quân (3 CD có ROI)", value: blendedRoas.toLocaleString("vi-VN", { maximumFractionDigits: 2 }) + "x" },
+    { label: "ACOS lũy kế (3 CD có ROI)", value: blendedAcos !== null ? `<span class="${blendedAcos <= breakevenAcos ? "roas-good" : "roas-bad"}">${pct(blendedAcos)}</span>` : "—", hint: `Hoà vốn ở ${pct(breakevenAcos)}` },
     { label: "Tổng liên hệ nhắn tin", value: num(at.newContacts) },
     { label: "Lượt mua ghi nhận", value: num(at.purchases) }
   ];
@@ -1152,10 +1325,6 @@
   ).join("");
 
   // ---------- Campaign table ----------
-  // ROAS hoà vốn (đã trừ giá vốn) = 1 / (1 − cogsRate) — dưới ngưỡng này là chiến dịch đang lỗ dù ROAS > 1
-  const breakevenRoas = 1 / (1 - DATA.cogsRate);
-  // CPI = chi tiêu / liên hệ mới. CPA = chi tiêu / lượt mua. ACOS = chi tiêu / doanh thu (ads) — hoà vốn khi ACOS = 1 − cogsRate (khớp ngưỡng breakevenRoas)
-  const breakevenAcos = 1 - DATA.cogsRate;
   document.getElementById("campaign-tbody").innerHTML = DATA.campaigns.map(c => {
     const cpi = c.contacts ? c.spend / c.contacts : null;
     const cpa = c.purchases ? c.spend / c.purchases : null;
@@ -1356,14 +1525,9 @@
       `<path class="combo-pct-line" d="${pathD.trim()}"></path>` + dotsSvg + xLabelsSvg;
   })();
 
-  // ---------- Cumulative profit line chart ----------
+  // ---------- Cumulative profit line chart (dùng chung chuỗi đã tính ở hero-trend phía trên, đỡ tính lại) ----------
   (function renderProfitLineChart() {
-    const series = DATA.dailyAdsGmv;
-    let cum = 0;
-    const points = series.map(d => {
-      cum += d.gmv * (1 - DATA.cogsRate) - d.ads;
-      return { date: d.date, value: cum };
-    });
+    const points = cumulativeProfitSeries;
     const values = points.map(p => p.value);
     const minV = Math.min(...values, 0);
     const maxV = Math.max(...values, 0);
@@ -1397,6 +1561,63 @@
     const note = document.getElementById("profit-line-note");
     note.textContent = `${fmtDayLabel(last.date)}: ${vnd(last.value)}`;
     note.style.color = last.value >= 0 ? "var(--good)" : "var(--critical)";
+  })();
+
+  // ---------- Cumulative ACOS line chart (Ads đã VAT ÷ doanh thu Pancake, cộng dồn từ 30/06) ----------
+  (function renderAcosLineChart() {
+    const series = DATA.dailyAdsGmv;
+    let cumAds = 0, cumGmv = 0;
+    const points = [];
+    series.forEach(d => {
+      cumAds += d.ads;
+      cumGmv += d.gmv;
+      if (cumGmv > 0) points.push({ date: d.date, value: cumAds / cumGmv });
+    });
+    const svg = document.getElementById("acos-line-chart");
+    const note = document.getElementById("acos-line-note");
+    if (!points.length) { svg.innerHTML = ""; note.textContent = ""; return; }
+
+    const W = 1000, H = 190;
+    const marginLeft = 40, marginRight = 6, marginTop = 14, marginBottom = 18;
+    const plotW = W - marginLeft - marginRight, plotH = H - marginTop - marginBottom;
+    const plotBottom = marginTop + plotH;
+    const n = points.length;
+
+    const maxVal = Math.max(...points.map(p => p.value), breakevenAcos);
+    const { ticks, niceMax } = niceTicks(maxVal * 1.05, 4);
+    const xPos = i => n > 1 ? marginLeft + (i / (n - 1)) * plotW : marginLeft + plotW / 2;
+    const yPos = v => plotBottom - (v / niceMax) * plotH;
+
+    const axisSvg = ticks.map(t => {
+      const y = yPos(t).toFixed(1);
+      return `<line class="combo-gridline" x1="${marginLeft}" y1="${y}" x2="${W - marginRight}" y2="${y}"></line>` +
+        `<text class="combo-axis-label" x="${marginLeft - 6}" y="${(+y + 3).toFixed(1)}" text-anchor="end">${pct(t)}</text>`;
+    }).join("");
+
+    const breakevenY = yPos(breakevenAcos).toFixed(1);
+    const breakevenSvg = `<line class="combo-breakeven-line" x1="${marginLeft}" y1="${breakevenY}" x2="${W - marginRight}" y2="${breakevenY}"></line>` +
+      `<text class="combo-axis-label" x="${marginLeft + 4}" y="${(+breakevenY - 4).toFixed(1)}" fill="var(--critical)">Hoà vốn ${pct(breakevenAcos)}</text>`;
+
+    const linePath = points.map((p, i) => `${i === 0 ? "M" : "L"}${xPos(i).toFixed(1)},${yPos(p.value).toFixed(1)}`).join(" ");
+
+    const dots = points.map((p, i) => {
+      const isToday = p.date === DATA.updatedAt;
+      const color = p.value <= breakevenAcos ? "var(--good)" : "var(--critical)";
+      const rad = isToday ? 4 : 2.2;
+      const tip = `${fmtDayLabel(p.date)}: ACOS lũy kế ${pct(p.value)}`;
+      return `<circle class="line-dot" cx="${xPos(i).toFixed(1)}" cy="${yPos(p.value).toFixed(1)}" r="${rad}" fill="${color}"><title>${tip}</title></circle>` +
+        `<circle class="line-dot-hit" cx="${xPos(i).toFixed(1)}" cy="${yPos(p.value).toFixed(1)}" r="9"><title>${tip}</title></circle>`;
+    }).join("");
+
+    const xLabelsSvg =
+      `<text class="combo-x-label" x="${xPos(0).toFixed(1)}" y="${(plotBottom + 14).toFixed(1)}" text-anchor="start">${fmtDayLabel(points[0].date)}</text>` +
+      `<text class="combo-x-label" x="${xPos(n - 1).toFixed(1)}" y="${(plotBottom + 14).toFixed(1)}" text-anchor="end">${fmtDayLabel(points[n - 1].date)}</text>`;
+
+    svg.innerHTML = axisSvg + breakevenSvg + `<path class="line-path" d="${linePath}"></path>` + dots + xLabelsSvg;
+
+    const last = points[points.length - 1];
+    note.textContent = `${fmtDayLabel(last.date)}: ${pct(last.value)}`;
+    note.style.color = last.value <= breakevenAcos ? "var(--good)" : "var(--critical)";
   })();
 
   // ---------- Payments (luồng tiền thanh toán) ----------
