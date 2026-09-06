@@ -1392,7 +1392,7 @@
       const monthMargin = monthProfit / m.revenue;
       const costPct = totalCost / m.revenue;
       return Object.assign({}, m, { totalCost, profit: monthProfit, margin: monthMargin, costPct });
-    });
+    }).reverse(); // tháng gần nhất hiển thị trước/bên trái
 
     const W = 700, H = 400;
     const marginLeft = 54, marginRight = 10, marginTop = 40, marginBottom = 46;
@@ -1611,7 +1611,7 @@
       </div>`;
     }).join("");
   }
-  renderBarChart("units-chart", DATA.dailySales.map(d => ({ date: d.date, value: d.units })), v => num(v), "var(--good)");
+  renderBarChart("units-chart", DATA.dailySales.map(d => ({ date: d.date, value: d.units })).reverse(), v => num(v), "var(--good)");
 
   // ---------- Ads vs GMV combo chart ----------
   const breakevenAdsGmv = (1 - cogsRate) * 100;
@@ -1635,7 +1635,7 @@
     return String(Math.round(v));
   }
   (function renderAdsGmvChart() {
-    const series = DATA.dailyAdsGmv;
+    const series = [...DATA.dailyAdsGmv].reverse(); // ngày gần nhất hiển thị trước/bên trái (chỉ riêng chart này — 2 chart lũy kế vẫn giữ chiều thời gian gốc)
     const n = series.length;
     const W = 1800, H = 300;
     const marginLeft = 6, marginRight = 44, marginTop = 10, marginBottom = 26;
