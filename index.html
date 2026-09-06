@@ -505,6 +505,7 @@
     font-weight: 600;
     background: var(--surface);
     border-top: 2px solid var(--border);
+    white-space: nowrap;
   }
   tfoot td.num { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
   .table-footnote {
@@ -786,7 +787,7 @@
         <thead>
           <tr>
             <th>Tháng</th><th class="num">Số đơn</th><th class="num">Doanh thu</th><th class="num">Giá vốn</th>
-            <th class="num">Phí</th><th class="num">VAT</th><th class="num">Ads</th><th class="num">% CP/DT</th>
+            <th class="num">Phí</th><th class="num">VAT</th><th class="num">Ads</th><th class="num">% Ads/DT</th><th class="num">% CP/DT</th>
             <th class="num">Lợi nhuận</th><th class="num">% biên LN</th><th>SP chiếm vốn nhiều nhất</th>
           </tr>
         </thead>
@@ -1391,7 +1392,8 @@
       const monthProfit = m.revenue - totalCost;
       const monthMargin = monthProfit / m.revenue;
       const costPct = totalCost / m.revenue;
-      return Object.assign({}, m, { totalCost, profit: monthProfit, margin: monthMargin, costPct });
+      const adsPct = m.ads / m.revenue; // % Ads (đã VAT 10%) trên doanh thu
+      return Object.assign({}, m, { totalCost, profit: monthProfit, margin: monthMargin, costPct, adsPct });
     }).reverse(); // tháng gần nhất hiển thị trước/bên trái
 
     const W = 700, H = 400;
@@ -1450,6 +1452,7 @@
         <td class="num">${vnd(m.fee)}</td>
         <td class="num">${vnd(m.vat)}</td>
         <td class="num">${vnd(m.ads)}</td>
+        <td class="num">${pct(m.adsPct)}</td>
         <td class="num">${pct(m.costPct)}</td>
         <td class="num ${m.profit < 0 ? "neg" : "pos"}">${m.profit < 0 ? "−" : ""}${vnd(Math.abs(m.profit))}</td>
         <td class="num ${m.margin < 0 ? "neg" : "pos"}">${m.margin < 0 ? "−" : ""}${pct(Math.abs(m.margin))}</td>
@@ -1466,7 +1469,7 @@
     document.getElementById("monthly-total-row").innerHTML = `
       <td>Tổng cộng</td><td class="num">${num(tot.orders)}</td><td class="num">${vnd(tot.revenue)}</td>
       <td class="num">${vnd(tot.cogs)}</td><td class="num">${vnd(tot.fee)}</td><td class="num">${vnd(tot.vat)}</td>
-      <td class="num">${vnd(tot.ads)}</td><td class="num">${pct(totCost / tot.revenue)}</td>
+      <td class="num">${vnd(tot.ads)}</td><td class="num">${pct(tot.ads / tot.revenue)}</td><td class="num">${pct(totCost / tot.revenue)}</td>
       <td class="num">${vnd(totProfit)}</td><td class="num">${pct(totProfit / tot.revenue)}</td><td>—</td>
     `;
   })();
