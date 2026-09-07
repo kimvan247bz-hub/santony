@@ -761,6 +761,7 @@
         </div>
         <span class="hero-status-badge" id="hero-status"></span>
       </div>
+      <div class="hero-trend" id="hero-trend"></div>
       <div class="hero-sub" id="hero-sub"></div>
       <div id="hero-caveats"></div>
     </div>
@@ -814,7 +815,7 @@
       <div class="line-chart-wrap">
         <svg id="profit-line-chart" viewBox="0 0 1000 170" preserveAspectRatio="none"></svg>
       </div>
-      <div class="chart-footnote">Số thực tế từng ngày: doanh thu − giá vốn − phí − VAT − ads (gộp 2 TK, có thể lệch nhẹ vài nghìn đồng/ngày so với tổng chiến dịch ở mục 04) — không còn ước tính giả định.</div>
+      <div class="chart-footnote">Số thực tế từng ngày: doanh thu − giá vốn − phí − VAT − ads (gộp 2 TK, kéo trực tiếp qua Meta API, khớp tuyệt đối với tổng chiến dịch ở mục 04 và với số "Lợi nhuận" ở mục 01) — không còn ước tính giả định.</div>
     </div>
     <div class="bar-chart-card">
       <div class="bar-chart-title">Số lượng bán ra (cái)</div>
@@ -854,7 +855,7 @@
     <div class="section-head">
       <span class="section-num">04</span>
       <span class="section-title">Hiệu quả quảng cáo</span>
-      <span class="section-note">Lũy kế đến 06/09/2026</span>
+      <span class="section-note">Lũy kế đến 07/09/2026</span>
     </div>
 
     <div class="subsection-label">So sánh theo tài khoản</div>
@@ -1068,7 +1069,8 @@
     period: "78 TC · 7 hoàn · 09/07 → 06/09/2026",
 
     caveats: [
-      "Chưa trừ: lương/nhân sự · phí thu hộ COD · hàng hoàn hỏng không bán lại được."
+      "Chưa trừ: lương/nhân sự · phí thu hộ COD · hàng hoàn hỏng không bán lại được.",
+      "Số \"Lợi nhuận\" ở trên đã trừ đúng chi phí Ads mới nhất (qua Meta API, đến 07/09), nhưng doanh thu/đơn hàng vẫn chỉ tính đến 06/09 (chưa có file orders mới) — tức đã trừ thêm 1 ngày chi Ads (07/09) mà chưa có doanh thu bù lại, nên số này đang ước tính THẤP hơn thực tế 1 chút. Gửi orders.xlsx mới để cập nhật đủ cả 2 phía."
     ],
 
     // ---- P&L thực tế, tính theo từng đơn (nguồn orders.xlsx Pancake, 09/07→06/09/2026) — thay cho giá vốn giả định 50%
@@ -1079,7 +1081,7 @@
       feeSuccess: 2964000,      // phí 38.000đ × 78 đơn thành công (16k ship + 22k fulfillment)
       feeReturn: 308000,        // phí 44.000đ × 7 đơn hoàn (16k ship + 28k fulfillment)
       vatOutput: 2807852,       // VAT đầu ra = doanh thu × 8/108
-      adsCost: 15757005,        // chi phí quảng cáo Facebook, campaign-level, đã VAT 10%
+      // (đã bỏ field adsCost cố định — giờ tính động = tổng DATA.dailyAdsGmv[].ads, xem biến `adsCost` trong script)
       ordersTotal: 85,
       ordersSuccess: 78,
       ordersReturned: 7,
@@ -1124,11 +1126,15 @@
       { date: "2026-09-06", gmv: 4391000,  units: 16 }
     ],
 
-    // ---- chi tiêu Ads (đã VAT 1.10) & GMV/giá vốn/phí/VAT thực theo ngày — dùng cho cả chart Ads&GMV, ACOS lũy kế VÀ
-    // "Lợi nhuận lũy kế" (mục 03, tính THỰC theo logic P&L đầy đủ, không còn ước tính giả định). Nguồn ads: 2 file
-    // "Báo cáo chưa đặt tên...xlsx" (Raw Data Report, acc1 30/06→06/09 + acc2 01/09→06/09), gộp theo ngày rồi ×1.10 VAT.
-    // Lưu ý: raw theo-ngày (gộp 2 TK) có thể lệch nhẹ vài nghìn đồng/ngày so với tổng chiến dịch dùng ở mục 01/04
-    // (campaign-level sạch hơn) — không phải lỗi tính toán, đã biết từ trước.
+    // ---- chi tiêu Ads (đã VAT 1.10) & GMV/giá vốn/phí/VAT thực theo ngày — dùng cho cả chart Ads&GMV, ACOS lũy kế,
+    // "Lợi nhuận lũy kế" (mục 03) VÀ chi phí Ads dùng trong "Lợi nhuận" hero mục 01 (biến `adsCost` = tổng cột `ads`
+    // dưới đây — KHÔNG còn số cố định riêng). Nguồn: script pull_fb_ads.py gọi thẳng Meta Marketing API (level=campaign,
+    // lọc tên chứa "Santony" để loại brand khác chạy chung acc2), gộp 2 TK theo ngày rồi ×1.10 VAT — xem
+    // /Users/lakimvan/Desktop/SANTONY/api-config/. Từ khi dùng API, tổng theo-ngày và tổng theo-chiến-dịch (mục 04)
+    // luôn khớp tuyệt đối (không còn lệch vài nghìn đồng như thời còn dùng file export xlsx khác nguồn).
+    // Mỗi lần chạy lại pull_fb_ads.py: GHI ĐÈ TOÀN BỘ chuỗi ads bên dưới bằng số mới (kể cả ngày cũ — Facebook có thể
+    // revise hồi tố), rồi thêm ngày mới nếu có. Ngày chưa có orders.xlsx tương ứng thì gmv/cogs/fee/vat = 0 (chưa biết),
+    // ads vẫn là số thật — nghĩa là "Lợi nhuận" hero sẽ tự trừ đúng chi phí ads mới nhất dù doanh thu chưa kịp cập nhật.
     dailyAdsGmv: [
       { date: "2026-06-30", ads: 14601, gmv: 0, cogs: 0, fee: 0, vat: 0 },
       { date: "2026-07-01", ads: 41110, gmv: 0, cogs: 0, fee: 0, vat: 0 },
@@ -1198,24 +1204,27 @@
       { date: "2026-09-03", ads: 1307006, gmv: 2764000, cogs: 899300, fee: 228000, vat: 204741 },
       { date: "2026-09-04", ads: 829529, gmv: 4362000, cogs: 1522600, fee: 304000, vat: 323111 },
       { date: "2026-09-05", ads: 889945, gmv: 2534000, cogs: 834300, fee: 228000, vat: 187704 },
-      { date: "2026-09-06", ads: 1021733, gmv: 4391000, cogs: 1431200, fee: 342000, vat: 325259 }
+      { date: "2026-09-06", ads: 1518537, gmv: 4391000, cogs: 1431200, fee: 342000, vat: 325259 },
+      { date: "2026-09-07", ads: 117845, gmv: 0, cogs: 0, fee: 0, vat: 0 }
     ],
 
     // ---- dữ liệu quảng cáo tách riêng theo từng tài khoản (campaign-level, đáng tin hơn account-level) ----
     accounts: [
-      { id: "acc1", name: "TK chính", period: "chạy từ 30/06", spend: 13077297, reach: 35258, newContacts: 665, purchases: 79 },
-      { id: "acc2", name: "TK phụ",   period: "chạy từ 01/09", spend: 1247253,  reach: 5697,  newContacts: 39,  purchases: 7 }
+      { id: "acc1", name: "TK chính", period: "chạy từ 30/06", spend: 13486040, reach: 34963, newContacts: 689, purchases: 80 },
+      { id: "acc2", name: "TK phụ",   period: "chạy từ 01/09", spend: 1389261,  reach: 6297,  newContacts: 46,  purchases: 7 }
     ],
+    // ---- 07/09/2026: kéo trực tiếp qua Meta Marketing API (script pull_fb_ads.py), không còn export xlsx thủ công.
+    // Đã lọc tên chiến dịch chứa "Santony" để loại chi tiêu brand khác chạy chung acc2 (~1,8tr "RoarTheme", xem memory).
     campaigns: [
       { name: "Mess | 30Jun",  account: "acc1", status: "inactive", spend: 50647,   contacts: 12,  purchases: null, revenue: null,     roas: null },
-      { name: "Mess | 06Jul",  account: "acc1", status: "inactive", spend: 1076926, contacts: 124, purchases: 3,    revenue: null,     roas: null },
+      { name: "Mess | 06Jul",  account: "acc1", status: "inactive", spend: 1076926, contacts: 125, purchases: 3,    revenue: null,     roas: null },
       { name: "GMV | 11Jul",   account: "acc1", status: "inactive", spend: 370001,  contacts: 45,  purchases: null, revenue: null,     roas: null },
-      { name: "GMV | 8Aug",    account: "acc1", status: "active",   spend: 3891668, contacts: 161, purchases: 21,   revenue: 7946000,  roas: 2.041798 },
-      { name: "Inbox | 11Aug", account: "acc1", status: "active",   spend: 4198103, contacts: 230, purchases: 30,   revenue: 11599000, roas: 2.762915 },
-      { name: "GMV | 20Aug",   account: "acc1", status: "active",   spend: 1550325, contacts: 34,  purchases: 15,   revenue: 7331000,  roas: 4.728686 },
-      { name: "Inbox | 24Aug", account: "acc1", status: "active",   spend: 964750,  contacts: 34,  purchases: 4,    revenue: 1207000,  roas: 1.251101 },
-      { name: "Inbox | 26Aug", account: "acc1", status: "active",   spend: 974877,  contacts: 25,  purchases: 6,    revenue: 2665000,  roas: 2.733678 },
-      { name: "Inbox | 1Sep",  account: "acc2", status: "active",   spend: 1247253, contacts: 39,  purchases: 7,    revenue: 3693000,  roas: 2.960907 }
+      { name: "GMV | 8Aug",    account: "acc1", status: "active",   spend: 3979050, contacts: 167, purchases: 21,   revenue: 7946000,  roas: 1.996959 },
+      { name: "Inbox | 11Aug", account: "acc1", status: "active",   spend: 4316264, contacts: 239, purchases: 30,   revenue: 11599000, roas: 2.687278 },
+      { name: "GMV | 20Aug",   account: "acc1", status: "active",   spend: 1662183, contacts: 37,  purchases: 15,   revenue: 7331000,  roas: 4.410465 },
+      { name: "Inbox | 24Aug", account: "acc1", status: "active",   spend: 1004548, contacts: 38,  purchases: 5,    revenue: 1476000,  roas: 1.469318 },
+      { name: "Inbox | 26Aug", account: "acc1", status: "active",   spend: 1026421, contacts: 26,  purchases: 6,    revenue: 2665000,  roas: 2.596401 },
+      { name: "Inbox | 1Sep",  account: "acc2", status: "active",   spend: 1389261, contacts: 46,  purchases: 7,    revenue: 3693000,  roas: 2.658248 }
     ],
 
     // ---- luồng tiền thanh toán quảng cáo (Meta Ads Manager > Thanh toán), mới nhất trước ----
@@ -1305,14 +1314,19 @@
   const fees = P.feeSuccess + P.feeReturn;
   const grossMargin = P.revenue - P.cogs;
   const profitBeforeAds = grossMargin - fees - P.vatOutput;
-  const profit = profitBeforeAds - P.adsCost;
+  // Chi phí Ads LUÔN tính = tổng toàn bộ DATA.dailyAdsGmv (không dùng số cố định) — nhờ vậy mỗi lần chạy
+  // pull_fb_ads.py lấy số Ads mới nhất (kể cả ngày chưa có đơn hàng tương ứng), "Lợi nhuận" ở hero tự động
+  // trừ đúng luôn, không cần đợi orders.xlsx mới để "khớp kỳ". Đây cũng chính là giá trị cuối của
+  // cumulativeProfitSeries — 2 chỗ giờ luôn khớp tuyệt đối, không còn lệch nguồn dữ liệu như trước.
+  const adsCost = DATA.dailyAdsGmv.reduce((s, d) => s + d.ads, 0);
+  const profit = profitBeforeAds - adsCost;
   const margin = profit / P.revenue;
   const returnRateOrders = P.ordersReturned / P.ordersTotal;
   const revenuePerOrder = P.revenue / P.ordersSuccess;
   const profitPerOrder = profit / P.ordersSuccess;
   const feePerOrder = fees / P.ordersTotal;
   const unitsPerOrder = P.unitsSold / P.ordersSuccess;
-  const adsToRevenue = P.adsCost / P.revenue;
+  const adsToRevenue = adsCost / P.revenue;
   const breakevenAdsPerOrder = profitBeforeAds / P.ordersSuccess;
 
   function computeCumulativeProfitSeries() {
@@ -1340,6 +1354,45 @@
     el.innerHTML = `<span class="dot"></span>${label}`;
   })();
 
+  // ---------- Hero trend (sparkline lũy kế thực + so hôm qua / 7 ngày trước) ----------
+  // Dùng chung cumulativeProfitSeries (số THỰC, xem computeCumulativeProfitSeries) với chart "Lợi nhuận lũy kế" mục 03.
+  (function renderHeroTrend() {
+    const el = document.getElementById("hero-trend");
+    const series = cumulativeProfitSeries;
+    if (series.length < 2) { el.remove(); return; }
+
+    const W = 150, H = 34, PAD = 2;
+    const n = series.length;
+    const values = series.map(p => p.value);
+    const minV = Math.min(...values, 0), maxV = Math.max(...values, 0);
+    const range = Math.max(maxV - minV, 1);
+    const xPos = i => PAD + (i / (n - 1)) * (W - PAD * 2);
+    const yPos = v => H - PAD - ((v - minV) / range) * (H - PAD * 2);
+    const last = values[n - 1];
+    const lineColor = last >= 0 ? "var(--good)" : "var(--critical)";
+    const path = series.map((p, i) => `${i === 0 ? "M" : "L"}${xPos(i).toFixed(1)},${yPos(p.value).toFixed(1)}`).join(" ");
+    const zeroY = yPos(0).toFixed(1);
+    const sparkSvg = `<svg class="hero-sparkline" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+      <line x1="0" y1="${zeroY}" x2="${W}" y2="${zeroY}" stroke="var(--ink-faint)" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"></line>
+      <path d="${path}" fill="none" stroke="${lineColor}" stroke-width="2"></path>
+      <circle cx="${xPos(n - 1).toFixed(1)}" cy="${yPos(last).toFixed(1)}" r="3" fill="${lineColor}"></circle>
+    </svg>`;
+
+    function deltaChip(label, from) {
+      if (from === undefined || from === null) return "";
+      const d = last - from;
+      const cls = Math.abs(d) < 1 ? "flat" : d > 0 ? "good" : "bad";
+      const arrow = Math.abs(d) < 1 ? "→" : d > 0 ? "▲" : "▼";
+      return `<div class="hero-delta"><span class="lbl">${label}</span><span class="val ${cls}">${arrow} ${vnd(Math.abs(d))}</span></div>`;
+    }
+    const deltas = [
+      deltaChip("So với hôm qua", n >= 2 ? values[n - 2] : undefined),
+      deltaChip("So với 7 ngày trước", n >= 8 ? values[n - 8] : undefined)
+    ].join("");
+
+    el.innerHTML = sparkSvg + `<div class="hero-deltas">${deltas}</div>`;
+  })();
+
   (function renderHeroCaveats() {
     const el = document.getElementById("hero-caveats");
     const caveats = DATA.caveats || [];
@@ -1362,7 +1415,7 @@
       <div class="chip-row">
         ${chip("Phí + VAT", vnd(fees + P.vatOutput))}
         <span class="op">−</span>
-        ${chip("Ads (đã VAT)", vnd(P.adsCost))}
+        ${chip("Ads (đã VAT)", vnd(adsCost))}
         <span class="op">=</span>
         ${chip("Lợi nhuận", vnd(profit), { accent: true })}
       </div>`;
