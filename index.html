@@ -713,6 +713,41 @@
   .line-dot { cursor: pointer; }
   .line-dot-hit { fill: transparent; cursor: pointer; }
 
+  /* ---------- Hover crosshair (dùng chung cho các chart lũy kế/combo trong mục 03) ---------- */
+  .chart-hover-capture { fill: transparent; cursor: crosshair; }
+  .chart-guide-line { stroke: var(--ink-faint); stroke-width: 1; stroke-dasharray: 3 3; display: none; pointer-events: none; }
+  .chart-hover-dot { display: none; pointer-events: none; stroke: var(--surface-raised); stroke-width: 2; }
+  .chart-tooltip {
+    position: fixed;
+    z-index: 60;
+    pointer-events: none;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 11px;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    transition: opacity 0.08s ease;
+    transform: translate(-50%, calc(-100% - 12px));
+    white-space: nowrap;
+  }
+  .chart-tooltip.visible { opacity: 1; }
+  .chart-tooltip .tt-date {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-bottom: 4px;
+  }
+  .chart-tooltip .tt-row { display: flex; align-items: baseline; gap: 14px; font-size: 12.5px; }
+  .chart-tooltip .tt-row + .tt-row { margin-top: 2px; }
+  .chart-tooltip .tt-label { color: var(--ink-soft); }
+  .chart-tooltip .tt-value {
+    margin-left: auto;
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
   footer {
     margin-top: 8px;
     font-size: 12px;
@@ -726,6 +761,8 @@
 </style>
 
 <div class="wrap">
+
+  <div class="chart-tooltip" id="chart-tooltip"></div>
 
   <nav class="topbar">
     <a href="#loinhuan">01 · Lợi nhuận</a>
@@ -855,7 +892,7 @@
     <div class="section-head">
       <span class="section-num">04</span>
       <span class="section-title">Hiệu quả quảng cáo</span>
-      <span class="section-note">Lũy kế đến 07/09/2026</span>
+      <span class="section-note">Lũy kế đến 09/09/2026</span>
     </div>
 
     <div class="subsection-label">So sánh theo tài khoản</div>
@@ -1065,40 +1102,41 @@
      DAILY INPUT — cập nhật các số ở đây mỗi khi có số liệu mới
      ============================================================ */
   const DATA = {
-    updatedAt: "2026-09-07",
-    period: "96 TC · 6 hoàn · 09/07 → 07/09/2026",
+    updatedAt: "2026-09-09",
+    period: "110 TC · 6 hoàn · 09/07 → 09/09/2026",
 
     caveats: [
       "Chưa trừ: lương/nhân sự · phí thu hộ COD · hàng hoàn hỏng không bán lại được.",
-      "Chi phí Ads ngày 07/09 (trong \"Lợi nhuận\" ở trên) lấy từ lần kéo Meta API cuối (sáng 07/09) — có thể chưa gồm hết chi tiêu phát sinh cuối ngày, trong khi doanh thu/đơn hàng ngày 07/09 đã đầy đủ đến 21:02. Chạy lại pull_fb_ads.py để cập nhật ads mới nhất khi cần."
+      "Ads ngày 09/09 lấy từ lần kéo Meta API lúc 13:46 cùng ngày (sau khi tài khoản Facebook được xác minh lại) — ngày chưa kết thúc nên có thể chưa gồm hết chi tiêu phát sinh cuối ngày. Chạy lại pull_fb_ads.py cuối ngày để có số đầy đủ."
     ],
 
-    // ---- P&L thực tế, tính theo từng đơn (nguồn orders.xlsx Pancake, 09/07→07/09/2026) — thay cho giá vốn giả định 50%
+    // ---- P&L thực tế, tính theo từng đơn (nguồn orders (1).xlsx Pancake, 09/07→09/09/2026) — thay cho giá vốn giả định 50%
     // cũ. Mọi số khác (lãi gộp, %margin, breakeven ROAS/ACOS, KPI vận hành...) đều TÍNH RA từ các số gốc dưới đây.
     pnl: {
-      revenue: 46814000,        // doanh thu 96 đơn thành công (đã gồm VAT)
-      cogs: 15977476,           // giá vốn hàng bán, tính theo giá nhập thực từng dòng SP (không phải % giả định)
-      feeSuccess: 3648000,      // phí 38.000đ × 96 đơn thành công (16k ship + 22k fulfillment)
+      revenue: 53422000,        // doanh thu 110 đơn thành công (đã gồm VAT)
+      cogs: 18348676,           // giá vốn hàng bán, tính theo giá nhập thực từng dòng SP (không phải % giả định)
+      feeSuccess: 4180000,      // phí 38.000đ × 110 đơn thành công (16k ship + 22k fulfillment)
       feeReturn: 264000,        // phí 44.000đ × 6 đơn hoàn (16k ship + 28k fulfillment)
-      vatOutput: 3467704,       // VAT đầu ra = doanh thu × 8/108
+      vatOutput: 3957185,       // VAT đầu ra = doanh thu × 8/108
       // (đã bỏ field adsCost cố định — giờ tính động = tổng DATA.dailyAdsGmv[].ads, xem biến `adsCost` trong script)
-      ordersTotal: 102,
-      ordersSuccess: 96,
+      ordersTotal: 116,
+      ordersSuccess: 110,
       ordersReturned: 6,
-      unitsSold: 191,
+      unitsSold: 217,
       returnedRevenueLost: 3095000,
-      returnRateValue: 0.062    // tỷ lệ hoàn theo giá trị đơn (đơn hoàn không giữ lại giá trị gốc nên không tự suy ra được)
+      returnRateValue: 0.0548   // tỷ lệ hoàn theo giá trị đơn (đơn hoàn không giữ lại giá trị gốc nên không tự suy ra được)
     },
 
     // ---- Theo tháng — mỗi tháng chỉ cần 6 số gốc, mọi cột khác (tổng chi phí/%CP-DT/lợi nhuận/%biên) tự tính ----
+    // Th9.ads cập nhật từ Meta API lúc 13:46 09/09 — ngày 09/09 có thể chưa đầy đủ (ngày chưa kết thúc, xem DATA.caveats).
     monthly: [
-      { label: "Th7/2026", partial: true,  orders: 5,  returned: 3, revenue: 734000,   cogs: 237200,  fee: 208000,  vat: 54370,   ads: 1647332, topSku: "65101" },
-      { label: "Th8/2026", partial: false, orders: 41, returned: 3, revenue: 18500000, cogs: 6454000, fee: 1576000, vat: 1370366, ads: 8373951, topSku: "65101" },
-      { label: "Th9/2026", partial: true,  orders: 56, returned: 0, revenue: 27580000, cogs: 9286276, fee: 2128000, vat: 2042967, ads: 5726902, topSku: "65101" }
+      { label: "Th7/2026", partial: true,  orders: 5,  returned: 3, revenue: 734000,   cogs: 237200,   fee: 208000,  vat: 54370,   ads: 1647332, topSku: "65101" },
+      { label: "Th8/2026", partial: false, orders: 41, returned: 3, revenue: 18500000, cogs: 6454000,  fee: 1576000, vat: 1370366, ads: 8373951, topSku: "65101" },
+      { label: "Th9/2026", partial: true,  orders: 70, returned: 0, revenue: 34188000, cogs: 11657476, fee: 2660000, vat: 2532449, ads: 9413286, topSku: "65101" }
     ],
 
     // ---- doanh số theo ngày (đã trừ đơn "Đã hoàn"), dựng từ cột "Ngày tạo đơn" trong file export Pancake (orders.xlsx) ----
-    // Rebuild TOÀN BỘ từ orders.xlsx (102 đơn, 09/07→07/09/2026), không cộng dồn delta — units = bra-only (rule cũ).
+    // Rebuild TOÀN BỘ từ orders (1).xlsx (116 đơn, 09/07→09/09/2026), không cộng dồn delta — units = bra-only (rule cũ).
     dailySales: [
       { date: "2026-07-10", gmv: 255000,  units: 1 },
       { date: "2026-07-15", gmv: 479000,  units: 2 },
@@ -1124,7 +1162,9 @@
       { date: "2026-09-04", gmv: 4362000,  units: 18 },
       { date: "2026-09-05", gmv: 2534000,  units: 10 },
       { date: "2026-09-06", gmv: 4660000,  units: 17 },
-      { date: "2026-09-07", gmv: 8140000,  units: 33 }
+      { date: "2026-09-07", gmv: 9289000,  units: 38 },
+      { date: "2026-09-08", gmv: 4760000,  units: 18 },
+      { date: "2026-09-09", gmv: 699000,   units: 3 }
     ],
 
     // ---- chi tiêu Ads (đã VAT 1.10) & GMV/giá vốn/phí/VAT thực theo ngày — dùng cho cả chart Ads&GMV, ACOS lũy kế,
@@ -1205,28 +1245,30 @@
       { date: "2026-09-03", ads: 1307006, gmv: 2764000, cogs: 899300, fee: 228000, vat: 204741 },
       { date: "2026-09-04", ads: 829529, gmv: 4362000, cogs: 1522600, fee: 304000, vat: 323111 },
       { date: "2026-09-05", ads: 889945, gmv: 2534000, cogs: 834300, fee: 228000, vat: 187704 },
-      { date: "2026-09-06", ads: 1518537, gmv: 4660000, cogs: 1517700, fee: 380000, vat: 345186 },
-      // ads 07/09 = số kéo qua Meta API sáng 07/09 (có thể chưa gồm hết chi tiêu cuối ngày, xem DATA.caveats)
-      { date: "2026-09-07", ads: 117845, gmv: 8140000, cogs: 2757800, fee: 608000, vat: 602964 }
+      { date: "2026-09-06", ads: 1522147, gmv: 4660000, cogs: 1517700, fee: 380000, vat: 345186 },
+      { date: "2026-09-07", ads: 1442378, gmv: 9289000, cogs: 3165100, fee: 684000, vat: 688075 },
+      { date: "2026-09-08", ads: 1273752, gmv: 4760000, cogs: 1695700, fee: 418000, vat: 352593 },
+      // ads 09/09 = số kéo qua Meta API lúc 13:46 09/09 (ngày chưa kết thúc, xem DATA.caveats)
+      { date: "2026-09-09", ads: 469840, gmv: 699000, cogs: 268200, fee: 38000, vat: 51778 }
     ],
 
     // ---- dữ liệu quảng cáo tách riêng theo từng tài khoản (campaign-level, đáng tin hơn account-level) ----
     accounts: [
-      { id: "acc1", name: "TK chính", period: "chạy từ 30/06", spend: 13486040, reach: 34963, newContacts: 689, purchases: 80 },
-      { id: "acc2", name: "TK phụ",   period: "chạy từ 01/09", spend: 1389261,  reach: 6297,  newContacts: 46,  purchases: 7 }
+      { id: "acc1", name: "TK chính", period: "chạy từ 30/06", spend: 15606616, reach: 39885, newContacts: 753, purchases: 105 },
+      { id: "acc2", name: "TK phụ",   period: "chạy từ 01/09", spend: 2061171,  reach: 8763,  newContacts: 58,  purchases: 8 }
     ],
-    // ---- 07/09/2026: kéo trực tiếp qua Meta Marketing API (script pull_fb_ads.py), không còn export xlsx thủ công.
+    // ---- 09/09/2026: kéo trực tiếp qua Meta Marketing API (script pull_fb_ads.py), không còn export xlsx thủ công.
     // Đã lọc tên chiến dịch chứa "Santony" để loại chi tiêu brand khác chạy chung acc2 (~1,8tr "RoarTheme", xem memory).
     campaigns: [
       { name: "Mess | 30Jun",  account: "acc1", status: "inactive", spend: 50647,   contacts: 12,  purchases: null, revenue: null,     roas: null },
       { name: "Mess | 06Jul",  account: "acc1", status: "inactive", spend: 1076926, contacts: 125, purchases: 3,    revenue: null,     roas: null },
       { name: "GMV | 11Jul",   account: "acc1", status: "inactive", spend: 370001,  contacts: 45,  purchases: null, revenue: null,     roas: null },
-      { name: "GMV | 8Aug",    account: "acc1", status: "active",   spend: 3979050, contacts: 167, purchases: 21,   revenue: 7946000,  roas: 1.996959 },
-      { name: "Inbox | 11Aug", account: "acc1", status: "active",   spend: 4316264, contacts: 239, purchases: 30,   revenue: 11599000, roas: 2.687278 },
-      { name: "GMV | 20Aug",   account: "acc1", status: "active",   spend: 1662183, contacts: 37,  purchases: 15,   revenue: 7331000,  roas: 4.410465 },
-      { name: "Inbox | 24Aug", account: "acc1", status: "active",   spend: 1004548, contacts: 38,  purchases: 5,    revenue: 1476000,  roas: 1.469318 },
-      { name: "Inbox | 26Aug", account: "acc1", status: "active",   spend: 1026421, contacts: 26,  purchases: 6,    revenue: 2665000,  roas: 2.596401 },
-      { name: "Inbox | 1Sep",  account: "acc2", status: "active",   spend: 1389261, contacts: 46,  purchases: 7,    revenue: 3693000,  roas: 2.658248 }
+      { name: "GMV | 8Aug",    account: "acc1", status: "active",   spend: 4333839, contacts: 175, purchases: 26,   revenue: 9731000,  roas: 2.245353 },
+      { name: "Inbox | 11Aug", account: "acc1", status: "active",   spend: 5070860, contacts: 274, purchases: 43,   revenue: 18922000, roas: 3.731517 },
+      { name: "GMV | 20Aug",   account: "acc1", status: "active",   spend: 2123495, contacts: 41,  purchases: 18,   revenue: 8828000,  roas: 4.157297 },
+      { name: "Inbox | 24Aug", account: "acc1", status: "active",   spend: 1307731, contacts: 47,  purchases: 6,    revenue: 1975000,  roas: 1.510249 },
+      { name: "Inbox | 26Aug", account: "acc1", status: "active",   spend: 1273117, contacts: 34,  purchases: 9,    revenue: 4113000,  roas: 3.230654 },
+      { name: "Inbox | 1Sep",  account: "acc2", status: "active",   spend: 2061171, contacts: 58,  purchases: 8,    revenue: 4192000,  roas: 2.033795 }
     ],
 
     // ---- luồng tiền thanh toán quảng cáo (Meta Ads Manager > Thanh toán), mới nhất trước ----
@@ -1257,22 +1299,22 @@
       { date: "2026-07-06", amount: 57750,   method: "Visa •••• 5075",       status: "paid" }
     ],
 
-    // ---- hành vi mua hàng (giờ/ngày tạo đơn, tỉnh/thành) — nguồn: cột "Thời điểm tạo đơn" + "Địa chỉ" trong file export "orders.xlsx" (102 đơn, rebuild toàn bộ) ----
+    // ---- hành vi mua hàng (giờ/ngày tạo đơn, tỉnh/thành) — nguồn: cột "Thời điểm tạo đơn" + "Địa chỉ" trong file export "orders (1).xlsx" (116 đơn, rebuild toàn bộ) ----
     orderBehavior: {
       hourly: [
         { hour: 0, orders: 0, gmv: 0 }, { hour: 1, orders: 0, gmv: 0 }, { hour: 2, orders: 0, gmv: 0 },
         { hour: 3, orders: 0, gmv: 0 }, { hour: 4, orders: 0, gmv: 0 }, { hour: 5, orders: 0, gmv: 0 },
-        { hour: 6, orders: 2, gmv: 978000 }, { hour: 7, orders: 2, gmv: 768000 }, { hour: 8, orders: 9, gmv: 4407000 },
-        { hour: 9, orders: 6, gmv: 3394000 }, { hour: 10, orders: 10, gmv: 3923000 }, { hour: 11, orders: 7, gmv: 3104000 },
-        { hour: 12, orders: 7, gmv: 2680000 }, { hour: 13, orders: 8, gmv: 3893000 }, { hour: 14, orders: 9, gmv: 5091000 },
+        { hour: 6, orders: 2, gmv: 978000 }, { hour: 7, orders: 2, gmv: 768000 }, { hour: 8, orders: 10, gmv: 5106000 },
+        { hour: 9, orders: 7, gmv: 4093000 }, { hour: 10, orders: 10, gmv: 3923000 }, { hour: 11, orders: 8, gmv: 3733000 },
+        { hour: 12, orders: 10, gmv: 3877000 }, { hour: 13, orders: 9, gmv: 4162000 }, { hour: 14, orders: 10, gmv: 5590000 },
         { hour: 15, orders: 3, gmv: 1477000 }, { hour: 16, orders: 5, gmv: 2381000 }, { hour: 17, orders: 3, gmv: 1267000 },
-        { hour: 18, orders: 3, gmv: 1857000 }, { hour: 19, orders: 4, gmv: 1457000 }, { hour: 20, orders: 10, gmv: 4382000 },
-        { hour: 21, orders: 9, gmv: 3808000 }, { hour: 22, orders: 4, gmv: 1488000 }, { hour: 23, orders: 1, gmv: 459000 }
+        { hour: 18, orders: 3, gmv: 1857000 }, { hour: 19, orders: 4, gmv: 1457000 }, { hour: 20, orders: 12, gmv: 4900000 },
+        { hour: 21, orders: 11, gmv: 4508000 }, { hour: 22, orders: 6, gmv: 2886000 }, { hour: 23, orders: 1, gmv: 459000 }
       ],
       weekday: [
-        { label: "T2", orders: 25, gmv: 10857000 },
-        { label: "T3", orders: 9,  gmv: 4302000 },
-        { label: "T4", orders: 9,  gmv: 4811000 },
+        { label: "T2", orders: 27, gmv: 12006000 },
+        { label: "T3", orders: 20, gmv: 9062000 },
+        { label: "T4", orders: 10, gmv: 5510000 },
         { label: "T5", orders: 10, gmv: 4421000 },
         { label: "T6", orders: 15, gmv: 6788000 },
         { label: "T7", orders: 12, gmv: 5808000 },
@@ -1280,17 +1322,17 @@
       ],
       topProvinces: [
         { name: "Hà Nội",            orders: 11, gmv: 5355000 },
-        { name: "Hồ Chí Minh",       orders: 8,  gmv: 3038000 },
-        { name: "Bình Dương",        orders: 6,  gmv: 3374000 },
+        { name: "Hồ Chí Minh",       orders: 9,  gmv: 3307000 },
+        { name: "Bình Dương",        orders: 8,  gmv: 4502000 },
         { name: "An Giang",          orders: 6,  gmv: 3304000 },
         { name: "Thanh Hóa",         orders: 5,  gmv: 2581000 },
-        { name: "Đà Nẵng",           orders: 5,  gmv: 1743000 }
+        { name: "Quảng Ninh",        orders: 5,  gmv: 2015000 }
       ],
-      otherProvinces: { count: 32, orders: 61, gmv: 27419000 },
-      repeatCustomers: 6,
-      uniqueCustomers: 95,
-      repeatOrders: 13,
-      incrementalRepeatOrders: 7
+      otherProvinces: { count: 36, orders: 72, gmv: 32358000 },
+      repeatCustomers: 9,
+      uniqueCustomers: 106,
+      repeatOrders: 19,
+      incrementalRepeatOrders: 10
     }
   };
 
@@ -1656,6 +1698,62 @@
     const [, m, d] = iso.split("-");
     return `${d}/${m}`;
   }
+
+  // ---------- Hover crosshair + tooltip (dùng chung cho 3 chart lũy kế/combo mục 03) ----------
+  // Cho phép "trỏ tới đâu thấy số của thời điểm đó" — di chuột (hoặc chạm trên di động) dọc theo chart,
+  // tự tìm điểm dữ liệu gần con trỏ nhất (theo toạ độ x quy đổi từ pixel màn hình sang toạ độ viewBox qua
+  // getScreenCTM, nên luôn đúng bất kể chart co giãn/scroll ngang), rồi gọi onHover(idx, clientX, clientY)
+  // để bên gọi tự vẽ guide-line/dot + nội dung tooltip riêng cho từng chart.
+  function attachChartHover(svg, xPos, n, onHover, onLeave) {
+    function svgPointFromEvent(evt) {
+      const src = evt.touches && evt.touches.length ? evt.touches[0] : evt;
+      const pt = svg.createSVGPoint();
+      pt.x = src.clientX;
+      pt.y = src.clientY;
+      const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
+      return { x: svgP.x, clientX: src.clientX, clientY: src.clientY };
+    }
+    function nearestIndex(x) {
+      let idx = 0, minDist = Infinity;
+      for (let i = 0; i < n; i++) {
+        const d = Math.abs(xPos(i) - x);
+        if (d < minDist) { minDist = d; idx = i; }
+      }
+      return idx;
+    }
+    function handleMove(evt) {
+      const p = svgPointFromEvent(evt);
+      onHover(nearestIndex(p.x), p.clientX, p.clientY);
+      if (evt.cancelable) evt.preventDefault();
+    }
+    function handleLeave() { onLeave(); hideChartTooltip(); }
+    svg.addEventListener("mousemove", handleMove);
+    svg.addEventListener("mouseleave", handleLeave);
+    svg.addEventListener("touchstart", handleMove, { passive: false });
+    svg.addEventListener("touchmove", handleMove, { passive: false });
+    svg.addEventListener("touchend", handleLeave);
+  }
+  function showChartTooltip(clientX, clientY, html) {
+    // Tự lật xuống dưới/căn lại theo cạnh trái-phải nếu tooltip mặc định (phía trên, giữa con trỏ) bị tràn
+    // ra ngoài viewport — hay gặp khi hover gần mép trên (dưới thanh topbar sticky) hoặc mép trái/phải màn hình.
+    const tt = document.getElementById("chart-tooltip");
+    tt.innerHTML = html;
+    tt.style.left = clientX + "px";
+    tt.style.top = clientY + "px";
+    tt.style.transform = "translate(-50%, calc(-100% - 12px))";
+    tt.classList.add("visible");
+    const rect = tt.getBoundingClientRect();
+    const translateY = rect.top < 4 ? "12px" : "calc(-100% - 12px)";
+    const translateX = rect.left < 4 ? "0%" : rect.right > window.innerWidth - 4 ? "-100%" : "-50%";
+    tt.style.transform = `translate(${translateX}, ${translateY})`;
+  }
+  function hideChartTooltip() {
+    document.getElementById("chart-tooltip").classList.remove("visible");
+  }
+  function ttRow(label, value, color) {
+    return `<div class="tt-row"><span class="tt-label">${label}</span><span class="tt-value"${color ? ` style="color:${color}"` : ""}>${value}</span></div>`;
+  }
+
   function renderBarChart(elId, series, valueFmt, color) {
     const TRACK_PX = 110;
     const maxV = Math.max(...series.map(d => d.value), 1);
@@ -1769,8 +1867,24 @@
       return `<text class="combo-x-label${isToday ? " today" : ""}" x="${xCenter(i).toFixed(1)}" y="${(plotBottom + 14).toFixed(1)}">${fmtDayLabel(d.date)}</text>`;
     }).join("");
 
-    document.getElementById("ads-gmv-chart").innerHTML = axisSvg + barsSvg + breakevenSvg +
-      `<path class="combo-pct-line" d="${pathD.trim()}"></path>` + dotsSvg + xLabelsSvg;
+    const hoverGuide = `<line class="chart-guide-line" id="adsgmv-guide-line" x1="0" y1="${marginTop}" x2="0" y2="${plotBottom}"></line>`;
+    const captureRect = `<rect class="chart-hover-capture" x="0" y="0" width="${W}" height="${H}"></rect>`;
+
+    const svg = document.getElementById("ads-gmv-chart");
+    svg.innerHTML = axisSvg + barsSvg + breakevenSvg +
+      `<path class="combo-pct-line" d="${pathD.trim()}"></path>` + dotsSvg + xLabelsSvg + hoverGuide + captureRect;
+
+    const guideLine = document.getElementById("adsgmv-guide-line");
+    attachChartHover(svg, xCenter, n, (idx, clientX, clientY) => {
+      const d = series[idx];
+      const ratio = ratios[idx];
+      guideLine.setAttribute("x1", xCenter(idx).toFixed(1));
+      guideLine.setAttribute("x2", xCenter(idx).toFixed(1));
+      guideLine.style.display = "block";
+      const rows = ttRow("Ads (đã VAT)", vnd(d.ads), "var(--warn)") + ttRow("GMV", vnd(d.gmv), "var(--accent)") +
+        (ratio !== null ? ttRow("Ads/GMV", pct(ratio / 100), ratio > breakevenAdsGmv ? "var(--critical)" : "var(--good)") : "");
+      showChartTooltip(clientX, clientY, `<div class="tt-date">${fmtDayLabel(d.date)}</div>${rows}`);
+    }, () => { guideLine.style.display = "none"; });
   })();
 
   // ---------- Cumulative profit line chart ----------
@@ -1798,17 +1912,36 @@
         `<circle class="line-dot-hit" cx="${xPos(i).toFixed(1)}" cy="${yPos(p.value).toFixed(1)}" r="9"><title>${tip}</title></circle>`;
     }).join("");
 
+    const hoverGuide = `<line class="chart-guide-line" id="profit-guide-line" x1="0" y1="0" x2="0" y2="${H}"></line>` +
+      `<circle class="chart-hover-dot" id="profit-hover-dot" r="4"></circle>`;
+    const captureRect = `<rect class="chart-hover-capture" x="0" y="0" width="${W}" height="${H}"></rect>`;
+
     const svg = document.getElementById("profit-line-chart");
     svg.innerHTML =
       `<line class="line-zero" x1="0" y1="${yZero.toFixed(1)}" x2="${W}" y2="${yZero.toFixed(1)}"></line>` +
       `<text x="${W}" y="${(yZero - 6).toFixed(1)}" text-anchor="end" font-size="10" fill="var(--ink-faint)" font-family="IBM Plex Mono, monospace">Hoà vốn</text>` +
       `<path class="line-path" d="${linePath}"></path>` +
-      dots;
+      dots + hoverGuide + captureRect;
 
     const last = points[points.length - 1];
     const note = document.getElementById("profit-line-note");
     note.textContent = `${fmtDayLabel(last.date)}: ${vnd(last.value)}`;
     note.style.color = last.value >= 0 ? "var(--good)" : "var(--critical)";
+
+    const guideLine = document.getElementById("profit-guide-line");
+    const hoverDot = document.getElementById("profit-hover-dot");
+    attachChartHover(svg, xPos, n, (idx, clientX, clientY) => {
+      const p = points[idx];
+      const color = p.value >= 0 ? "var(--good)" : "var(--critical)";
+      guideLine.setAttribute("x1", xPos(idx).toFixed(1));
+      guideLine.setAttribute("x2", xPos(idx).toFixed(1));
+      guideLine.style.display = "block";
+      hoverDot.setAttribute("cx", xPos(idx).toFixed(1));
+      hoverDot.setAttribute("cy", yPos(p.value).toFixed(1));
+      hoverDot.setAttribute("fill", color);
+      hoverDot.style.display = "block";
+      showChartTooltip(clientX, clientY, `<div class="tt-date">${fmtDayLabel(p.date)}</div>${ttRow("Lợi nhuận lũy kế", vnd(p.value), color)}`);
+    }, () => { guideLine.style.display = "none"; hoverDot.style.display = "none"; });
   })();
 
   // ---------- Cumulative ACOS line chart ----------
@@ -1861,11 +1994,30 @@
       `<text class="combo-x-label" x="${xPos(0).toFixed(1)}" y="${(plotBottom + 14).toFixed(1)}" text-anchor="start">${fmtDayLabel(points[0].date)}</text>` +
       `<text class="combo-x-label" x="${xPos(n - 1).toFixed(1)}" y="${(plotBottom + 14).toFixed(1)}" text-anchor="end">${fmtDayLabel(points[n - 1].date)}</text>`;
 
-    svg.innerHTML = axisSvg + breakevenSvg + `<path class="line-path" d="${linePath}"></path>` + dots + xLabelsSvg;
+    const hoverGuide = `<line class="chart-guide-line" id="acos-guide-line" x1="0" y1="${marginTop}" x2="0" y2="${plotBottom}"></line>` +
+      `<circle class="chart-hover-dot" id="acos-hover-dot" r="4"></circle>`;
+    const captureRect = `<rect class="chart-hover-capture" x="0" y="0" width="${W}" height="${H}"></rect>`;
+
+    svg.innerHTML = axisSvg + breakevenSvg + `<path class="line-path" d="${linePath}"></path>` + dots + xLabelsSvg + hoverGuide + captureRect;
 
     const last = points[points.length - 1];
     note.textContent = `${fmtDayLabel(last.date)}: ${pct(last.value)}`;
     note.style.color = last.value <= breakevenAcos ? "var(--good)" : "var(--critical)";
+
+    const guideLine = document.getElementById("acos-guide-line");
+    const hoverDot = document.getElementById("acos-hover-dot");
+    attachChartHover(svg, xPos, n, (idx, clientX, clientY) => {
+      const p = points[idx];
+      const color = p.value <= breakevenAcos ? "var(--good)" : "var(--critical)";
+      guideLine.setAttribute("x1", xPos(idx).toFixed(1));
+      guideLine.setAttribute("x2", xPos(idx).toFixed(1));
+      guideLine.style.display = "block";
+      hoverDot.setAttribute("cx", xPos(idx).toFixed(1));
+      hoverDot.setAttribute("cy", yPos(p.value).toFixed(1));
+      hoverDot.setAttribute("fill", color);
+      hoverDot.style.display = "block";
+      showChartTooltip(clientX, clientY, `<div class="tt-date">${fmtDayLabel(p.date)}</div>${ttRow("ACOS lũy kế", pct(p.value), color)}`);
+    }, () => { guideLine.style.display = "none"; hoverDot.style.display = "none"; });
   })();
 
   // ---------- Payments ----------
