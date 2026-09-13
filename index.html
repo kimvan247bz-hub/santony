@@ -892,7 +892,7 @@
     <div class="section-head">
       <span class="section-num">04</span>
       <span class="section-title">Hiệu quả quảng cáo</span>
-      <span class="section-note">Lũy kế đến 09/09/2026</span>
+      <span class="section-note">Lũy kế đến 13/09/2026</span>
     </div>
 
     <div class="subsection-label">So sánh theo tài khoản</div>
@@ -1102,41 +1102,41 @@
      DAILY INPUT — cập nhật các số ở đây mỗi khi có số liệu mới
      ============================================================ */
   const DATA = {
-    updatedAt: "2026-09-09",
-    period: "110 TC · 6 hoàn · 09/07 → 09/09/2026",
+    updatedAt: "2026-09-13",
+    period: "125 TC · 10 hoàn · 09/07 → 13/09/2026",
 
     caveats: [
       "Chưa trừ: lương/nhân sự · phí thu hộ COD · hàng hoàn hỏng không bán lại được.",
-      "Ads ngày 09/09 lấy từ lần kéo Meta API lúc 13:46 cùng ngày (sau khi tài khoản Facebook được xác minh lại) — ngày chưa kết thúc nên có thể chưa gồm hết chi tiêu phát sinh cuối ngày. Chạy lại pull_fb_ads.py cuối ngày để có số đầy đủ."
+      "Có 1 cặp đơn đổi hàng (AUF_35016 đổi sang AUF_35324, cùng khách, cùng giá trị) trong kỳ — doanh thu chỉ tính 1 lần đúng theo thực thu, nhưng giá vốn/phí ship tính đủ 2 lần vì có 2 lượt giao hàng thật."
     ],
 
-    // ---- P&L thực tế, tính theo từng đơn (nguồn orders (1).xlsx Pancake, 09/07→09/09/2026) — thay cho giá vốn giả định 50%
+    // ---- P&L thực tế, tính theo từng đơn (nguồn orders.xlsx Pancake, 09/07→13/09/2026) — thay cho giá vốn giả định 50%
     // cũ. Mọi số khác (lãi gộp, %margin, breakeven ROAS/ACOS, KPI vận hành...) đều TÍNH RA từ các số gốc dưới đây.
     pnl: {
-      revenue: 53422000,        // doanh thu 110 đơn thành công (đã gồm VAT)
-      cogs: 18348676,           // giá vốn hàng bán, tính theo giá nhập thực từng dòng SP (không phải % giả định)
-      feeSuccess: 4180000,      // phí 38.000đ × 110 đơn thành công (16k ship + 22k fulfillment)
-      feeReturn: 264000,        // phí 44.000đ × 6 đơn hoàn (16k ship + 28k fulfillment)
-      vatOutput: 3957185,       // VAT đầu ra = doanh thu × 8/108
+      revenue: 59637000,        // doanh thu 125 đơn thành công (đã gồm VAT) — dùng cột "Doanh thu bán hàng" Pancake (tự = 0 cho đơn hoàn + cho vế "đổi" đã bị thay thế, tránh đếm trùng)
+      cogs: 20607376,           // giá vốn hàng bán, tính theo giá nhập thực từng dòng SP (không phải % giả định)
+      feeSuccess: 4750000,      // phí 38.000đ × 125 đơn thành công (16k ship + 22k fulfillment)
+      feeReturn: 440000,        // phí 44.000đ × 10 đơn hoàn (16k ship + 28k fulfillment)
+      vatOutput: 4417556,       // VAT đầu ra = doanh thu × 8/108
       // (đã bỏ field adsCost cố định — giờ tính động = tổng DATA.dailyAdsGmv[].ads, xem biến `adsCost` trong script)
-      ordersTotal: 116,
-      ordersSuccess: 110,
-      ordersReturned: 6,
-      unitsSold: 217,
-      returnedRevenueLost: 3095000,
-      returnRateValue: 0.0548   // tỷ lệ hoàn theo giá trị đơn (đơn hoàn không giữ lại giá trị gốc nên không tự suy ra được)
+      ordersTotal: 135,
+      ordersSuccess: 125,
+      ordersReturned: 10,
+      unitsSold: 242,
+      returnedRevenueLost: 5442000,
+      returnRateValue: 0.0836   // tỷ lệ hoàn theo giá trị đơn (đơn hoàn không giữ lại giá trị gốc nên không tự suy ra được)
     },
 
     // ---- Theo tháng — mỗi tháng chỉ cần 6 số gốc, mọi cột khác (tổng chi phí/%CP-DT/lợi nhuận/%biên) tự tính ----
-    // Th9.ads cập nhật từ Meta API lúc 13:46 09/09 — ngày 09/09 có thể chưa đầy đủ (ngày chưa kết thúc, xem DATA.caveats).
+    // Th9.ads cập nhật từ Meta API 13/09 (đã kéo đủ đến 13/09, không còn thiếu như lần pull giữa-ngày 09/09 trước đó).
     monthly: [
-      { label: "Th7/2026", partial: true,  orders: 5,  returned: 3, revenue: 734000,   cogs: 237200,   fee: 208000,  vat: 54370,   ads: 1647332, topSku: "65101" },
-      { label: "Th8/2026", partial: false, orders: 41, returned: 3, revenue: 18500000, cogs: 6454000,  fee: 1576000, vat: 1370366, ads: 8373951, topSku: "65101" },
-      { label: "Th9/2026", partial: true,  orders: 70, returned: 0, revenue: 34188000, cogs: 11657476, fee: 2660000, vat: 2532449, ads: 9413286, topSku: "65101" }
+      { label: "Th7/2026", partial: true,  orders: 5,  returned: 3, revenue: 734000,   cogs: 237200,   fee: 208000,  vat: 54370,   ads: 1647332,  topSku: "65101" },
+      { label: "Th8/2026", partial: false, orders: 41, returned: 3, revenue: 18500000, cogs: 6454000,  fee: 1576000, vat: 1370366, ads: 8373951,  topSku: "65101" },
+      { label: "Th9/2026", partial: true,  orders: 89, returned: 4, revenue: 40403000, cogs: 13916176, fee: 3406000, vat: 2992821, ads: 14084507, topSku: "65101" }
     ],
 
     // ---- doanh số theo ngày (đã trừ đơn "Đã hoàn"), dựng từ cột "Ngày tạo đơn" trong file export Pancake (orders.xlsx) ----
-    // Rebuild TOÀN BỘ từ orders (1).xlsx (116 đơn, 09/07→09/09/2026), không cộng dồn delta — units = bra-only (rule cũ).
+    // Rebuild TOÀN BỘ từ orders.xlsx (135 đơn, 09/07→13/09/2026), không cộng dồn delta — units = bra-only (rule cũ).
     dailySales: [
       { date: "2026-07-10", gmv: 255000,  units: 1 },
       { date: "2026-07-15", gmv: 479000,  units: 2 },
@@ -1157,14 +1157,18 @@
       { date: "2026-08-30", gmv: 1148000,  units: 5 },
       { date: "2026-08-31", gmv: 1697000,  units: 7 },
       { date: "2026-09-01", gmv: 2465000,  units: 10 },
-      { date: "2026-09-02", gmv: 2655000,  units: 11 },
+      { date: "2026-09-02", gmv: 1956000,  units: 8 },
       { date: "2026-09-03", gmv: 2764000,  units: 11 },
       { date: "2026-09-04", gmv: 4362000,  units: 18 },
-      { date: "2026-09-05", gmv: 2534000,  units: 10 },
-      { date: "2026-09-06", gmv: 4660000,  units: 17 },
-      { date: "2026-09-07", gmv: 9289000,  units: 38 },
+      { date: "2026-09-05", gmv: 2035000,  units: 10 },
+      { date: "2026-09-06", gmv: 4161000,  units: 15 },
+      { date: "2026-09-07", gmv: 8140000,  units: 33 },
       { date: "2026-09-08", gmv: 4760000,  units: 18 },
-      { date: "2026-09-09", gmv: 699000,   units: 3 }
+      { date: "2026-09-09", gmv: 2196000,  units: 9 },
+      { date: "2026-09-10", gmv: 1536000,  units: 6 },
+      { date: "2026-09-11", gmv: 1267000,  units: 5 },
+      { date: "2026-09-12", gmv: 1398000,  units: 6 },
+      { date: "2026-09-13", gmv: 3363000,  units: 12 }
     ],
 
     // ---- chi tiêu Ads (đã VAT 1.10) & GMV/giá vốn/phí/VAT thực theo ngày — dùng cho cả chart Ads&GMV, ACOS lũy kế,
@@ -1176,6 +1180,10 @@
     // Mỗi lần chạy lại pull_fb_ads.py: GHI ĐÈ TOÀN BỘ chuỗi ads bên dưới bằng số mới (kể cả ngày cũ — Facebook có thể
     // revise hồi tố), rồi thêm ngày mới nếu có. Ngày chưa có orders.xlsx tương ứng thì gmv/cogs/fee/vat = 0 (chưa biết),
     // ads vẫn là số thật — nghĩa là "Lợi nhuận" hero sẽ tự trừ đúng chi phí ads mới nhất dù doanh thu chưa kịp cập nhật.
+    // Cập nhật 13/09/2026 (lần chạy lại sau khi Facebook mở chặn "API access blocked"): pull_fb_ads.py chạy thành công,
+    // đã kéo đủ ads đến 13/09 — chuỗi ngày giờ khớp đúng period orders (09/07→13/09). Ads 08/09 revise nhẹ
+    // (1.273.752→1.274.274đ, bình thường do attribution window), ads 09/09 tăng mạnh (469.840→1.257.835đ) vì lần pull
+    // trước chỉ lấy được nửa ngày (13:46), lần này lấy trọn ngày.
     dailyAdsGmv: [
       { date: "2026-06-30", ads: 14601, gmv: 0, cogs: 0, fee: 0, vat: 0 },
       { date: "2026-07-01", ads: 41110, gmv: 0, cogs: 0, fee: 0, vat: 0 },
@@ -1241,38 +1249,45 @@
       { date: "2026-08-30", ads: 809478, gmv: 1148000, cogs: 428600, fee: 76000, vat: 85037 },
       { date: "2026-08-31", ads: 682647, gmv: 1697000, cogs: 589000, fee: 158000, vat: 125704 },
       { date: "2026-09-01", ads: 655958, gmv: 2465000, cogs: 823300, fee: 190000, vat: 182593 },
-      { date: "2026-09-02", ads: 1022731, gmv: 2655000, cogs: 931276, fee: 190000, vat: 196667 },
+      { date: "2026-09-02", ads: 1022731, gmv: 1956000, cogs: 671776, fee: 196000, vat: 144889 },
       { date: "2026-09-03", ads: 1307006, gmv: 2764000, cogs: 899300, fee: 228000, vat: 204741 },
       { date: "2026-09-04", ads: 829529, gmv: 4362000, cogs: 1522600, fee: 304000, vat: 323111 },
-      { date: "2026-09-05", ads: 889945, gmv: 2534000, cogs: 834300, fee: 228000, vat: 187704 },
-      { date: "2026-09-06", ads: 1522147, gmv: 4660000, cogs: 1517700, fee: 380000, vat: 345186 },
-      { date: "2026-09-07", ads: 1442378, gmv: 9289000, cogs: 3165100, fee: 684000, vat: 688075 },
-      { date: "2026-09-08", ads: 1273752, gmv: 4760000, cogs: 1695700, fee: 418000, vat: 352593 },
-      // ads 09/09 = số kéo qua Meta API lúc 13:46 09/09 (ngày chưa kết thúc, xem DATA.caveats)
-      { date: "2026-09-09", ads: 469840, gmv: 699000, cogs: 268200, fee: 38000, vat: 51778 }
+      { date: "2026-09-05", ads: 889945, gmv: 2035000, cogs: 834300, fee: 228000, vat: 150741 },
+      { date: "2026-09-06", ads: 1522147, gmv: 4161000, cogs: 1357300, fee: 386000, vat: 308222 },
+      { date: "2026-09-07", ads: 1442378, gmv: 8140000, cogs: 2757800, fee: 696000, vat: 602963 },
+      { date: "2026-09-08", ads: 1274274, gmv: 4760000, cogs: 1695700, fee: 418000, vat: 352593 },
+      { date: "2026-09-09", ads: 1257835, gmv: 2196000, cogs: 758100, fee: 152000, vat: 162667 },
+      { date: "2026-09-10", ads: 1173878, gmv: 1536000, cogs: 489900, fee: 152000, vat: 113778 },
+      { date: "2026-09-11", ads: 752987, gmv: 1267000, cogs: 400500, fee: 114000, vat: 93852 },
+      { date: "2026-09-12", ads: 930413, gmv: 1398000, cogs: 550300, fee: 76000, vat: 103556 },
+      { date: "2026-09-13", ads: 1025426, gmv: 3363000, cogs: 1155300, fee: 266000, vat: 249111 }
     ],
 
     // ---- dữ liệu quảng cáo tách riêng theo từng tài khoản (campaign-level, đáng tin hơn account-level) ----
     accounts: [
-      { id: "acc1", name: "TK chính", period: "chạy từ 30/06", spend: 15606616, reach: 39885, newContacts: 753, purchases: 105 },
-      { id: "acc2", name: "TK phụ",   period: "chạy từ 01/09", spend: 2061171,  reach: 8763,  newContacts: 58,  purchases: 8 }
+      { id: "acc1", name: "TK chính", period: "chạy từ 30/06", spend: 19212442, reach: 46026, newContacts: 876, purchases: 116 },
+      { id: "acc2", name: "TK phụ",   period: "chạy từ 01/09", spend: 2701910,  reach: 11016, newContacts: 74,  purchases: 10 }
     ],
-    // ---- 09/09/2026: kéo trực tiếp qua Meta Marketing API (script pull_fb_ads.py), không còn export xlsx thủ công.
+    // ---- 13/09/2026: kéo trực tiếp qua Meta Marketing API (script pull_fb_ads.py), không còn export xlsx thủ công.
     // Đã lọc tên chiến dịch chứa "Santony" để loại chi tiêu brand khác chạy chung acc2 (~1,8tr "RoarTheme", xem memory).
     campaigns: [
       { name: "Mess | 30Jun",  account: "acc1", status: "inactive", spend: 50647,   contacts: 12,  purchases: null, revenue: null,     roas: null },
       { name: "Mess | 06Jul",  account: "acc1", status: "inactive", spend: 1076926, contacts: 125, purchases: 3,    revenue: null,     roas: null },
       { name: "GMV | 11Jul",   account: "acc1", status: "inactive", spend: 370001,  contacts: 45,  purchases: null, revenue: null,     roas: null },
-      { name: "GMV | 8Aug",    account: "acc1", status: "active",   spend: 4333839, contacts: 175, purchases: 26,   revenue: 9731000,  roas: 2.245353 },
-      { name: "Inbox | 11Aug", account: "acc1", status: "active",   spend: 5070860, contacts: 274, purchases: 43,   revenue: 18922000, roas: 3.731517 },
-      { name: "GMV | 20Aug",   account: "acc1", status: "active",   spend: 2123495, contacts: 41,  purchases: 18,   revenue: 8828000,  roas: 4.157297 },
-      { name: "Inbox | 24Aug", account: "acc1", status: "active",   spend: 1307731, contacts: 47,  purchases: 6,    revenue: 1975000,  roas: 1.510249 },
-      { name: "Inbox | 26Aug", account: "acc1", status: "active",   spend: 1273117, contacts: 34,  purchases: 9,    revenue: 4113000,  roas: 3.230654 },
-      { name: "Inbox | 1Sep",  account: "acc2", status: "active",   spend: 2061171, contacts: 58,  purchases: 8,    revenue: 4192000,  roas: 2.033795 }
+      { name: "GMV | 8Aug",    account: "acc1", status: "active",   spend: 5037438, contacts: 194, purchases: 28,   revenue: 10499000, roas: 2.084194 },
+      { name: "Inbox | 11Aug", account: "acc1", status: "active",   spend: 6401427, contacts: 342, purchases: 51,   revenue: 21955000, roas: 3.429704 },
+      { name: "GMV | 20Aug",   account: "acc1", status: "active",   spend: 2926672, contacts: 46,  purchases: 19,   revenue: 9327000,  roas: 3.186896 },
+      { name: "Inbox | 24Aug", account: "acc1", status: "active",   spend: 1765674, contacts: 68,  purchases: 6,    revenue: 1975000,  roas: 1.118553 },
+      { name: "Inbox | 26Aug", account: "acc1", status: "active",   spend: 1583657, contacts: 44,  purchases: 9,    revenue: 4113000,  roas: 2.597153 },
+      { name: "Inbox | 1Sep",  account: "acc2", status: "active",   spend: 2701910, contacts: 74,  purchases: 10,   revenue: 4192000,  roas: 1.551495 }
     ],
 
     // ---- luồng tiền thanh toán quảng cáo (Meta Ads Manager > Thanh toán), mới nhất trước ----
     payments: [
+      { date: "2026-09-12", amount: 2005198, method: "MasterCard •••• 4375", status: "paid" },
+      { date: "2026-09-10", amount: 2005198, method: "MasterCard •••• 4375", status: "paid" },
+      { date: "2026-09-08", amount: 2005198, method: "MasterCard •••• 4375", status: "paid" },
+      { date: "2026-09-06", amount: 1650000, method: "MasterCard •••• 4375", status: "paid" },
       { date: "2026-09-04", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
       { date: "2026-09-03", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
       { date: "2026-09-02", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
@@ -1299,40 +1314,42 @@
       { date: "2026-07-06", amount: 57750,   method: "Visa •••• 5075",       status: "paid" }
     ],
 
-    // ---- hành vi mua hàng (giờ/ngày tạo đơn, tỉnh/thành) — nguồn: cột "Thời điểm tạo đơn" + "Địa chỉ" trong file export "orders (1).xlsx" (116 đơn, rebuild toàn bộ) ----
+    // ---- hành vi mua hàng (giờ/ngày tạo đơn, tỉnh/thành) — nguồn: cột "Thời điểm tạo đơn" + "Địa chỉ" trong file export "orders.xlsx" (135 đơn, rebuild toàn bộ) ----
+    // repeatCustomers/repeatOrders/incrementalRepeatOrders loại trừ đơn "Đang đổi" AUF_35016 (vế gốc của cặp đổi hàng
+    // AUF_35016→AUF_35324, cùng khách Tuyên Quang) để không đếm 1 lần đổi hàng thành 2 đơn mua lại giả.
     orderBehavior: {
       hourly: [
         { hour: 0, orders: 0, gmv: 0 }, { hour: 1, orders: 0, gmv: 0 }, { hour: 2, orders: 0, gmv: 0 },
         { hour: 3, orders: 0, gmv: 0 }, { hour: 4, orders: 0, gmv: 0 }, { hour: 5, orders: 0, gmv: 0 },
-        { hour: 6, orders: 2, gmv: 978000 }, { hour: 7, orders: 2, gmv: 768000 }, { hour: 8, orders: 10, gmv: 5106000 },
-        { hour: 9, orders: 7, gmv: 4093000 }, { hour: 10, orders: 10, gmv: 3923000 }, { hour: 11, orders: 8, gmv: 3733000 },
-        { hour: 12, orders: 10, gmv: 3877000 }, { hour: 13, orders: 9, gmv: 4162000 }, { hour: 14, orders: 10, gmv: 5590000 },
-        { hour: 15, orders: 3, gmv: 1477000 }, { hour: 16, orders: 5, gmv: 2381000 }, { hour: 17, orders: 3, gmv: 1267000 },
-        { hour: 18, orders: 3, gmv: 1857000 }, { hour: 19, orders: 4, gmv: 1457000 }, { hour: 20, orders: 12, gmv: 4900000 },
-        { hour: 21, orders: 11, gmv: 4508000 }, { hour: 22, orders: 6, gmv: 2886000 }, { hour: 23, orders: 1, gmv: 459000 }
+        { hour: 6, orders: 2, gmv: 978000 }, { hour: 7, orders: 4, gmv: 1536000 }, { hour: 8, orders: 11, gmv: 5535000 },
+        { hour: 9, orders: 8, gmv: 4592000 }, { hour: 10, orders: 10, gmv: 3923000 }, { hour: 11, orders: 9, gmv: 4002000 },
+        { hour: 12, orders: 11, gmv: 4146000 }, { hour: 13, orders: 12, gmv: 6059000 }, { hour: 14, orders: 10, gmv: 4592000 },
+        { hour: 15, orders: 5, gmv: 2475000 }, { hour: 16, orders: 6, gmv: 2650000 }, { hour: 17, orders: 4, gmv: 1766000 },
+        { hour: 18, orders: 4, gmv: 2756000 }, { hour: 19, orders: 5, gmv: 1726000 }, { hour: 20, orders: 16, gmv: 6197000 },
+        { hour: 21, orders: 11, gmv: 4058000 }, { hour: 22, orders: 6, gmv: 2187000 }, { hour: 23, orders: 1, gmv: 459000 }
       ],
       weekday: [
-        { label: "T2", orders: 27, gmv: 12006000 },
+        { label: "T2", orders: 27, gmv: 10857000 },
         { label: "T3", orders: 20, gmv: 9062000 },
-        { label: "T4", orders: 10, gmv: 5510000 },
-        { label: "T5", orders: 10, gmv: 4421000 },
-        { label: "T6", orders: 15, gmv: 6788000 },
-        { label: "T7", orders: 12, gmv: 5808000 },
-        { label: "CN", orders: 22, gmv: 9827000 }
+        { label: "T4", orders: 13, gmv: 6308000 },
+        { label: "T5", orders: 14, gmv: 5957000 },
+        { label: "T6", orders: 18, gmv: 8055000 },
+        { label: "T7", orders: 14, gmv: 6707000 },
+        { label: "CN", orders: 29, gmv: 12691000 }
       ],
       topProvinces: [
-        { name: "Hà Nội",            orders: 11, gmv: 5355000 },
-        { name: "Hồ Chí Minh",       orders: 9,  gmv: 3307000 },
+        { name: "Hà Nội",            orders: 13, gmv: 6353000 },
+        { name: "Hồ Chí Minh",       orders: 12, gmv: 5204000 },
         { name: "Bình Dương",        orders: 8,  gmv: 4502000 },
+        { name: "Quảng Ninh",        orders: 7,  gmv: 2553000 },
         { name: "An Giang",          orders: 6,  gmv: 3304000 },
-        { name: "Thanh Hóa",         orders: 5,  gmv: 2581000 },
-        { name: "Quảng Ninh",        orders: 5,  gmv: 2015000 }
+        { name: "Thanh Hóa",         orders: 5,  gmv: 2581000 }
       ],
-      otherProvinces: { count: 36, orders: 72, gmv: 32358000 },
-      repeatCustomers: 9,
-      uniqueCustomers: 106,
-      repeatOrders: 19,
-      incrementalRepeatOrders: 10
+      otherProvinces: { count: 39, orders: 84, gmv: 35140000 },
+      repeatCustomers: 11,
+      uniqueCustomers: 122,
+      repeatOrders: 23,
+      incrementalRepeatOrders: 12
     }
   };
 
