@@ -374,7 +374,7 @@
     margin-bottom: 8px;
   }
   @media (min-width: 620px) {
-    .account-grid { grid-template-columns: repeat(2, 1fr); }
+    .account-grid { grid-template-columns: repeat(3, 1fr); }
   }
   .account-card {
     background: var(--surface-raised);
@@ -432,6 +432,7 @@
   }
   .acc-badge.acc1 { background: var(--accent-soft); color: var(--accent); }
   .acc-badge.acc2 { background: var(--good-soft); color: var(--good); }
+  .acc-badge.acc3 { background: var(--warn-soft); color: var(--warn); }
 
   /* ---------- Funnel grid (song song theo tài khoản) ---------- */
   .funnel-grid {
@@ -441,7 +442,7 @@
     margin-top: 14px;
   }
   @media (min-width: 620px) {
-    .funnel-grid { grid-template-columns: repeat(2, 1fr); }
+    .funnel-grid { grid-template-columns: repeat(3, 1fr); }
   }
   .funnel-grid .funnel-card { margin-top: 0; }
 
@@ -555,6 +556,9 @@
     box-shadow: var(--shadow);
   }
   .funnel-title { font-size: 13px; font-weight: 600; margin-bottom: 14px; }
+  .funnel-spend { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px 12px; margin-bottom: 16px; background: var(--surface); border-radius: 8px; }
+  .funnel-spend .lbl { font-size: 11px; color: var(--ink-soft); }
+  .funnel-spend .val { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 14px; margin-top: 2px; color: var(--acc-color, var(--ink)); }
   .funnel-row { margin-bottom: 12px; }
   .funnel-row:last-child { margin-bottom: 0; }
   .funnel-meta {
@@ -852,7 +856,7 @@
       <div class="line-chart-wrap">
         <svg id="profit-line-chart" viewBox="0 0 1000 170" preserveAspectRatio="none"></svg>
       </div>
-      <div class="chart-footnote">Số thực tế từng ngày: doanh thu − giá vốn − phí − VAT − ads (gộp 2 TK, kéo trực tiếp qua Meta API, khớp tuyệt đối với tổng chiến dịch ở mục 04 và với số "Lợi nhuận" ở mục 01) — không còn ước tính giả định.</div>
+      <div class="chart-footnote">Số thực tế từng ngày: doanh thu − giá vốn − phí − VAT − ads (gộp 3 TK, kéo trực tiếp qua Meta API, khớp tuyệt đối với tổng chiến dịch ở mục 04 và với số "Lợi nhuận" ở mục 01) — không còn ước tính giả định.</div>
     </div>
     <div class="bar-chart-card">
       <div class="bar-chart-title">Số lượng bán ra (cái)</div>
@@ -862,7 +866,7 @@
       <div class="bar-chart-title-row">
         <div class="bar-chart-title">Chi tiêu Ads &amp; GMV theo ngày</div>
         <div class="chart-legend">
-          <span class="legend-item"><span class="legend-dot" style="background:var(--warn)"></span>Ads (đã VAT, gộp 2 TK) — trục trái</span>
+          <span class="legend-item"><span class="legend-dot" style="background:var(--warn)"></span>Ads (đã VAT, gộp 3 TK) — trục trái</span>
           <span class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span>GMV — trục trái</span>
           <span class="legend-item"><span class="legend-line"></span>Ads/GMV % — trục phải</span>
         </div>
@@ -892,13 +896,13 @@
     <div class="section-head">
       <span class="section-num">04</span>
       <span class="section-title">Hiệu quả quảng cáo</span>
-      <span class="section-note">Lũy kế đến 13/09/2026</span>
+      <span class="section-note">Lũy kế đến 23/09/2026</span>
     </div>
 
     <div class="subsection-label">So sánh theo tài khoản</div>
     <div class="account-grid" id="account-grid"></div>
 
-    <div class="subsection-label">Tổng hợp cả 2 tài khoản</div>
+    <div class="subsection-label">Tổng hợp cả 3 tài khoản</div>
     <div class="tile-row" id="ad-tiles"></div>
 
     <div class="table-card">
@@ -934,7 +938,7 @@
     <div class="section-head">
       <span class="section-num">05</span>
       <span class="section-title">Giá vốn hàng theo mã sản phẩm</span>
-      <span class="section-note">Chỉ tính đơn thành công</span>
+      <span class="section-note">Chỉ tính đơn thành công · combo quy ra từng cái</span>
     </div>
     <div class="toolbar">
       <input type="text" id="spSearch" placeholder="Lọc theo mã sản phẩm hoặc tên...">
@@ -953,52 +957,65 @@
             <td><span class="code-pill">65101</span></td>
             <td>Áo lót nữ PIER NO5, model 65101</td>
             <td class="num">73.900đ</td>
-            <td class="num">139</td>
-            <td class="num">10.272.100đ</td>
-            <td class="num">70</td>
-            <td class="num">79.2%</td>
+            <td class="num">293</td>
+            <td class="num">21.652.700đ</td>
+            <td class="num">140</td>
+            <td class="num">80.3%</td>
             <td class="share-cell">
               <div class="share-track"><div class="share-fill" style="width:100%"></div></div>
-              <div class="share-hint">27.1% doanh thu</div>
+              <div class="share-hint">27.7% doanh thu</div>
+            </td>
+          </tr>
+          <tr data-code="83011" data-name="Quần lót nữ, model 83011">
+            <td><span class="code-pill">83011</span></td>
+            <td>Quần lót nữ, model 83011</td>
+            <td class="num">15.576đ</td>
+            <td class="num">118</td>
+            <td class="num">1.838.000đ</td>
+            <td class="num">68</td>
+            <td class="num">6.8%</td>
+            <td class="share-cell">
+              <div class="share-track"><div class="share-fill" style="width:8%"></div></div>
+              <div class="share-hint">2.3% doanh thu</div>
+            </td>
+          </tr>
+          <tr data-code="2402" data-name="Quần lót nữ, model 2402">
+            <td><span class="code-pill">2402</span></td>
+            <td>Quần lót nữ, model 2402</td>
+            <td class="num">12.600đ</td>
+            <td class="num">114</td>
+            <td class="num">1.436.400đ</td>
+            <td class="num">67</td>
+            <td class="num">5.3%</td>
+            <td class="share-cell">
+              <div class="share-track"><div class="share-fill" style="width:7%"></div></div>
+              <div class="share-hint">1.8% doanh thu</div>
             </td>
           </tr>
           <tr data-code="2608" data-name="Áo lót nữ mã 2608">
             <td><span class="code-pill">2608</span></td>
             <td>Áo lót nữ mã 2608</td>
             <td class="num">79.800đ</td>
-            <td class="num">11</td>
-            <td class="num">877.800đ</td>
-            <td class="num">5</td>
-            <td class="num">6.8%</td>
+            <td class="num">14</td>
+            <td class="num">1.117.200đ</td>
+            <td class="num">7</td>
+            <td class="num">4.1%</td>
             <td class="share-cell">
-              <div class="share-track"><div class="share-fill" style="width:9%"></div></div>
-              <div class="share-hint">2.3% doanh thu</div>
+              <div class="share-track"><div class="share-fill" style="width:5%"></div></div>
+              <div class="share-hint">1.4% doanh thu</div>
             </td>
           </tr>
-          <tr data-code="83011" data-name="Quần lót nữ, model 83011">
-            <td><span class="code-pill">83011</span></td>
-            <td>Quần lót nữ, model 83011</td>
-            <td class="num">15.500đ</td>
-            <td class="num">51</td>
-            <td class="num">790.500đ</td>
-            <td class="num">34</td>
-            <td class="num">6.1%</td>
+          <tr data-code="65123" data-name="Áo lót nữ, model 65123">
+            <td><span class="code-pill">65123</span></td>
+            <td>Áo lót nữ, model 65123</td>
+            <td class="num">88.600đ</td>
+            <td class="num">4</td>
+            <td class="num">354.400đ</td>
+            <td class="num">4</td>
+            <td class="num">1.3%</td>
             <td class="share-cell">
-              <div class="share-track"><div class="share-fill" style="width:8%"></div></div>
-              <div class="share-hint">2.1% doanh thu</div>
-            </td>
-          </tr>
-          <tr data-code="2402" data-name="Quần lót nữ, model 2402">
-            <td><span class="code-pill">2402</span></td>
-            <td>Quần lót nữ, model 2402</td>
-            <td class="num">15.059đ</td>
-            <td class="num">41</td>
-            <td class="num">617.400đ</td>
-            <td class="num">27</td>
-            <td class="num">4.8%</td>
-            <td class="share-cell">
-              <div class="share-track"><div class="share-fill" style="width:6%"></div></div>
-              <div class="share-hint">1.6% doanh thu</div>
+              <div class="share-track"><div class="share-fill" style="width:2%"></div></div>
+              <div class="share-hint">0.5% doanh thu</div>
             </td>
           </tr>
           <tr data-code="2568" data-name="Áo lót nữ mã 2568">
@@ -1008,10 +1025,23 @@
             <td class="num">3</td>
             <td class="num">234.900đ</td>
             <td class="num">1</td>
-            <td class="num">1.8%</td>
+            <td class="num">0.9%</td>
             <td class="share-cell">
-              <div class="share-track"><div class="share-fill" style="width:2%"></div></div>
-              <div class="share-hint">0.6% doanh thu</div>
+              <div class="share-track"><div class="share-fill" style="width:1%"></div></div>
+              <div class="share-hint">0.3% doanh thu</div>
+            </td>
+          </tr>
+          <tr data-code="65107" data-name="Áo lót nữ, model 65107">
+            <td><span class="code-pill">65107</span></td>
+            <td>Áo lót nữ, model 65107</td>
+            <td class="num">73.900đ</td>
+            <td class="num">2</td>
+            <td class="num">147.800đ</td>
+            <td class="num">1</td>
+            <td class="num">0.5%</td>
+            <td class="share-cell">
+              <div class="share-track"><div class="share-fill" style="width:1%"></div></div>
+              <div class="share-hint">0.2% doanh thu</div>
             </td>
           </tr>
           <tr data-code="65192" data-name="Áo lót nữ, model 65192">
@@ -1021,23 +1051,36 @@
             <td class="num">1</td>
             <td class="num">91.476đ</td>
             <td class="num">1</td>
-            <td class="num">0.7%</td>
+            <td class="num">0.3%</td>
             <td class="share-cell">
               <div class="share-track"><div class="share-fill" style="width:1%"></div></div>
-              <div class="share-hint">0.2% doanh thu</div>
+              <div class="share-hint">0.1% doanh thu</div>
             </td>
           </tr>
-          <tr data-code="65123" data-name="Áo lót nữ, model 65123">
-            <td><span class="code-pill">65123</span></td>
-            <td>Áo lót nữ, model 65123</td>
-            <td class="num">88.600đ</td>
+          <tr data-code="5601" data-name="Áo lót nữ, model 5601">
+            <td><span class="code-pill">5601</span></td>
+            <td>Áo lót nữ, model 5601</td>
+            <td class="num">71.900đ</td>
             <td class="num">1</td>
-            <td class="num">88.600đ</td>
+            <td class="num">71.900đ</td>
             <td class="num">1</td>
-            <td class="num">0.7%</td>
+            <td class="num">0.3%</td>
             <td class="share-cell">
               <div class="share-track"><div class="share-fill" style="width:1%"></div></div>
-              <div class="share-hint">0.2% doanh thu</div>
+              <div class="share-hint">0.1% doanh thu</div>
+            </td>
+          </tr>
+          <tr data-code="SCL888" data-name="Quần lót nữ (xi líp), mã 888">
+            <td><span class="code-pill">SCL888</span></td>
+            <td>Quần lót nữ (xi líp), mã 888</td>
+            <td class="num">16.200đ</td>
+            <td class="num">1</td>
+            <td class="num">16.200đ</td>
+            <td class="num">1</td>
+            <td class="num">0.1%</td>
+            <td class="share-cell">
+              <div class="share-track"><div class="share-fill" style="width:1%"></div></div>
+              <div class="share-hint">0.0% doanh thu</div>
             </td>
           </tr>
         </tbody>
@@ -1051,10 +1094,11 @@
     <div class="section-head">
       <span class="section-num">06</span>
       <span class="section-title">Thanh toán quảng cáo</span>
-      <span class="section-note">Chỉ tính giao dịch "Đã thanh toán"</span>
+      <span class="section-note">Theo ảnh chụp Meta · cập nhật 23/09/2026</span>
     </div>
 
     <div class="tile-row" id="payment-tiles"></div>
+    <div class="chart-footnote">Chỉ cộng giao dịch "Đã thanh toán". Chưa có lịch sử của TK phụ trước 17/09 và của TK HongKong.</div>
   </div>
 
   <!-- ============ SECTION 08 — HÀNH VI MUA HÀNG (INSIGHT CHẠY ADS) ============ -->
@@ -1102,41 +1146,41 @@
      DAILY INPUT — cập nhật các số ở đây mỗi khi có số liệu mới
      ============================================================ */
   const DATA = {
-    updatedAt: "2026-09-13",
-    period: "125 TC · 10 hoàn · 09/07 → 13/09/2026",
+    updatedAt: "2026-09-23",
+    period: "157 TC · 23 hoàn · 09/07 → 22/09/2026",
 
     caveats: [
       "Chưa trừ: lương/nhân sự · phí thu hộ COD · hàng hoàn hỏng không bán lại được.",
       "Có 1 cặp đơn đổi hàng (AUF_35016 đổi sang AUF_35324, cùng khách, cùng giá trị) trong kỳ — doanh thu chỉ tính 1 lần đúng theo thực thu, nhưng giá vốn/phí ship tính đủ 2 lần vì có 2 lượt giao hàng thật."
     ],
 
-    // ---- P&L thực tế, tính theo từng đơn (nguồn orders.xlsx Pancake, 09/07→13/09/2026) — thay cho giá vốn giả định 50%
+    // ---- P&L thực tế, tính theo từng đơn (nguồn orders.xlsx Pancake, 09/07→22/09/2026) — thay cho giá vốn giả định 50%
     // cũ. Mọi số khác (lãi gộp, %margin, breakeven ROAS/ACOS, KPI vận hành...) đều TÍNH RA từ các số gốc dưới đây.
     pnl: {
-      revenue: 59637000,        // doanh thu 125 đơn thành công (đã gồm VAT) — dùng cột "Doanh thu bán hàng" Pancake (tự = 0 cho đơn hoàn + cho vế "đổi" đã bị thay thế, tránh đếm trùng)
-      cogs: 20607376,           // giá vốn hàng bán, tính theo giá nhập thực từng dòng SP (không phải % giả định)
-      feeSuccess: 4750000,      // phí 38.000đ × 125 đơn thành công (16k ship + 22k fulfillment)
-      feeReturn: 440000,        // phí 44.000đ × 10 đơn hoàn (16k ship + 28k fulfillment)
-      vatOutput: 4417556,       // VAT đầu ra = doanh thu × 8/108
+      revenue: 78234000,        // doanh thu 157 đơn thành công (đã gồm VAT) — dùng cột "Doanh thu bán hàng" Pancake (tự = 0 cho đơn hoàn + cho vế "đổi" đã bị thay thế, tránh đếm trùng)
+      cogs: 26960976,           // giá vốn hàng bán, tính theo giá nhập thực từng dòng SP (không phải % giả định)
+      feeSuccess: 5966000,      // phí 38.000đ × 157 đơn thành công (16k ship + 22k fulfillment)
+      feeReturn: 1012000,        // phí 44.000đ × 23 đơn hoàn (16k ship + 28k fulfillment)
+      vatOutput: 5795111,       // VAT đầu ra = doanh thu × 8/108
       // (đã bỏ field adsCost cố định — giờ tính động = tổng DATA.dailyAdsGmv[].ads, xem biến `adsCost` trong script)
-      ordersTotal: 135,
-      ordersSuccess: 125,
-      ordersReturned: 10,
-      unitsSold: 242,
-      returnedRevenueLost: 5442000,
-      returnRateValue: 0.0836   // tỷ lệ hoàn theo giá trị đơn (đơn hoàn không giữ lại giá trị gốc nên không tự suy ra được)
+      ordersTotal: 180,
+      ordersSuccess: 157,
+      ordersReturned: 23,
+      unitsSold: 318,
+      returnedRevenueLost: 11896000,
+      returnRateValue: 0.132   // tỷ lệ hoàn theo giá trị đơn (đơn hoàn không giữ lại giá trị gốc nên không tự suy ra được)
     },
 
     // ---- Theo tháng — mỗi tháng chỉ cần 6 số gốc, mọi cột khác (tổng chi phí/%CP-DT/lợi nhuận/%biên) tự tính ----
-    // Th9.ads cập nhật từ Meta API 13/09 (đã kéo đủ đến 13/09, không còn thiếu như lần pull giữa-ngày 09/09 trước đó).
+    // Th9.ads cập nhật từ Meta API sáng 23/09/2026 (gồm cả phần ads đã chạy của ngày 23/09, doanh thu Th9 tính đến hết 22/09).
     monthly: [
-      { label: "Th7/2026", partial: true,  orders: 5,  returned: 3, revenue: 734000,   cogs: 237200,   fee: 208000,  vat: 54370,   ads: 1647332,  topSku: "65101" },
-      { label: "Th8/2026", partial: false, orders: 41, returned: 3, revenue: 18500000, cogs: 6454000,  fee: 1576000, vat: 1370366, ads: 8373951,  topSku: "65101" },
-      { label: "Th9/2026", partial: true,  orders: 89, returned: 4, revenue: 40403000, cogs: 13916176, fee: 3406000, vat: 2992821, ads: 14084507, topSku: "65101" }
+      { label: "Th7/2026", partial: true, orders: 5, returned: 3, revenue: 734000, cogs: 237200, fee: 208000, vat: 54370, ads: 1647332, topSku: "65101" },
+      { label: "Th8/2026", partial: false, orders: 41, returned: 3, revenue: 18500000, cogs: 6454000, fee: 1576000, vat: 1370371, ads: 8373951, topSku: "65101" },
+      { label: "Th9/2026", partial: true, orders: 134, returned: 17, revenue: 59000000, cogs: 20269776, fee: 5194000, vat: 4370371, ads: 24073929, topSku: "65101" }
     ],
 
     // ---- doanh số theo ngày (đã trừ đơn "Đã hoàn"), dựng từ cột "Ngày tạo đơn" trong file export Pancake (orders.xlsx) ----
-    // Rebuild TOÀN BỘ từ orders.xlsx (135 đơn, 09/07→13/09/2026), không cộng dồn delta — units = bra-only (rule cũ).
+    // Rebuild TOÀN BỘ từ orders.xlsx (180 đơn, 09/07→22/09/2026), không cộng dồn delta — units = bra-only (rule cũ).
     dailySales: [
       { date: "2026-07-10", gmv: 255000,  units: 1 },
       { date: "2026-07-15", gmv: 479000,  units: 2 },
@@ -1162,28 +1206,36 @@
       { date: "2026-09-04", gmv: 4362000,  units: 18 },
       { date: "2026-09-05", gmv: 2035000,  units: 10 },
       { date: "2026-09-06", gmv: 4161000,  units: 15 },
-      { date: "2026-09-07", gmv: 8140000,  units: 33 },
-      { date: "2026-09-08", gmv: 4760000,  units: 18 },
+      { date: "2026-09-07", gmv: 6887000,  units: 28 },
+      { date: "2026-09-08", gmv: 3542000,  units: 13 },
       { date: "2026-09-09", gmv: 2196000,  units: 9 },
       { date: "2026-09-10", gmv: 1536000,  units: 6 },
-      { date: "2026-09-11", gmv: 1267000,  units: 5 },
-      { date: "2026-09-12", gmv: 1398000,  units: 6 },
-      { date: "2026-09-13", gmv: 3363000,  units: 12 }
+      { date: "2026-09-11", gmv: 998000,  units: 4 },
+      { date: "2026-09-12", gmv: 899000,  units: 4 },
+      { date: "2026-09-13", gmv: 2953000,  units: 10 },
+      { date: "2026-09-14", gmv: 1467000,  units: 6 },
+      { date: "2026-09-15", gmv: 1467000,  units: 6 },
+      { date: "2026-09-16", gmv: 998000,  units: 4 },
+      { date: "2026-09-17", gmv: 1786000,  units: 7 },
+      { date: "2026-09-18", gmv: 2097000,  units: 9 },
+      { date: "2026-09-19", gmv: 2895000,  units: 12 },
+      { date: "2026-09-20", gmv: 5346000,  units: 21 },
+      { date: "2026-09-21", gmv: 2596000,  units: 11 },
+      { date: "2026-09-22", gmv: 3594000,  units: 15 }
     ],
 
     // ---- chi tiêu Ads (đã VAT 1.10) & GMV/giá vốn/phí/VAT thực theo ngày — dùng cho cả chart Ads&GMV, ACOS lũy kế,
     // "Lợi nhuận lũy kế" (mục 03) VÀ chi phí Ads dùng trong "Lợi nhuận" hero mục 01 (biến `adsCost` = tổng cột `ads`
     // dưới đây — KHÔNG còn số cố định riêng). Nguồn: script pull_fb_ads.py gọi thẳng Meta Marketing API (level=campaign,
-    // lọc tên chứa "Santony" để loại brand khác chạy chung acc2), gộp 2 TK theo ngày rồi ×1.10 VAT — xem
+    // lọc tên chứa "Santony" để loại brand khác chạy chung acc2), gộp 3 TK theo ngày rồi ×1.10 VAT — xem
     // /Users/lakimvan/Desktop/SANTONY/api-config/. Từ khi dùng API, tổng theo-ngày và tổng theo-chiến-dịch (mục 04)
     // luôn khớp tuyệt đối (không còn lệch vài nghìn đồng như thời còn dùng file export xlsx khác nguồn).
     // Mỗi lần chạy lại pull_fb_ads.py: GHI ĐÈ TOÀN BỘ chuỗi ads bên dưới bằng số mới (kể cả ngày cũ — Facebook có thể
     // revise hồi tố), rồi thêm ngày mới nếu có. Ngày chưa có orders.xlsx tương ứng thì gmv/cogs/fee/vat = 0 (chưa biết),
     // ads vẫn là số thật — nghĩa là "Lợi nhuận" hero sẽ tự trừ đúng chi phí ads mới nhất dù doanh thu chưa kịp cập nhật.
-    // Cập nhật 13/09/2026 (lần chạy lại sau khi Facebook mở chặn "API access blocked"): pull_fb_ads.py chạy thành công,
-    // đã kéo đủ ads đến 13/09 — chuỗi ngày giờ khớp đúng period orders (09/07→13/09). Ads 08/09 revise nhẹ
-    // (1.273.752→1.274.274đ, bình thường do attribution window), ads 09/09 tăng mạnh (469.840→1.257.835đ) vì lần pull
-    // trước chỉ lấy được nửa ngày (13:46), lần này lấy trọn ngày.
+    // Cập nhật 23/09/2026: pull_fb_ads.py chạy lúc 08:30 sáng 23/09 (đủ 3 TK, gồm TK HongKong chạy từ 19/09) — ads đến 23/09 (ngày 23/09 mới chạy được một phần,
+    // chưa có đơn tương ứng nên gmv = 0). Orders.xlsx rebuild toàn bộ đến hết 22/09: số đơn "Đã hoàn" tạo trong
+    // khoảng 09/07→13/09 tăng từ 10 lên 21 so với lần cập nhật trước, nên gmv/cogs/fee/vat của các ngày cũ cũng thay đổi theo.
     dailyAdsGmv: [
       { date: "2026-06-30", ads: 14601, gmv: 0, cogs: 0, fee: 0, vat: 0 },
       { date: "2026-07-01", ads: 41110, gmv: 0, cogs: 0, fee: 0, vat: 0 },
@@ -1254,102 +1306,132 @@
       { date: "2026-09-04", ads: 829529, gmv: 4362000, cogs: 1522600, fee: 304000, vat: 323111 },
       { date: "2026-09-05", ads: 889945, gmv: 2035000, cogs: 834300, fee: 228000, vat: 150741 },
       { date: "2026-09-06", ads: 1522147, gmv: 4161000, cogs: 1357300, fee: 386000, vat: 308222 },
-      { date: "2026-09-07", ads: 1442378, gmv: 8140000, cogs: 2757800, fee: 696000, vat: 602963 },
-      { date: "2026-09-08", ads: 1274274, gmv: 4760000, cogs: 1695700, fee: 418000, vat: 352593 },
+      { date: "2026-09-07", ads: 1442378, gmv: 6887000, cogs: 2360200, fee: 714000, vat: 510148 },
+      { date: "2026-09-08", ads: 1274274, gmv: 3542000, cogs: 1262000, fee: 436000, vat: 262370 },
       { date: "2026-09-09", ads: 1257835, gmv: 2196000, cogs: 758100, fee: 152000, vat: 162667 },
       { date: "2026-09-10", ads: 1173878, gmv: 1536000, cogs: 489900, fee: 152000, vat: 113778 },
-      { date: "2026-09-11", ads: 752987, gmv: 1267000, cogs: 400500, fee: 114000, vat: 93852 },
-      { date: "2026-09-12", ads: 930413, gmv: 1398000, cogs: 550300, fee: 76000, vat: 103556 },
-      { date: "2026-09-13", ads: 1025426, gmv: 3363000, cogs: 1155300, fee: 266000, vat: 249111 }
+      { date: "2026-09-11", ads: 752987, gmv: 998000, cogs: 326600, fee: 120000, vat: 73926 },
+      { date: "2026-09-12", ads: 930449, gmv: 899000, cogs: 357600, fee: 82000, vat: 66593 },
+      { date: "2026-09-13", ads: 1334561, gmv: 2953000, cogs: 987300, fee: 398000, vat: 218741 },
+      { date: "2026-09-14", ads: 1147465, gmv: 1467000, cogs: 502500, fee: 158000, vat: 108667 },
+      { date: "2026-09-15", ads: 1075962, gmv: 1467000, cogs: 493800, fee: 114000, vat: 108667 },
+      { date: "2026-09-16", ads: 1260590, gmv: 998000, cogs: 320800, fee: 120000, vat: 73926 },
+      { date: "2026-09-17", ads: 850753, gmv: 1786000, cogs: 569800, fee: 152000, vat: 132296 },
+      { date: "2026-09-18", ads: 754863, gmv: 2097000, cogs: 769500, fee: 114000, vat: 155333 },
+      { date: "2026-09-19", ads: 658779, gmv: 2895000, cogs: 987600, fee: 190000, vat: 214444 },
+      { date: "2026-09-20", ads: 1350598, gmv: 5346000, cogs: 1802100, fee: 380000, vat: 396000 },
+      { date: "2026-09-21", ads: 1308770, gmv: 2596000, cogs: 926300, fee: 152000, vat: 192296 },
+      { date: "2026-09-22", ads: 1143268, gmv: 3594000, cogs: 1247100, fee: 228000, vat: 266222 },
+      { date: "2026-09-23", ads: 129203, gmv: 0, cogs: 0, fee: 0, vat: 0 }
     ],
 
     // ---- dữ liệu quảng cáo tách riêng theo từng tài khoản (campaign-level, đáng tin hơn account-level) ----
     accounts: [
-      { id: "acc1", name: "TK chính", period: "chạy từ 30/06", spend: 19212442, reach: 46026, newContacts: 876, purchases: 116 },
-      { id: "acc2", name: "TK phụ",   period: "chạy từ 01/09", spend: 2701910,  reach: 11016, newContacts: 74,  purchases: 10 }
+      { id: "acc1", name: "TK chính", period: "chạy từ 30/06", spend: 25999420, reach: 59578, newContacts: 1106, purchases: 152 },
+      { id: "acc2", name: "TK phụ", period: "chạy từ 01/09", spend: 4782492, reach: 15814, newContacts: 94, purchases: 17 },
+      { id: "acc3", name: "TK HongKong", period: "chạy từ 19/09", spend: 213733, reach: 615, newContacts: 4, purchases: 0 }
     ],
-    // ---- 13/09/2026: kéo trực tiếp qua Meta Marketing API (script pull_fb_ads.py), không còn export xlsx thủ công.
+    // ---- 23/09/2026: kéo trực tiếp qua Meta Marketing API (script pull_fb_ads.py), không còn export xlsx thủ công.
     // Đã lọc tên chiến dịch chứa "Santony" để loại chi tiêu brand khác chạy chung acc2 (~1,8tr "RoarTheme", xem memory).
+    // Trạng thái active/inactive lấy từ effective_status qua API (23/09). "Test content | Inbox | 22Sep" (acc1) đang chạy nhưng chưa có chi tiêu nên chưa có dòng.
+    // acc3 = "Santony 3 I HongKong" (act_1539125914523198, thêm 23/09, múi giờ TK là Asia/Hong_Kong nên ngày lệch 1 giờ so với 2 TK kia).
+    // 2 chiến dịch cùng tên "Inbox | 14Sep" ở acc2 — bản quần 83011 ghi thêm "(83011)" để phân biệt.
     campaigns: [
-      { name: "Mess | 30Jun",  account: "acc1", status: "inactive", spend: 50647,   contacts: 12,  purchases: null, revenue: null,     roas: null },
-      { name: "Mess | 06Jul",  account: "acc1", status: "inactive", spend: 1076926, contacts: 125, purchases: 3,    revenue: null,     roas: null },
-      { name: "GMV | 11Jul",   account: "acc1", status: "inactive", spend: 370001,  contacts: 45,  purchases: null, revenue: null,     roas: null },
-      { name: "GMV | 8Aug",    account: "acc1", status: "active",   spend: 5037438, contacts: 194, purchases: 28,   revenue: 10499000, roas: 2.084194 },
-      { name: "Inbox | 11Aug", account: "acc1", status: "active",   spend: 6401427, contacts: 342, purchases: 51,   revenue: 21955000, roas: 3.429704 },
-      { name: "GMV | 20Aug",   account: "acc1", status: "active",   spend: 2926672, contacts: 46,  purchases: 19,   revenue: 9327000,  roas: 3.186896 },
-      { name: "Inbox | 24Aug", account: "acc1", status: "active",   spend: 1765674, contacts: 68,  purchases: 6,    revenue: 1975000,  roas: 1.118553 },
-      { name: "Inbox | 26Aug", account: "acc1", status: "active",   spend: 1583657, contacts: 44,  purchases: 9,    revenue: 4113000,  roas: 2.597153 },
-      { name: "Inbox | 1Sep",  account: "acc2", status: "active",   spend: 2701910, contacts: 74,  purchases: 10,   revenue: 4192000,  roas: 1.551495 }
+      { name: "Mess | 30Jun", account: "acc1", status: "inactive", spend: 50647, contacts: 12, purchases: null, revenue: null, roas: null },
+      { name: "Mess | 06Jul", account: "acc1", status: "inactive", spend: 1076926, contacts: 125, purchases: 3, revenue: null, roas: null },
+      { name: "GMV | 11Jul", account: "acc1", status: "inactive", spend: 370001, contacts: 45, purchases: null, revenue: null, roas: null },
+      { name: "GMV | 8Aug", account: "acc1", status: "active", spend: 6190045, contacts: 213, purchases: 32, revenue: 13150000, roas: 2.124379 },
+      { name: "Inbox | 11Aug", account: "acc1", status: "active", spend: 9559735, contacts: 497, purchases: 77, revenue: 35310000, roas: 3.693617 },
+      { name: "GMV | 20Aug", account: "acc1", status: "active", spend: 4201102, contacts: 63, purchases: 23, revenue: 11723000, roas: 2.790458 },
+      { name: "Inbox | 24Aug", account: "acc1", status: "inactive", spend: 2784435, contacts: 96, purchases: 8, revenue: 3173000, roas: 1.139549 },
+      { name: "Inbox | 26Aug", account: "acc1", status: "inactive", spend: 1766529, contacts: 55, purchases: 9, revenue: 4113000, roas: 2.328295 },
+      { name: "Inbox | 1Sep", account: "acc2", status: "active", spend: 3414253, contacts: 80, purchases: 12, revenue: 5190000, roas: 1.520098 },
+      { name: "Inbox | 14Sep", account: "acc2", status: "active", spend: 887682, contacts: 11, purchases: 5, revenue: 2895000, roas: 3.261303 },
+      { name: "Inbox | 14Sep (83011)", account: "acc2", status: "inactive", spend: 2906, contacts: 0, purchases: null, revenue: null, roas: null },
+      { name: "GMV-CVS | 19Sep", account: "acc2", status: "inactive", spend: 193892, contacts: 0, purchases: null, revenue: null, roas: null },
+      { name: "Inbox | 20Sep", account: "acc2", status: "active", spend: 283759, contacts: 3, purchases: null, revenue: null, roas: null },
+      { name: "GMV | 19Sep", account: "acc3", status: "active", spend: 212418, contacts: 4, purchases: null, revenue: null, roas: null },
+      { name: "Inbox | 22Sep", account: "acc3", status: "active", spend: 1315, contacts: 0, purchases: null, revenue: null, roas: null }
     ],
 
     // ---- luồng tiền thanh toán quảng cáo (Meta Ads Manager > Thanh toán), mới nhất trước ----
+    // Cập nhật 23/09/2026 từ ảnh chụp Meta > Hoạt động thanh toán: Santony 1 (acc1, 01–30/09) và Santony 2 (acc2, chỉ khoảng
+    // 17–23/09). Các dòng cũ (trước 23/09) đều là của Santony 1 — số tiền khớp đúng ảnh chụp. Lịch sử acc2 trước 17/09 và
+    // của acc3 (HongKong) CHƯA có ảnh chụp nên chưa có trong danh sách.
     payments: [
-      { date: "2026-09-12", amount: 2005198, method: "MasterCard •••• 4375", status: "paid" },
-      { date: "2026-09-10", amount: 2005198, method: "MasterCard •••• 4375", status: "paid" },
-      { date: "2026-09-08", amount: 2005198, method: "MasterCard •••• 4375", status: "paid" },
-      { date: "2026-09-06", amount: 1650000, method: "MasterCard •••• 4375", status: "paid" },
-      { date: "2026-09-04", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
-      { date: "2026-09-03", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
-      { date: "2026-09-02", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
-      { date: "2026-08-31", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
-      { date: "2026-08-30", amount: 933076,  method: "MasterCard •••• 4375", status: "paid" },
-      { date: "2026-08-28", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
-      { date: "2026-08-26", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
-      { date: "2026-08-24", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
-      { date: "2026-08-22", amount: 496331,  method: "MasterCard •••• 4375", status: "paid" },
-      { date: "2026-08-20", amount: 496331,  method: "MasterCard •••• 4375", status: "paid" },
-      { date: "2026-08-18", amount: 496331,  method: "MasterCard •••• 4375", status: "paid" },
-      { date: "2026-08-17", amount: 496331,  method: "MasterCard •••• 4375", status: "paid" },
-      { date: "2026-08-14", amount: 496331,  method: "MasterCard •••• 4375", status: "paid" },
-      { date: "2026-08-12", amount: 496647,  method: "MasterCard •••• 4375", status: "paid" },
-      { date: "2026-08-12", amount: 496331,  method: "MasterCard •••• 4375", status: "failed" },
-      { date: "2026-07-30", amount: 158830,  method: "Visa •••• 5075",       status: "paid" },
-      { date: "2026-07-16", amount: 496331,  method: "Visa •••• 5075",       status: "paid" },
-      { date: "2026-07-13", amount: 365376,  method: "Visa •••• 5075",       status: "paid" },
-      { date: "2026-07-11", amount: 290011,  method: "Visa •••• 5075",       status: "paid" },
-      { date: "2026-07-09", amount: 79811,   method: "Visa •••• 5075",       status: "paid" },
-      { date: "2026-07-08", amount: 79811,   method: "Visa •••• 5075",       status: "paid" },
-      { date: "2026-07-08", amount: 61299,   method: "Visa •••• 5075",       status: "paid" },
-      { date: "2026-07-07", amount: 58114,   method: "Visa •••• 5075",       status: "paid" },
-      { date: "2026-07-06", amount: 57750,   method: "Visa •••• 5075",       status: "paid" }
+      { account: "acc2", date: "2026-09-23", amount: 5285379, method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-09-22", amount: 2005198, method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-09-20", amount: 2005198, method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-09-16", amount: 2005198, method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-09-14", amount: 2005198, method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-09-12", amount: 2005198, method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-09-10", amount: 2005198, method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-09-08", amount: 2005198, method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-09-06", amount: 1650000, method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-09-04", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-09-03", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-09-02", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-08-31", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-08-30", amount: 933076,  method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-08-28", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-08-26", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-08-24", amount: 990000,  method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-08-22", amount: 496331,  method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-08-20", amount: 496331,  method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-08-18", amount: 496331,  method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-08-17", amount: 496331,  method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-08-14", amount: 496331,  method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-08-12", amount: 496647,  method: "MasterCard •••• 4375", status: "paid" },
+      { account: "acc1", date: "2026-08-12", amount: 496331,  method: "MasterCard •••• 4375", status: "failed" },
+      { account: "acc1", date: "2026-07-30", amount: 158830,  method: "Visa •••• 5075",       status: "paid" },
+      { account: "acc1", date: "2026-07-16", amount: 496331,  method: "Visa •••• 5075",       status: "paid" },
+      { account: "acc1", date: "2026-07-13", amount: 365376,  method: "Visa •••• 5075",       status: "paid" },
+      { account: "acc1", date: "2026-07-11", amount: 290011,  method: "Visa •••• 5075",       status: "paid" },
+      { account: "acc1", date: "2026-07-09", amount: 79811,   method: "Visa •••• 5075",       status: "paid" },
+      { account: "acc1", date: "2026-07-08", amount: 79811,   method: "Visa •••• 5075",       status: "paid" },
+      { account: "acc1", date: "2026-07-08", amount: 61299,   method: "Visa •••• 5075",       status: "paid" },
+      { account: "acc1", date: "2026-07-07", amount: 58114,   method: "Visa •••• 5075",       status: "paid" },
+      { account: "acc1", date: "2026-07-06", amount: 57750,   method: "Visa •••• 5075",       status: "paid" }
     ],
+    // Dư nợ hiện tại (chưa tới ngưỡng thanh toán) theo ảnh chụp 23/09 — acc3 chưa có số.
+    billingBalances: { asOf: "2026-09-23", items: [ { account: "acc1", amount: 386227 }, { account: "acc2", amount: 45679 } ] },
 
-    // ---- hành vi mua hàng (giờ/ngày tạo đơn, tỉnh/thành) — nguồn: cột "Thời điểm tạo đơn" + "Địa chỉ" trong file export "orders.xlsx" (135 đơn, rebuild toàn bộ) ----
+    // ---- hành vi mua hàng (giờ/ngày tạo đơn, tỉnh/thành) — nguồn: cột "Thời điểm tạo đơn" + "Địa chỉ" trong file export "orders.xlsx" (180 đơn, rebuild toàn bộ) ----
     // repeatCustomers/repeatOrders/incrementalRepeatOrders loại trừ đơn "Đang đổi" AUF_35016 (vế gốc của cặp đổi hàng
     // AUF_35016→AUF_35324, cùng khách Tuyên Quang) để không đếm 1 lần đổi hàng thành 2 đơn mua lại giả.
     orderBehavior: {
       hourly: [
         { hour: 0, orders: 0, gmv: 0 }, { hour: 1, orders: 0, gmv: 0 }, { hour: 2, orders: 0, gmv: 0 },
-        { hour: 3, orders: 0, gmv: 0 }, { hour: 4, orders: 0, gmv: 0 }, { hour: 5, orders: 0, gmv: 0 },
-        { hour: 6, orders: 2, gmv: 978000 }, { hour: 7, orders: 4, gmv: 1536000 }, { hour: 8, orders: 11, gmv: 5535000 },
-        { hour: 9, orders: 8, gmv: 4592000 }, { hour: 10, orders: 10, gmv: 3923000 }, { hour: 11, orders: 9, gmv: 4002000 },
-        { hour: 12, orders: 11, gmv: 4146000 }, { hour: 13, orders: 12, gmv: 6059000 }, { hour: 14, orders: 10, gmv: 4592000 },
-        { hour: 15, orders: 5, gmv: 2475000 }, { hour: 16, orders: 6, gmv: 2650000 }, { hour: 17, orders: 4, gmv: 1766000 },
-        { hour: 18, orders: 4, gmv: 2756000 }, { hour: 19, orders: 5, gmv: 1726000 }, { hour: 20, orders: 16, gmv: 6197000 },
-        { hour: 21, orders: 11, gmv: 4058000 }, { hour: 22, orders: 6, gmv: 2187000 }, { hour: 23, orders: 1, gmv: 459000 }
+        { hour: 3, orders: 0, gmv: 0 }, { hour: 4, orders: 1, gmv: 499000 }, { hour: 5, orders: 0, gmv: 0 },
+        { hour: 6, orders: 3, gmv: 1477000 }, { hour: 7, orders: 6, gmv: 2534000 }, { hour: 8, orders: 12, gmv: 5935000 },
+        { hour: 9, orders: 15, gmv: 8186000 }, { hour: 10, orders: 13, gmv: 6020000 }, { hour: 11, orders: 10, gmv: 4271000 },
+        { hour: 12, orders: 16, gmv: 6273000 }, { hour: 13, orders: 14, gmv: 6788000 }, { hour: 14, orders: 12, gmv: 5590000 },
+        { hour: 15, orders: 8, gmv: 3144000 }, { hour: 16, orders: 9, gmv: 3843000 }, { hour: 17, orders: 7, gmv: 3263000 },
+        { hour: 18, orders: 4, gmv: 1358000 }, { hour: 19, orders: 7, gmv: 2714000 }, { hour: 20, orders: 17, gmv: 6896000 },
+        { hour: 21, orders: 16, gmv: 5344000 }, { hour: 22, orders: 8, gmv: 3141000 }, { hour: 23, orders: 2, gmv: 958000 }
       ],
       weekday: [
-        { label: "T2", orders: 27, gmv: 10857000 },
-        { label: "T3", orders: 20, gmv: 9062000 },
-        { label: "T4", orders: 13, gmv: 6308000 },
-        { label: "T5", orders: 14, gmv: 5957000 },
-        { label: "T6", orders: 18, gmv: 8055000 },
-        { label: "T7", orders: 14, gmv: 6707000 },
-        { label: "CN", orders: 29, gmv: 12691000 }
+        { label: "T2", orders: 35, gmv: 13667000 },
+        { label: "T3", orders: 29, gmv: 12905000 },
+        { label: "T4", orders: 16, gmv: 7306000 },
+        { label: "T5", orders: 18, gmv: 7743000 },
+        { label: "T6", orders: 21, gmv: 9883000 },
+        { label: "T7", orders: 19, gmv: 9103000 },
+        { label: "CN", orders: 42, gmv: 17627000 }
       ],
       topProvinces: [
-        { name: "Hà Nội",            orders: 13, gmv: 6353000 },
-        { name: "Hồ Chí Minh",       orders: 12, gmv: 5204000 },
-        { name: "Bình Dương",        orders: 8,  gmv: 4502000 },
-        { name: "Quảng Ninh",        orders: 7,  gmv: 2553000 },
-        { name: "An Giang",          orders: 6,  gmv: 3304000 },
-        { name: "Thanh Hóa",         orders: 5,  gmv: 2581000 }
+        { name: "Hà Nội",             orders: 19,  gmv: 8408000 },
+        { name: "Hồ Chí Minh",        orders: 15,  gmv: 5562000 },
+        { name: "Bình Dương",         orders: 11,  gmv: 6149000 },
+        { name: "Quảng Ninh",         orders: 11,  gmv: 4480000 },
+        { name: "An Giang",           orders: 7,   gmv: 4203000 },
+        { name: "Bà Rịa-Vũng Tàu",    orders: 7,   gmv: 3623000 }
       ],
-      otherProvinces: { count: 39, orders: 84, gmv: 35140000 },
-      repeatCustomers: 11,
-      uniqueCustomers: 122,
-      repeatOrders: 23,
-      incrementalRepeatOrders: 12
+      otherProvinces: { count: 44, orders: 110, gmv: 45809000 },
+      repeatCustomers: 16,
+      uniqueCustomers: 162,
+      repeatOrders: 33,
+      incrementalRepeatOrders: 17
     }
   };
 
@@ -1589,7 +1671,8 @@
   })();
 
   // ---------- Account comparison cards ----------
-  const ACC_COLOR = { acc1: "var(--accent)", acc2: "var(--good)" };
+  const ACC_COLOR = { acc1: "var(--accent)", acc2: "var(--good)", acc3: "var(--warn)" };
+  const ACC_NAME = Object.fromEntries(DATA.accounts.map(a => [a.id, a.name]));
   function blendedRoasFor(campaignList) {
     const rev = campaignList.reduce((s, c) => s + (c.revenue || 0), 0);
     const spend = campaignList.filter(c => c.revenue).reduce((s, c) => s + c.spend, 0);
@@ -1615,7 +1698,7 @@
     </div>`;
   }).join("");
 
-  // ---------- Ad tiles (tổng hợp cả 2 acc) ----------
+  // ---------- Ad tiles (tổng hợp cả 3 acc) ----------
   const breakevenRoas = 1 / (1 - cogsRate);
   const breakevenAcos = 1 - cogsRate;
   const at = DATA.accounts.reduce((s, a) => ({
@@ -1630,8 +1713,8 @@
   const blendedAcos = trackedRevenue ? trackedSpend / trackedRevenue : null;
   const adTiles = [
     { label: "Tổng chi tiêu (lũy kế)", value: vnd(at.spend) },
-    { label: "ROAS b.quân (3 CD có ROI)", value: blendedRoas.toLocaleString("vi-VN", { maximumFractionDigits: 2 }) + "x" },
-    { label: "ACOS lũy kế (3 CD có ROI)", value: blendedAcos !== null ? `<span class="${blendedAcos <= breakevenAcos ? "roas-good" : "roas-bad"}">${pct(blendedAcos)}</span>` : "—", hint: `Hoà vốn ở ${pct(breakevenAcos)}` },
+    { label: `ROAS b.quân (${DATA.campaigns.filter(c => c.revenue).length} CD có ROI)`, value: blendedRoas.toLocaleString("vi-VN", { maximumFractionDigits: 2 }) + "x" },
+    { label: `ACOS lũy kế (${DATA.campaigns.filter(c => c.revenue).length} CD có ROI)`, value: blendedAcos !== null ? `<span class="${blendedAcos <= breakevenAcos ? "roas-good" : "roas-bad"}">${pct(blendedAcos)}</span>` : "—", hint: `Hoà vốn ở ${pct(breakevenAcos)}` },
     { label: "Tổng liên hệ nhắn tin", value: num(at.newContacts) },
     { label: "Lượt mua ghi nhận", value: num(at.purchases) }
   ];
@@ -1646,7 +1729,7 @@
     const acos = c.revenue ? c.spend / c.revenue : null;
     return `
     <tr>
-      <td class="campaign-name">${c.name}<span class="acc-badge ${c.account}">${c.account === "acc1" ? "TK chính" : "TK phụ"}</span></td>
+      <td class="campaign-name">${c.name}<span class="acc-badge ${c.account}">${ACC_NAME[c.account]}</span></td>
       <td><span class="status-pill ${c.status}"><span class="dot"></span>${c.status === "active" ? "Đang chạy" : "Tạm dừng"}</span></td>
       <td class="num">${vnd(c.spend)}</td>
       <td class="num">${num(c.contacts)}</td>
@@ -1706,6 +1789,10 @@
   document.getElementById("funnel-grid").innerHTML = DATA.accounts.map(acc => `
     <div class="funnel-card" style="--acc-color:${ACC_COLOR[acc.id]}">
       <div class="funnel-title">${acc.name} <span style="color:var(--ink-faint); font-weight:400;">(${acc.period})</span></div>
+      <div class="funnel-spend">
+        <div><div class="lbl">Đã chi (trước VAT)</div><div class="val">${vnd(acc.spend)}</div></div>
+        <div><div class="lbl">Đã chi (gồm VAT 10%)</div><div class="val">${vnd(acc.spend * 1.1)}</div></div>
+      </div>
       ${funnelHtml(acc.reach, acc.newContacts, acc.purchases)}
     </div>
   `).join("");
@@ -2043,11 +2130,17 @@
     const paid = payments.filter(p => p.status === "paid");
     const totalPaid = paid.reduce((s, p) => s + p.amount, 0);
     const lastPaid = paid[0];
+    const bal = DATA.billingBalances;
+    const totalBal = bal ? bal.items.reduce((s, b) => s + b.amount, 0) : null;
 
     const tiles = [
-      { label: "Tổng đã thanh toán (lũy kế)", value: vnd(totalPaid) },
-      { label: "Số giao dịch đã thanh toán", value: num(paid.length) },
-      { label: "Giao dịch gần nhất", value: lastPaid ? `${vnd(lastPaid.amount)}` : "—", hint: lastPaid ? fmtDate(lastPaid.date) : null }
+      { label: "Tổng đã thanh toán (lũy kế)", value: vnd(totalPaid), hint: `${num(paid.length)} giao dịch` },
+      ...DATA.accounts.map(a => {
+        const accPaid = paid.filter(p => p.account === a.id);
+        return { label: `Đã thanh toán · ${a.name}`, value: accPaid.length ? vnd(accPaid.reduce((s, p) => s + p.amount, 0)) : "—", hint: accPaid.length ? `${num(accPaid.length)} giao dịch` : "Chưa có dữ liệu" };
+      }),
+      { label: "Giao dịch gần nhất", value: lastPaid ? vnd(lastPaid.amount) : "—", hint: lastPaid ? `${fmtDate(lastPaid.date)} · ${ACC_NAME[lastPaid.account]}` : null },
+      ...(bal ? [{ label: "Dư nợ hiện tại (chưa trả)", value: vnd(totalBal), hint: bal.items.map(b => `${ACC_NAME[b.account]} ${vnd(b.amount)}`).join(" · ") + ` — ngày ${fmtDate(bal.asOf)}` }] : [])
     ];
     document.getElementById("payment-tiles").innerHTML = tiles.map(t =>
       `<div class="tile"><div class="tile-label">${t.label}</div><div class="tile-value">${t.value}</div>${t.hint ? `<div class="kpi-hint">${t.hint}</div>` : ""}</div>`
