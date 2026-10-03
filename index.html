@@ -773,7 +773,7 @@
     <a href="#thang">02 · Theo tháng</a>
     <a href="#xuhuong">03 · Xu hướng ngày</a>
     <a href="#quangcao">04 · Quảng cáo</a>
-    <a href="#giavon">05 · Giá vốn SP</a>
+    <a href="#giavon">05 · Theo mã SP</a>
     <a href="#thanhtoan">06 · Thanh toán</a>
     <a href="#hanhvi">07 · Hành vi mua</a>
   </nav>
@@ -933,13 +933,33 @@
     <div class="funnel-grid" id="funnel-grid"></div>
   </div>
 
-  <!-- ============ SECTION 06 — GIÁ VỐN THEO MÃ SẢN PHẨM ============ -->
+  <!-- ============ SECTION 06 — HIỆU QUẢ & GIÁ VỐN THEO MÃ SẢN PHẨM ============ -->
   <div class="section" id="giavon">
     <div class="section-head">
       <span class="section-num">05</span>
-      <span class="section-title">Giá vốn hàng theo mã sản phẩm</span>
-      <span class="section-note">Chỉ tính đơn thành công · combo quy ra từng cái</span>
+      <span class="section-title">Hiệu quả theo mã sản phẩm</span>
+      <span class="section-note">Doanh thu · giá vốn · Ads · lợi nhuận</span>
     </div>
+
+    <div class="subsection-label">Lãi lỗ &amp; chi phí Ads theo mã SP</div>
+    <div class="table-card">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Mã SP</th><th class="num">SL bán</th><th class="num">Tặng kèm</th><th class="num">Doanh thu</th>
+              <th class="num">Giá vốn (+quà)</th><th class="num">Phí + VAT</th><th class="num">Ads (đã VAT)</th>
+              <th class="num">% Ads/DT</th><th class="num">ROAS</th><th class="num">Lợi nhuận</th><th class="num">% biên</th>
+            </tr>
+          </thead>
+          <tbody id="sku-pnl-tbody"></tbody>
+          <tfoot><tr id="sku-pnl-total-row"></tr></tfoot>
+        </table>
+      </div>
+      <div class="table-footnote" id="sku-pnl-note"></div>
+    </div>
+
+    <div class="subsection-label">Giá vốn chi tiết · chỉ đơn thành công, combo quy ra từng cái (gồm cả quần tặng)</div>
     <div class="toolbar">
       <input type="text" id="spSearch" placeholder="Lọc theo mã sản phẩm hoặc tên...">
     </div>
@@ -953,17 +973,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr data-code="65101" data-name="Áo lót nữ PIER NO5, model 65101">
+          <tr data-code="65101" data-name="Áo lót nữ PIER NO5, model 65101 (gồm 65107 – bản có nút cài)">
             <td><span class="code-pill">65101</span></td>
-            <td>Áo lót nữ PIER NO5, model 65101</td>
+            <td>Áo lót nữ PIER NO5, model 65101 (gồm 65107 – bản có nút cài)</td>
             <td class="num">73.900đ</td>
-            <td class="num">365</td>
-            <td class="num">26.973.500đ</td>
-            <td class="num">174</td>
-            <td class="num">77.2%</td>
+            <td class="num">369</td>
+            <td class="num">27.269.100đ</td>
+            <td class="num">176</td>
+            <td class="num">78.0%</td>
             <td class="share-cell">
               <div class="share-track"><div class="share-fill" style="width:100%"></div></div>
-              <div class="share-hint">26.8% doanh thu</div>
+              <div class="share-hint">27.1% doanh thu</div>
             </td>
           </tr>
           <tr data-code="83011" data-name="Quần lót nữ, model 83011">
@@ -1016,19 +1036,6 @@
             <td class="share-cell">
               <div class="share-track"><div class="share-fill" style="width:2%"></div></div>
               <div class="share-hint">0.4% doanh thu</div>
-            </td>
-          </tr>
-          <tr data-code="65107" data-name="Áo lót nữ, model 65107">
-            <td><span class="code-pill">65107</span></td>
-            <td>Áo lót nữ, model 65107</td>
-            <td class="num">73.900đ</td>
-            <td class="num">4</td>
-            <td class="num">295.600đ</td>
-            <td class="num">2</td>
-            <td class="num">0.8%</td>
-            <td class="share-cell">
-              <div class="share-track"><div class="share-fill" style="width:1%"></div></div>
-              <div class="share-hint">0.3% doanh thu</div>
             </td>
           </tr>
           <tr data-code="2568" data-name="Áo lót nữ mã 2568">
@@ -1357,25 +1364,48 @@
     // Đã lọc tên chiến dịch chứa "Santony" để loại chi tiêu brand khác chạy chung acc2 (~1,8tr "RoarTheme", xem memory).
     // Trạng thái active/inactive lấy từ effective_status qua API (03/10). "Mess-Purchase | 22Sep (83011)" = chiến dịch quần 83011 tên gốc "ACC1_MSG_Purchase_Quan83011_TOF_2209".
     // acc3 = "Santony 3 I HongKong" (act_1539125914523198, thêm 23/09, múi giờ TK là Asia/Hong_Kong nên ngày lệch 1 giờ so với 2 TK kia).
+    // `sku` = mã SP chiến dịch quảng cáo (theo tên gốc): "Santony 5101 |..." (30Jun/06Jul/11Jul) tính là 65101, "Santony 2608" → 2608,
+    // tên có 83011 → 83011, còn lại 65101. Dùng để chia chi phí Ads theo mã SP ở mục 05.
     // 2 chiến dịch cùng tên "Inbox | 14Sep" ở acc2 — bản quần 83011 ghi thêm "(83011)" để phân biệt.
     campaigns: [
-      { name: "Mess | 30Jun", account: "acc1", status: "inactive", spend: 50647, contacts: 12, purchases: null, revenue: null, roas: null },
-      { name: "Mess | 06Jul", account: "acc1", status: "inactive", spend: 1076926, contacts: 125, purchases: 3, revenue: null, roas: null },
-      { name: "GMV | 11Jul", account: "acc1", status: "inactive", spend: 370001, contacts: 45, purchases: null, revenue: null, roas: null },
-      { name: "GMV | 8Aug", account: "acc1", status: "active", spend: 7136581, contacts: 233, purchases: 35, revenue: 14417000, roas: 2.020155 },
-      { name: "Inbox | 11Aug", account: "acc1", status: "active", spend: 13450561, contacts: 592, purchases: 107, revenue: 48189000, roas: 3.582676 },
-      { name: "GMV | 20Aug", account: "acc1", status: "inactive", spend: 4264986, contacts: 64, purchases: 23, revenue: 11723000, roas: 2.748661 },
-      { name: "Inbox | 24Aug", account: "acc1", status: "inactive", spend: 2784561, contacts: 96, purchases: 8, revenue: 3173000, roas: 1.139497 },
-      { name: "Inbox | 26Aug", account: "acc1", status: "inactive", spend: 1766529, contacts: 55, purchases: 9, revenue: 4113000, roas: 2.328295 },
-      { name: "Test content | Inbox | 22Sep", account: "acc1", status: "active", spend: 1290494, contacts: 19, purchases: 6, revenue: 3038000, roas: 2.354137 },
-      { name: "Mess-Purchase | 22Sep (83011)", account: "acc1", status: "active", spend: 1307016, contacts: 76, purchases: 10, revenue: 1975000, roas: 1.511076 },
-      { name: "Inbox | 1Sep", account: "acc2", status: "inactive", spend: 3452286, contacts: 80, purchases: 12, revenue: 5190000, roas: 1.503352 },
-      { name: "Inbox | 14Sep", account: "acc2", status: "active", spend: 1734949, contacts: 20, purchases: 7, revenue: 3683000, roas: 2.122829 },
-      { name: "Inbox | 14Sep (83011)", account: "acc2", status: "inactive", spend: 2906, contacts: 0, purchases: null, revenue: null, roas: null },
-      { name: "GMV-CVS | 19Sep", account: "acc2", status: "inactive", spend: 193892, contacts: 0, purchases: null, revenue: null, roas: null },
-      { name: "Inbox | 20Sep", account: "acc2", status: "inactive", spend: 975426, contacts: 13, purchases: 1, revenue: 499000, roas: 0.511571 },
-      { name: "GMV | 19Sep", account: "acc3", status: "inactive", spend: 689035, contacts: 20, purchases: null, revenue: null, roas: null },
-      { name: "Inbox | 22Sep", account: "acc3", status: "active", spend: 1280818, contacts: 11, purchases: 4, revenue: 1247000, roas: 0.973597 }
+      { name: "Mess | 30Jun", sku: "65101", account: "acc1", status: "inactive", spend: 50647, contacts: 12, purchases: null, revenue: null, roas: null },
+      { name: "Mess | 06Jul", sku: "65101", account: "acc1", status: "inactive", spend: 1076926, contacts: 125, purchases: 3, revenue: null, roas: null },
+      { name: "GMV | 11Jul", sku: "65101", account: "acc1", status: "inactive", spend: 370001, contacts: 45, purchases: null, revenue: null, roas: null },
+      { name: "GMV | 8Aug", sku: "65101", account: "acc1", status: "active", spend: 7136581, contacts: 233, purchases: 35, revenue: 14417000, roas: 2.020155 },
+      { name: "Inbox | 11Aug", sku: "65101", account: "acc1", status: "active", spend: 13450561, contacts: 592, purchases: 107, revenue: 48189000, roas: 3.582676 },
+      { name: "GMV | 20Aug", sku: "65101", account: "acc1", status: "inactive", spend: 4264986, contacts: 64, purchases: 23, revenue: 11723000, roas: 2.748661 },
+      { name: "Inbox | 24Aug", sku: "65101", account: "acc1", status: "inactive", spend: 2784561, contacts: 96, purchases: 8, revenue: 3173000, roas: 1.139497 },
+      { name: "Inbox | 26Aug", sku: "2608", account: "acc1", status: "inactive", spend: 1766529, contacts: 55, purchases: 9, revenue: 4113000, roas: 2.328295 },
+      { name: "Test content | Inbox | 22Sep", sku: "65101", account: "acc1", status: "active", spend: 1290494, contacts: 19, purchases: 6, revenue: 3038000, roas: 2.354137 },
+      { name: "Mess-Purchase | 22Sep (83011)", sku: "83011", account: "acc1", status: "active", spend: 1307016, contacts: 76, purchases: 10, revenue: 1975000, roas: 1.511076 },
+      { name: "Inbox | 1Sep", sku: "65101", account: "acc2", status: "inactive", spend: 3452286, contacts: 80, purchases: 12, revenue: 5190000, roas: 1.503352 },
+      { name: "Inbox | 14Sep", sku: "65101", account: "acc2", status: "active", spend: 1734949, contacts: 20, purchases: 7, revenue: 3683000, roas: 2.122829 },
+      { name: "Inbox | 14Sep (83011)", sku: "83011", account: "acc2", status: "inactive", spend: 2906, contacts: 0, purchases: null, revenue: null, roas: null },
+      { name: "GMV-CVS | 19Sep", sku: "65101", account: "acc2", status: "inactive", spend: 193892, contacts: 0, purchases: null, revenue: null, roas: null },
+      { name: "Inbox | 20Sep", sku: "65101", account: "acc2", status: "inactive", spend: 975426, contacts: 13, purchases: 1, revenue: 499000, roas: 0.511571 },
+      { name: "GMV | 19Sep", sku: "65101", account: "acc3", status: "inactive", spend: 689035, contacts: 20, purchases: null, revenue: null, roas: null },
+      { name: "Inbox | 22Sep", sku: "65101", account: "acc3", status: "active", spend: 1280818, contacts: 11, purchases: 4, revenue: 1247000, roas: 0.973597 }
+    ],
+
+    // ---- Lãi lỗ theo mã SP (mục 05) — nguồn orders.xlsx, cùng kỳ với pnl (tổng revenue/cogs+giftCost/fee khớp tuyệt đối pnl).
+    // 65107 = 65101 bản có nút cài tăng giảm (cùng mẫu) → gộp chung vào 65101 ở cả bảng này lẫn bảng giá vốn chi tiết.
+    // Quy tắc quần (83011/2402/SCL888): đi kèm áo mà <5 cái (thường 1 cái/áo) = QUÀ TẶNG, không có doanh thu; ≥5 cái = bán combo
+    // 5 cái 249k / 10 cái 429k (phần lẻ ngoài bội số 5 = tặng). Đơn có áo + combo quần: quần nhận đúng giá combo, áo nhận phần còn lại;
+    // đơn chỉ có quần: toàn bộ doanh thu cho quần. Đơn nhiều mã áo: chia theo số cái, trừ AUF_40051 (user xác nhận: 2 áo 65107 499k
+    // tặng 1 quần + combo 5 quần 249k + áo 5601 255k). Combo "Combo 5/10 Quần" quy ra từng cái theo giá nhập.
+    // giftCost = giá vốn quà tặng mà SP ĐÓ phải gánh (chia cho các mã áo trong đơn theo số cái); giftCostOwn = giá vốn của chính mã đó
+    // khi bị đem tặng (chỉ để tham khảo, đã nằm trong giftCost của mã áo). fee = phí ship/fulfillment 38k/44k chia theo doanh thu từng
+    // mã trong đơn (đơn hoàn chia theo giá nhập). VAT = revenue × 8/108, Ads = tổng campaigns[].spend theo `sku` × 1.1 — tính trong JS.
+    skuPnl: [
+      { code: "65101", pcs: 369, giftPcs: 0, revenue: 88326167, cogs: 27269100, giftCost: 3323150, giftCostOwn: 0, fee: 7360517 },
+      { code: "83011", pcs: 120, giftPcs: 138, revenue: 5800000, cogs: 1962000, giftCost: 0, giftCostOwn: 2184000, fee: 872655 },
+      { code: "2608", pcs: 14, giftPcs: 0, revenue: 2915000, cogs: 1117200, giftCost: 103700, giftCostOwn: 0, fee: 317333 },
+      { code: "65123", pcs: 5, giftPcs: 0, revenue: 1366000, cogs: 443000, giftCost: 15500, giftCostOwn: 0, fee: 203333 },
+      { code: "5601", pcs: 3, giftPcs: 0, revenue: 744833, cogs: 215700, giftCost: 14950, giftCostOwn: 0, fee: 31828 },
+      { code: "2568", pcs: 3, giftPcs: 0, revenue: 699000, cogs: 234900, giftCost: 40700, giftCostOwn: 0, fee: 63667 },
+      { code: "2402", pcs: 10, giftPcs: 103, revenue: 429000, cogs: 126000, giftCost: 0, giftCostOwn: 1297800, fee: 162667 },
+      { code: "65192", pcs: 1, giftPcs: 0, revenue: 289000, cogs: 91476, giftCost: 0, giftCostOwn: 0, fee: 38000 },
+      { code: "SCL888", pcs: 0, giftPcs: 1, revenue: 0, cogs: 0, giftCost: 0, giftCostOwn: 16200, fee: 22000 }
     ],
 
     // ---- luồng tiền thanh toán quảng cáo (Meta Ads Manager > Thanh toán), mới nhất trước ----
@@ -2239,6 +2269,48 @@
     const other = ob.otherProvinces;
     const otherRow = `<tr><td class="dim">Khác (${num(other.count)} tỉnh/thành)</td><td class="num dim">${num(other.orders)}</td><td class="num dim">${vnd(other.gmv)}</td></tr>`;
     document.getElementById("province-tbody").innerHTML = provRows + otherRow;
+  })();
+
+  // ---------- Lãi lỗ theo mã SP (mục 05) ----------
+  (function renderSkuPnl() {
+    const adsBySku = {};
+    DATA.campaigns.forEach(c => { adsBySku[c.sku] = (adsBySku[c.sku] || 0) + c.spend * 1.1; });
+    const rows = DATA.skuPnl.map(x => {
+      const vat = x.revenue * 8 / 108;
+      const ads = adsBySku[x.code] || 0;
+      const cost = x.cogs + x.giftCost + x.fee + vat + ads;
+      const profit = x.revenue - cost;
+      return Object.assign({}, x, { vat, ads, profit, margin: x.revenue ? profit / x.revenue : null,
+        adsPct: x.revenue ? ads / x.revenue : null, roas: ads ? x.revenue / ads : null });
+    }).sort((a, b) => (b.revenue + b.ads) - (a.revenue + a.ads));
+    const dash = '<span class="dim">—</span>';
+    const signed = v => `${v < 0 ? "−" : ""}${vnd(Math.abs(v))}`;
+    document.getElementById("sku-pnl-tbody").innerHTML = rows.map(r => `
+      <tr>
+        <td><span class="code-pill">${r.code}</span></td>
+        <td class="num">${r.pcs ? num(r.pcs) : dash}</td>
+        <td class="num">${r.giftPcs ? num(r.giftPcs) : dash}</td>
+        <td class="num">${r.revenue ? vnd(r.revenue) : dash}</td>
+        <td class="num">${vnd(r.cogs + r.giftCost)}</td>
+        <td class="num">${vnd(r.fee + r.vat)}</td>
+        <td class="num">${r.ads ? vnd(r.ads) : dash}</td>
+        <td class="num">${r.adsPct !== null && r.ads ? `<span class="${r.adsPct <= 1 - cogsRate ? "roas-good" : "roas-bad"}">${pct(r.adsPct)}</span>` : dash}</td>
+        <td class="num">${r.roas !== null ? r.roas.toLocaleString("vi-VN", { maximumFractionDigits: 2 }) + "x" : dash}</td>
+        <td class="num ${r.profit < 0 ? "neg" : "pos"}">${signed(r.profit)}</td>
+        <td class="num ${r.margin !== null && r.margin < 0 ? "neg" : "pos"}">${r.margin !== null ? `${r.margin < 0 ? "−" : ""}${pct(Math.abs(r.margin))}` : dash}</td>
+      </tr>`).join("");
+    const t = rows.reduce((s, r) => ({ pcs: s.pcs + r.pcs, gift: s.gift + r.giftPcs, rev: s.rev + r.revenue, cogs: s.cogs + r.cogs + r.giftCost,
+      fv: s.fv + r.fee + r.vat, ads: s.ads + r.ads, profit: s.profit + r.profit }), { pcs: 0, gift: 0, rev: 0, cogs: 0, fv: 0, ads: 0, profit: 0 });
+    document.getElementById("sku-pnl-total-row").innerHTML = `
+      <td>Tổng cộng</td><td class="num">${num(t.pcs)}</td><td class="num">${num(t.gift)}</td><td class="num">${vnd(t.rev)}</td>
+      <td class="num">${vnd(t.cogs)}</td><td class="num">${vnd(t.fv)}</td><td class="num">${vnd(t.ads)}</td>
+      <td class="num">${pct(t.ads / t.rev)}</td><td class="num">${(t.rev / t.ads).toLocaleString("vi-VN", { maximumFractionDigits: 2 })}x</td>
+      <td class="num ${t.profit < 0 ? "neg" : "pos"}">${signed(t.profit)}</td><td class="num">${pct(t.profit / t.rev)}</td>`;
+    const q = DATA.skuPnl.filter(x => x.giftCostOwn > 0);
+    document.getElementById("sku-pnl-note").innerHTML =
+      `Quần đi kèm áo &lt;5 cái (thường 1 quần/áo) là <b>quà tặng</b>: không tính doanh thu, giá vốn quà dồn vào mã áo của đơn đó (${q.map(x => `${x.code} tặng ${num(x.giftPcs)} cái = ${vnd(x.giftCostOwn)}`).join(" · ")}). ` +
+      `Quần bán theo combo 5 cái 249k / 10 cái 429k. Ads chia theo mã SP trong tên chiến dịch (chiến dịch "5101" tháng 6–7 tính cho 65101) — đây là chi phí Ads TRỰC TIẾP; khách vào từ Ads áo vẫn có thể mua thêm quần và ngược lại. ` +
+      `Ads ở đây = tổng chiến dịch × 1,1 nên có thể lệch vài đồng so với mục 01 do làm tròn theo ngày.`;
   })();
 
   // ---------- SKU search filter (mục 05) ----------
