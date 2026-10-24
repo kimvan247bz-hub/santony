@@ -1,0 +1,2200 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Santony Profit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,680&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink: #211C22;
+    --ink-soft: #5C5560;
+    --ink-faint: #8B848C;
+    --surface: #F6F4F2;
+    --surface-raised: #FFFFFF;
+    --border: #E4DFDB;
+    --accent: #9C2F53;
+    --accent-soft: #F1DCE3;
+    --good: #2E7D5B;
+    --good-soft: #DCEEE4;
+    --warn: #B8802A;
+    --warn-soft: #F5E7CF;
+    --critical: #C0392B;
+    --critical-soft: #F7DEDB;
+    --muted-track: #EDEAE7;
+    --shadow: 0 1px 2px rgba(33,28,34,0.04), 0 8px 24px rgba(33,28,34,0.05);
+    --topbar-bg: rgba(246,244,242,.92);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #F3EEF0;
+      --ink-soft: #B9AFB6;
+      --ink-faint: #837C82;
+      --surface: #1B171A;
+      --surface-raised: #242024;
+      --border: #353034;
+      --accent: #E68CAB;
+      --accent-soft: #3A1F29;
+      --good: #6FCF9E;
+      --good-soft: #16332A;
+      --warn: #E3B15C;
+      --warn-soft: #3A2E17;
+      --critical: #E8776B;
+      --critical-soft: #3A1E1B;
+      --muted-track: #2A262A;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+      --topbar-bg: rgba(27,23,26,.92);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #F3EEF0;
+    --ink-soft: #B9AFB6;
+    --ink-faint: #837C82;
+    --surface: #1B171A;
+    --surface-raised: #242024;
+    --border: #353034;
+    --accent: #E68CAB;
+    --accent-soft: #3A1F29;
+    --good: #6FCF9E;
+    --good-soft: #16332A;
+    --warn: #E3B15C;
+    --warn-soft: #3A2E17;
+    --critical: #E8776B;
+    --critical-soft: #3A1E1B;
+    --muted-track: #2A262A;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+    --topbar-bg: rgba(27,23,26,.92);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 20px 64px;
+  }
+
+  /* ---------- Topbar (CTA điều hướng nhanh) ---------- */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    background: var(--topbar-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    margin: 0 -20px;
+    padding: 10px 20px;
+    scrollbar-width: none;
+  }
+  .topbar::-webkit-scrollbar { display: none; }
+  .topbar a {
+    flex: none;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 6px 12px;
+    border-radius: 100px;
+    scroll-margin-top: 50px;
+  }
+  .topbar a:hover, .topbar a:focus { color: var(--accent); background: var(--accent-soft); }
+
+  /* ---------- Masthead ---------- */
+  .masthead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    padding: 28px 0 22px;
+    margin-bottom: 26px;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 680;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+  }
+  .brand .accent-dot { color: var(--accent); }
+  .brand-sub {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+  .updated-pill {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 12px;
+    white-space: nowrap;
+  }
+
+  /* ---------- Sections ---------- */
+  .section { margin-bottom: 44px; scroll-margin-top: 54px; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .section-num {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    color: var(--ink-faint);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 6px;
+  }
+  .section-title {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: -0.005em;
+  }
+  .section-note {
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    margin-left: auto;
+  }
+
+  /* ---------- Hero profit card ---------- */
+  .hero {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 26px 28px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--accent);
+  }
+  .hero-label {
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .hero-figure {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: clamp(34px, 6vw, 48px);
+    line-height: 1.1;
+    margin-top: 6px;
+    letter-spacing: -0.01em;
+  }
+  .hero-figure.empty {
+    color: var(--ink-faint);
+    font-size: 22px;
+    font-weight: 500;
+    font-family: "IBM Plex Sans", sans-serif;
+  }
+  .hero-figure .sign { color: var(--ink-faint); font-weight: 500; margin-right: 2px; }
+  .hero-top-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .hero-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 13px;
+    border-radius: 100px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+  .hero-status-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: none; }
+  .hero-status-badge.good { background: var(--good-soft); color: var(--good); }
+  .hero-status-badge.bad { background: var(--critical-soft); color: var(--critical); }
+  .hero-status-badge.warn { background: var(--warn-soft); color: var(--warn); }
+  .hero-trend {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .hero-sparkline { width: 150px; height: 34px; flex: none; display: block; }
+  .hero-deltas { display: flex; gap: 16px; flex-wrap: wrap; }
+  .hero-delta { font-size: 12px; white-space: nowrap; }
+  .hero-delta .lbl { color: var(--ink-soft); margin-right: 5px; }
+  .hero-delta .val { font-family: "IBM Plex Mono", monospace; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .hero-delta .val.good { color: var(--good); }
+  .hero-delta .val.bad { color: var(--critical); }
+  .hero-delta .val.flat { color: var(--ink-faint); }
+  .hero-caveat {
+    margin-top: 14px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--warn);
+    background: var(--warn-soft);
+    border-radius: 8px;
+    padding: 9px 13px;
+  }
+  .hero-caveat + .hero-caveat { margin-top: 8px; }
+  .hero-sub { margin-top: 14px; }
+  .chip-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 13px;
+  }
+  .chip-row + .chip-row { margin-top: 8px; }
+  .chip-row .op { color: var(--ink-faint); font-size: 13px; padding: 0 1px; }
+  .stat-chip {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 7px;
+    white-space: nowrap;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 5px 10px;
+  }
+  .stat-chip.accent { background: var(--accent-soft); border-color: transparent; }
+  .stat-chip .chip-label { color: var(--ink-soft); font-size: 12.5px; }
+  .stat-chip .chip-value {
+    color: var(--ink);
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 13.5px;
+  }
+  .stat-chip.accent .chip-value { color: var(--accent); }
+
+  /* ---------- KPI grid ---------- */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  @media (min-width: 620px) {
+    .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .kpi {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 16px;
+    border-top: 3px solid var(--kpi-accent, var(--border));
+    min-width: 0;
+  }
+  .kpi-label {
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--ink-soft);
+    font-weight: 500;
+    min-height: 2.7em;
+  }
+  .kpi-value {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: clamp(17px, 3.4vw, 21px);
+    margin-top: 6px;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .kpi-value.empty { color: var(--ink-faint); font-size: 13.5px; font-weight: 400; font-family: "IBM Plex Sans", sans-serif; white-space: normal; }
+  .kpi-hint { font-size: 11px; color: var(--ink-faint); margin-top: 4px; }
+
+  /* ---------- Ad summary tiles ---------- */
+  .tile-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .tile {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .tile-label { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .tile-value {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 19px;
+    margin-top: 4px;
+  }
+
+  /* ---------- Section subheading (dùng để chia nhỏ trong 1 section) ---------- */
+  .subsection-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    margin-bottom: 10px;
+  }
+  .subsection-label:not(:first-child) { margin-top: 22px; }
+
+  /* ---------- Account comparison cards ---------- */
+  .account-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  @media (min-width: 620px) {
+    .account-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .account-card {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    border-top: 3px solid var(--acc-color, var(--accent));
+    box-shadow: var(--shadow);
+  }
+  .account-card-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .account-name {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: 15.5px;
+  }
+  .account-period {
+    font-size: 11px;
+    color: var(--ink-faint);
+    font-family: "IBM Plex Mono", monospace;
+    white-space: nowrap;
+  }
+  .account-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 16px;
+  }
+  .account-stat-label { font-size: 11.5px; color: var(--ink-soft); }
+  .account-stat-value {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 15px;
+    margin-top: 3px;
+    color: var(--acc-color, var(--ink));
+  }
+  .account-stat-value.dim { color: var(--ink-faint); font-weight: 500; }
+
+  /* ---------- Account badge (trong bảng chiến dịch) ---------- */
+  .acc-badge {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .acc-badge.acc1 { background: var(--accent-soft); color: var(--accent); }
+  .acc-badge.acc2 { background: var(--good-soft); color: var(--good); }
+  .acc-badge.acc3 { background: var(--warn-soft); color: var(--warn); }
+
+  /* ---------- Funnel grid (song song theo tài khoản) ---------- */
+  .funnel-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 14px;
+  }
+  @media (min-width: 620px) {
+    .funnel-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .funnel-grid .funnel-card { margin-top: 0; }
+
+  /* ---------- Table ---------- */
+  .table-card {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table-scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; }
+  thead th {
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    font-weight: 500;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  thead th.num, td.num { text-align: right; }
+  tbody td {
+    padding: 12px 14px;
+    font-size: 13.5px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody td.num {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  .campaign-name { font-weight: 500; }
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 3px 9px 3px 7px;
+    border-radius: 100px;
+  }
+  .status-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .status-pill.active { background: var(--good-soft); color: var(--good); }
+  .status-pill.active .dot { background: var(--good); }
+  .status-pill.inactive { background: var(--muted-track); color: var(--ink-faint); }
+  .status-pill.inactive .dot { background: var(--ink-faint); }
+  .roas-good { color: var(--good); font-weight: 600; }
+  .roas-bad { color: var(--critical); font-weight: 600; }
+  .dim { color: var(--ink-faint); }
+  .num.neg { color: var(--critical); }
+  .num.pos { color: var(--good); }
+  tr.hide { display: none; }
+  tfoot td {
+    padding: 12px 14px;
+    font-size: 13.5px;
+    font-weight: 600;
+    background: var(--surface);
+    border-top: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  tfoot td.num { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
+  .table-footnote {
+    font-size: 11px;
+    color: var(--ink-faint);
+    padding: 12px 14px 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ---------- Toolbar / filter input ---------- */
+  .toolbar { margin-bottom: 14px; }
+  .toolbar input[type=text] {
+    width: 100%;
+    max-width: 320px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    color: var(--ink);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: inherit;
+  }
+  .code-pill {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 6px;
+    padding: 2px 7px;
+  }
+
+  /* ---------- Share bar (mini progress, dùng trong bảng giá vốn theo SP) ---------- */
+  .share-cell { min-width: 120px; }
+  .share-track { background: var(--muted-track); border-radius: 5px; height: 8px; width: 100%; overflow: hidden; }
+  .share-fill { background: var(--accent); height: 100%; border-radius: 5px; }
+  .share-hint { font-size: 11px; color: var(--ink-faint); margin-top: 3px; white-space: nowrap; }
+
+  /* ---------- Funnel ---------- */
+  .funnel-card {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px 18px;
+    margin-top: 14px;
+    box-shadow: var(--shadow);
+  }
+  .funnel-title { font-size: 13px; font-weight: 600; margin-bottom: 14px; }
+  .funnel-spend { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px 12px; margin-bottom: 16px; background: var(--surface); border-radius: 8px; }
+  .funnel-spend .lbl { font-size: 11px; color: var(--ink-soft); }
+  .funnel-spend .val { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 14px; margin-top: 2px; color: var(--acc-color, var(--ink)); }
+  .funnel-row { margin-bottom: 12px; }
+  .funnel-row:last-child { margin-bottom: 0; }
+  .funnel-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    margin-bottom: 5px;
+  }
+  .funnel-meta .lbl { color: var(--ink-soft); }
+  .funnel-meta .val { font-family: "IBM Plex Mono", monospace; font-weight: 600; }
+  .funnel-track {
+    background: var(--muted-track);
+    border-radius: 6px;
+    height: 14px;
+    overflow: hidden;
+  }
+  .funnel-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 6px;
+    transition: width 0.6s ease;
+  }
+  .funnel-rate {
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-top: 4px;
+    font-family: "IBM Plex Mono", monospace;
+  }
+
+  /* ---------- Daily bar chart ---------- */
+  .bar-chart-card {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px 14px;
+    box-shadow: var(--shadow);
+  }
+  .bar-chart-card + .bar-chart-card { margin-top: 14px; }
+  #monthly-chart { width: 100%; height: auto; display: block; }
+  .bar-chart-title { font-size: 13px; font-weight: 600; margin-bottom: 16px; }
+  .bar-chart-title-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    margin-bottom: 16px;
+  }
+  .bar-chart-title-row .bar-chart-title { margin-bottom: 0; }
+  .chart-legend { display: flex; gap: 14px; flex-wrap: wrap; }
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+  }
+  .legend-dot { width: 8px; height: 8px; border-radius: 2px; flex: none; }
+  .bar-chart {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .bar-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 34px;
+    flex: 1 0 auto;
+  }
+  .bar-val {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    margin-bottom: 5px;
+    white-space: nowrap;
+    height: 13px;
+  }
+  .bar-track {
+    height: 110px;
+    display: flex;
+    align-items: flex-end;
+  }
+  .bar-shape {
+    width: 20px;
+    border-radius: 4px 4px 2px 2px;
+    background: var(--bar-color, var(--accent));
+    min-height: 3px;
+    transition: opacity 0.15s ease;
+  }
+  .bar-col:hover .bar-shape { opacity: 0.8; }
+  .bar-col:hover .bar-val { color: var(--ink); }
+  .bar-label {
+    font-size: 10.5px;
+    color: var(--ink-faint);
+    margin-top: 8px;
+    white-space: nowrap;
+  }
+  .bar-col.today .bar-label { color: var(--accent); font-weight: 600; }
+
+  .legend-line {
+    width: 14px;
+    height: 0;
+    border-top: 2px solid var(--ink);
+    flex: none;
+  }
+  .combo-chart-wrap { width: 100%; overflow-x: auto; overflow-y: hidden; display: flex; }
+  .combo-axis-sticky {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    flex: none;
+    width: 46px;
+    background: var(--surface-raised);
+  }
+  #ads-gmv-axis { width: 46px; height: 300px; display: block; }
+  .combo-chart-scroll { flex: none; }
+  #ads-gmv-chart { width: 1800px; min-width: 1800px; height: 300px; display: block; }
+  .combo-bar { transition: opacity 0.15s ease; }
+  .combo-bar:hover { opacity: 0.75; }
+  .combo-axis-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 9px;
+    fill: var(--ink-faint);
+  }
+  .combo-x-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 9px;
+    fill: var(--ink-faint);
+    text-anchor: middle;
+  }
+  .combo-x-label.today { fill: var(--accent); font-weight: 600; }
+  .combo-gridline { stroke: var(--border); stroke-width: 1; }
+  .combo-pct-line { fill: none; stroke: var(--ink); stroke-width: 2; }
+  .combo-breakeven-line { stroke: var(--critical); stroke-width: 1; stroke-dasharray: 4 3; }
+
+  .chart-note {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+  .chart-footnote {
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+  .line-chart-wrap { width: 100%; }
+  #profit-line-chart { width: 100%; height: 170px; display: block; overflow: visible; }
+  .line-path { fill: none; stroke: var(--accent); stroke-width: 2; }
+  .line-zero { stroke: var(--ink-faint); stroke-width: 1; stroke-dasharray: 4 4; }
+  .line-dot { cursor: pointer; }
+  .line-dot-hit { fill: transparent; cursor: pointer; }
+
+  /* ---------- Hover crosshair (dùng chung cho các chart lũy kế/combo trong mục 03) ---------- */
+  .chart-hover-capture { fill: transparent; cursor: crosshair; }
+  .chart-guide-line { stroke: var(--ink-faint); stroke-width: 1; stroke-dasharray: 3 3; display: none; pointer-events: none; }
+  .chart-hover-dot { display: none; pointer-events: none; stroke: var(--surface-raised); stroke-width: 2; }
+  .chart-tooltip {
+    position: fixed;
+    z-index: 60;
+    pointer-events: none;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 11px;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    transition: opacity 0.08s ease;
+    transform: translate(-50%, calc(-100% - 12px));
+    white-space: nowrap;
+  }
+  .chart-tooltip.visible { opacity: 1; }
+  .chart-tooltip .tt-date {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-bottom: 4px;
+  }
+  .chart-tooltip .tt-row { display: flex; align-items: baseline; gap: 14px; font-size: 12.5px; }
+  .chart-tooltip .tt-row + .tt-row { margin-top: 2px; }
+  .chart-tooltip .tt-label { color: var(--ink-soft); }
+  .chart-tooltip .tt-value {
+    margin-left: auto;
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  footer {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .funnel-fill { transition: none; }
+  }
+
+  /* ---------- Link sang trang phân tích quảng cáo ---------- */
+  .ads-link { display: flex; align-items: center; justify-content: space-between; gap: 16px; text-decoration: none; color: var(--ink); background: var(--accent-soft); border-radius: 12px; padding: 14px 18px; font-size: 14px; }
+  .ads-link:hover, .ads-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .ads-link strong { color: var(--accent); }
+  .ads-link-sub { display: block; font-size: 12px; color: var(--ink-soft); margin-top: 3px; line-height: 1.45; }
+
+  /* ---------- Section 08 — phân tích ads 83011 ---------- */
+  .q-verdict { display: flex; gap: 14px; align-items: flex-start; background: var(--warn-soft); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; }
+  .q-verdict-tag { flex: none; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--warn); padding-top: 2px; }
+  .q-verdict-body { font-size: 14px; line-height: 1.55; color: var(--ink); }
+  .q-neg { color: var(--critical); }
+  .q-actions { display: grid; gap: 10px; }
+  .q-action { display: flex; gap: 12px; align-items: flex-start; background: var(--surface-raised); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; font-size: 13.5px; line-height: 1.55; }
+  .q-step { flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font: 600 12px "IBM Plex Mono", monospace; display: grid; place-items: center; }
+  @media (max-width: 600px) { .q-verdict { flex-direction: column; gap: 6px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html" style="display:inline-block;margin-top:12px;font-size:12.5px;font-weight:600;color:var(--accent);text-decoration:none">← Trang chủ báo cáo</a>
+
+  <div class="chart-tooltip" id="chart-tooltip"></div>
+
+  <nav class="topbar">
+    <a href="#loinhuan">01 · Lợi nhuận</a>
+    <a href="#thang">02 · Theo tháng</a>
+    <a href="#xuhuong">03 · Xu hướng ngày</a>
+    <a href="#quangcao">04 · Quảng cáo</a>
+    <a href="#giavon">05 · Theo mã SP</a>
+    <a href="#thanhtoan">06 · Thanh toán</a>
+    <a href="#hanhvi">07 · Hành vi mua</a>
+  </nav>
+
+  <div class="masthead">
+    <div>
+      <div class="brand">Santony<span class="accent-dot">·</span>Lợi nhuận</div>
+      <div class="brand-sub">Dashboard theo dõi lợi nhuận</div>
+    </div>
+    <div class="updated-pill" id="updated-pill">Cập nhật lần cuối: —</div>
+  </div>
+
+    <div class="section" id="loinhuan">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <span class="section-title">Lợi nhuận</span>
+      <span class="section-note" id="period-note"></span>
+    </div>
+
+    <div class="hero">
+      <div class="hero-top-row">
+        <div>
+          <div class="hero-label">Lợi nhuận</div>
+          <div class="hero-figure" id="hero-profit">—</div>
+        </div>
+        <span class="hero-status-badge" id="hero-status"></span>
+      </div>
+      <div class="hero-trend" id="hero-trend"></div>
+      <div class="hero-sub" id="hero-sub"></div>
+      <div id="hero-caveats"></div>
+    </div>
+
+    <div class="kpi-grid" id="kpi-grid"></div>
+  </div>
+
+    <div class="section" id="thang">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <span class="section-title">Doanh thu &amp; lợi nhuận theo tháng</span>
+      <span class="section-note">Th7 – Th10/2026</span>
+    </div>
+
+    <div class="bar-chart-card">
+      <div class="chart-legend" id="monthly-legend" style="margin-bottom:14px;"></div>
+      <svg id="monthly-chart" viewBox="0 0 700 400" role="img" aria-label="Doanh thu và chi phí theo tháng"></svg>
+    </div>
+
+    <div class="table-card" style="margin-top:14px;">
+      <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Tháng</th><th class="num">Số đơn</th><th class="num">Doanh thu</th><th class="num">Giá vốn</th>
+            <th class="num">Phí</th><th class="num">VAT</th><th class="num">Ads</th><th class="num">% Ads/DT</th><th class="num">% CP/DT</th>
+            <th class="num">Lợi nhuận</th><th class="num">% biên LN</th><th>SP chiếm vốn nhiều nhất</th>
+          </tr>
+        </thead>
+        <tbody id="monthly-tbody"></tbody>
+        <tfoot><tr id="monthly-total-row"></tr></tfoot>
+      </table>
+      </div>
+    </div>
+  </div>
+
+    <div class="section" id="xuhuong">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <span class="section-title">Xu hướng theo ngày</span>
+      <span class="section-note">Đã trừ đơn hoàn</span>
+    </div>
+
+    <div class="bar-chart-card">
+      <div class="bar-chart-title-row">
+        <div class="bar-chart-title">Lợi nhuận lũy kế</div>
+        <div class="chart-note" id="profit-line-note"></div>
+      </div>
+      <div class="line-chart-wrap">
+        <svg id="profit-line-chart" viewBox="0 0 1000 170" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="chart-footnote">Số thực tế từng ngày: doanh thu − giá vốn − phí − VAT 8% (chỉ đơn shop AUF) − ads (gộp 3 TK, kéo trực tiếp qua Meta API, khớp tuyệt đối với tổng chiến dịch ở mục 04 và với số "Lợi nhuận" ở mục 01) — không còn ước tính giả định.</div>
+    </div>
+    <div class="bar-chart-card">
+      <div class="bar-chart-title">Số lượng bán ra (cái)</div>
+      <div class="bar-chart" id="units-chart"></div>
+    </div>
+    <div class="bar-chart-card">
+      <div class="bar-chart-title-row">
+        <div class="bar-chart-title">Chi tiêu Ads &amp; GMV theo ngày</div>
+        <div class="chart-legend">
+          <span class="legend-item"><span class="legend-dot" style="background:var(--warn)"></span>Ads (đã VAT, gộp 3 TK) — trục trái</span>
+          <span class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span>GMV — trục trái</span>
+          <span class="legend-item"><span class="legend-line"></span>Ads/GMV % — trục phải</span>
+        </div>
+      </div>
+      <div class="combo-chart-wrap">
+        <div class="combo-axis-sticky">
+          <svg id="ads-gmv-axis" viewBox="0 0 46 300"></svg>
+        </div>
+        <div class="combo-chart-scroll">
+          <svg id="ads-gmv-chart" viewBox="0 0 1800 300"></svg>
+        </div>
+      </div>
+    </div>
+    <div class="bar-chart-card">
+      <div class="bar-chart-title-row">
+        <div class="bar-chart-title">ACOS lũy kế theo ngày</div>
+        <div class="chart-note" id="acos-line-note"></div>
+      </div>
+      <div class="line-chart-wrap">
+        <svg id="acos-line-chart" viewBox="0 0 1000 190" preserveAspectRatio="none"></svg>
+      </div>
+    </div>
+  </div>
+
+    <div class="section" id="quangcao">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <span class="section-title">Quảng cáo</span>
+      <span class="section-note">Lũy kế đến 24/10/2026</span>
+    </div>
+    <div class="tile-row" id="ad-tiles"></div>
+    <a class="ads-link" href="quang-cao.html">
+      <span><strong>Phân tích quảng cáo chi tiết</strong><span class="ads-link-sub">Ads vs đơn thật theo tuần/ngày · tài khoản · chiến dịch · nhóm &amp; mẫu quảng cáo · độ tuổi, vị trí · Ads quần 83011</span></span>
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+
+    <div class="section" id="giavon">
+    <div class="section-head">
+      <span class="section-num">05</span>
+      <span class="section-title">Hiệu quả theo mã sản phẩm</span>
+      <span class="section-note">Doanh thu · giá vốn · Ads · lợi nhuận</span>
+    </div>
+
+    <div class="subsection-label">Lãi lỗ &amp; chi phí Ads theo mã SP</div>
+    <div class="table-card">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Mã SP</th><th class="num">SL bán</th><th class="num">Tặng kèm</th><th class="num">Doanh thu</th>
+              <th class="num">Giá vốn (+quà)</th><th class="num">Phí</th><th class="num">VAT 8%</th><th class="num">Ads (đã VAT)</th>
+              <th class="num">% Ads/DT</th><th class="num">ROAS</th><th class="num">Lợi nhuận</th><th class="num">% biên</th>
+            </tr>
+          </thead>
+          <tbody id="sku-pnl-tbody"></tbody>
+          <tfoot><tr id="sku-pnl-total-row"></tr></tfoot>
+        </table>
+      </div>
+      <div class="table-footnote" id="sku-pnl-note"></div>
+    </div>
+
+    <div class="subsection-label">Giá vốn chi tiết · chỉ đơn thành công, combo quy ra từng cái (gồm cả quần tặng)</div>
+    <div class="toolbar">
+      <input type="text" id="spSearch" placeholder="Lọc theo mã sản phẩm hoặc tên...">
+    </div>
+    <div class="table-card">
+      <div class="table-scroll">
+      <table id="spTable">
+        <thead>
+          <tr>
+            <th>Mã SP</th><th>Tên sản phẩm</th><th class="num">Đơn giá vốn</th><th class="num">SL bán</th>
+            <th class="num">Tổng giá vốn</th><th class="num">Số đơn</th><th class="num">% tổng giá vốn</th><th>% doanh thu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-code="65101" data-name="Áo lót nữ PIER NO5, model 65101 (gồm 65107 – bản có nút cài)">
+            <td><span class="code-pill">65101</span></td>
+            <td>Áo lót nữ PIER NO5, model 65101 (gồm 65107 – bản có nút cài)</td>
+            <td class="num">76.650đ</td>
+            <td class="num">541</td>
+            <td class="num">41.467.900đ</td>
+            <td class="num">253</td>
+            <td class="num">74.3%</td>
+            <td class="share-cell">
+              <div class="share-track"><div class="share-fill" style="width:100%"></div></div>
+              <div class="share-hint">27.1% doanh thu</div>
+            </td>
+          </tr>
+          <tr data-code="83011" data-name="Quần lót nữ, model 83011">
+            <td><span class="code-pill">83011</span></td>
+            <td>Quần lót nữ, model 83011</td>
+            <td class="num">17.097đ</td>
+            <td class="num">526</td>
+            <td class="num">8.993.000đ</td>
+            <td class="num">203</td>
+            <td class="num">16.1%</td>
+            <td class="share-cell">
+              <div class="share-track"><div class="share-fill" style="width:22%"></div></div>
+              <div class="share-hint">5.9% doanh thu</div>
+            </td>
+          </tr>
+          <tr data-code="2402" data-name="Quần lót nữ, model 2402">
+            <td><span class="code-pill">2402</span></td>
+            <td>Quần lót nữ, model 2402</td>
+            <td class="num">12.600đ</td>
+            <td class="num">121</td>
+            <td class="num">1.524.600đ</td>
+            <td class="num">69</td>
+            <td class="num">2.7%</td>
+            <td class="share-cell">
+              <div class="share-track"><div class="share-fill" style="width:4%"></div></div>
+              <div class="share-hint">1.0% doanh thu</div>
+            </td>
+          </tr>
+          <tr data-code="2568" data-name="Áo lót nữ mã 2568">
+            <td><span class="code-pill">2568</span></td>
+            <td>Áo lót nữ mã 2568</td>
+            <td class="num">84.540đ</td>
+            <td class="num">15</td>
+            <td class="num">1.268.100đ</td>
+            <td class="num">9</td>
+            <td class="num">2.3%</td>
+            <td class="share-cell">
+              <div class="share-track"><div class="share-fill" style="width:3%"></div></div>
+              <div class="share-hint">0.8% doanh thu</div>
+            </td>
+          </tr>
+          <tr data-code="2608" data-name="Áo lót nữ mã 2608">
+            <td><span class="code-pill">2608</span></td>
+            <td>Áo lót nữ mã 2608</td>
+            <td class="num">79.800đ</td>
+            <td class="num">14</td>
+            <td class="num">1.117.200đ</td>
+            <td class="num">7</td>
+            <td class="num">2.0%</td>
+            <td class="share-cell">
+              <div class="share-track"><div class="share-fill" style="width:3%"></div></div>
+              <div class="share-hint">0.7% doanh thu</div>
+            </td>
+          </tr>
+          <tr data-code="65123" data-name="Áo lót nữ, model 65123">
+            <td><span class="code-pill">65123</span></td>
+            <td>Áo lót nữ, model 65123</td>
+            <td class="num">102.800đ</td>
+            <td class="num">10</td>
+            <td class="num">1.028.000đ</td>
+            <td class="num">8</td>
+            <td class="num">1.8%</td>
+            <td class="share-cell">
+              <div class="share-track"><div class="share-fill" style="width:2%"></div></div>
+              <div class="share-hint">0.7% doanh thu</div>
+            </td>
+          </tr>
+          <tr data-code="5601" data-name="Áo lót nữ, model 5601">
+            <td><span class="code-pill">5601</span></td>
+            <td>Áo lót nữ, model 5601</td>
+            <td class="num">73.700đ</td>
+            <td class="num">4</td>
+            <td class="num">294.800đ</td>
+            <td class="num">4</td>
+            <td class="num">0.5%</td>
+            <td class="share-cell">
+              <div class="share-track"><div class="share-fill" style="width:1%"></div></div>
+              <div class="share-hint">0.2% doanh thu</div>
+            </td>
+          </tr>
+          <tr data-code="65192" data-name="Áo lót nữ, model 65192">
+            <td><span class="code-pill">65192</span></td>
+            <td>Áo lót nữ, model 65192</td>
+            <td class="num">91.476đ</td>
+            <td class="num">1</td>
+            <td class="num">91.476đ</td>
+            <td class="num">1</td>
+            <td class="num">0.2%</td>
+            <td class="share-cell">
+              <div class="share-track"><div class="share-fill" style="width:1%"></div></div>
+              <div class="share-hint">0.1% doanh thu</div>
+            </td>
+          </tr>
+          <tr data-code="SCL888" data-name="Quần lót nữ (xi líp), mã 888">
+            <td><span class="code-pill">SCL888</span></td>
+            <td>Quần lót nữ (xi líp), mã 888</td>
+            <td class="num">16.200đ</td>
+            <td class="num">1</td>
+            <td class="num">16.200đ</td>
+            <td class="num">1</td>
+            <td class="num">0.0%</td>
+            <td class="share-cell">
+              <div class="share-track"><div class="share-fill" style="width:1%"></div></div>
+              <div class="share-hint">0.0% doanh thu</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+
+    <div class="section" id="thanhtoan">
+    <div class="section-head">
+      <span class="section-num">06</span>
+      <span class="section-title">Thanh toán quảng cáo</span>
+      <span class="section-note">Theo ảnh chụp Meta · cập nhật 03/10/2026</span>
+    </div>
+
+    <div class="tile-row" id="payment-tiles"></div>
+    <div class="chart-footnote">Chỉ cộng giao dịch "Đã thanh toán". Đủ lịch sử cả 3 TK. TK phụ còn 2 giao dịch tháng 8 (12/08, 23/08 — tổng 1.909.175 ₫) trả cho brand khác chạy chung TK, không tính.</div>
+  </div>
+
+    <div class="section" id="hanhvi">
+    <div class="section-head">
+      <span class="section-num">07</span>
+      <span class="section-title">Hành vi mua hàng</span>
+      <span class="section-note">Insight cho lịch chạy Ads</span>
+    </div>
+
+    <div class="tile-row" id="behavior-tiles"></div>
+
+    <div class="bar-chart-card">
+      <div class="bar-chart-title">Đơn hàng theo giờ trong ngày</div>
+      <div class="bar-chart" id="hour-chart"></div>
+      <div class="chart-footnote" id="hour-chart-note"></div>
+    </div>
+    <div class="bar-chart-card">
+      <div class="bar-chart-title">Đơn hàng theo ngày trong tuần</div>
+      <div class="bar-chart" id="weekday-chart"></div>
+      <div class="chart-footnote" id="weekday-chart-note"></div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Tỉnh/Thành</th>
+              <th class="num">Số đơn</th>
+              <th class="num">GMV ròng</th>
+            </tr>
+          </thead>
+          <tbody id="province-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer>Ads: file xuất Facebook Ads Manager · Doanh thu/đơn hàng: Pancake, cập nhật thủ công</footer>
+</div>
+
+<script>
+  /* ============================================================
+     DAILY INPUT — cập nhật các số ở đây mỗi khi có số liệu mới
+     ============================================================ */
+  const DATA = {
+    updatedAt: "2026-10-24",
+    period: "309 TC · 43 hoàn · 09/07 → 24/10/2026",
+
+    caveats: [
+      "Chưa trừ: lương/nhân sự · phí thu hộ COD · hàng hoàn hỏng không bán lại được.",
+      "Có 3 cặp đơn đổi hàng (AUF_35016→AUF_35324, AUF_39125→AUF_39496, AUF_40327→AUF_40775) trong kỳ — doanh thu chỉ tính 1 lần đúng theo thực thu (cặp cuối khách bù thêm 249k), nhưng giá vốn/phí ship tính đủ 2 lần vì có 2 lượt giao hàng thật.",
+      "Từ 07/10 đơn chuyển sang shop Pancake mới (mã SAN_, kho \"Đồ Nội Y Santony\"): 98 đơn 07→24/10 (75 Đã nhận, 4 hoàn — SAN_16, SAN_23, SAN_27, SAN_50), 19 đơn còn đang giao (Đã gửi hàng) được tính như thành công — có thể còn phát sinh hoàn. SAN_40 (15/10) khách chuyển khoản trước nên trên Pancake để 0đ — dashboard tính giá bán bình thường 499k (2 áo 65101 + 1 quần tặng). Phí đơn shop mới tạm giữ 38k/đơn như cũ (ĐVVC SPX thực thu 11–12k/đơn) — cần xác nhận phí fulfillment kho mới.",
+      "VAT 8% chỉ tính cho đơn shop cũ AUF. Từ khi chuyển sang shop SAN (07/10) không còn mất VAT 8% — VAT tách thành dòng riêng ở trên; phần đã tiết kiệm xem ô \"VAT 8%\" bên dưới.",
+      "Giá vốn mới (bảng giá gốc cập nhật 13/10/2026) áp cho mọi đơn từ 07/10/2026: 65101 83.500đ (cũ 73.900), 83011 18.200đ (cũ 16.500; combo 5 = 91.000), 2568 86.100đ, 2608 87.800đ, 65123 97.500đ, 5601 79.100đ, 65192 93.200đ, SCL888 18.200đ. Đơn trước 07/10 giữ giá nhập cũ trong Pancake, nên đơn giá vốn ở bảng giá vốn chi tiết là giá bình quân."
+    ],
+
+    pnl: {
+      revenue: 153028000,        // doanh thu 309 đơn thành công (đã gồm VAT) — dùng cột "Doanh thu bán hàng" Pancake (tự = 0 cho đơn hoàn + cho vế "đổi" đã bị thay thế, tránh đếm trùng)
+      cogs: 55801276,           // giá vốn hàng bán, tính theo giá nhập thực từng dòng SP (không phải % giả định)
+      feeSuccess: 11742000,      // phí 38.000đ × 309 đơn thành công (16k ship + 22k fulfillment)
+      feeReturn: 1892000,        // phí 44.000đ × 43 đơn hoàn (16k ship + 28k fulfillment)
+      vatOutput: 7951037,       // VAT đầu ra 8% = doanh thu shop AUF × 8/108 — CHỈ đơn shop cũ AUF; shop SAN (từ 07/10) không mất VAT
+      revenueAuf: 107339000,      // doanh thu đơn TC shop AUF (chịu VAT 8%)
+      revenueSan: 45689000,      // doanh thu đơn TC shop SAN (không mất VAT)
+      vatSaved: 3384370,         // VAT 8% lẽ ra phải trả nếu đơn SAN vẫn chịu VAT = revenueSan × 8/108 (chỉ tham khảo, không trừ)
+      ordersTotal: 352,
+      ordersSuccess: 309,
+      ordersReturned: 43,
+      unitsSold: 585,
+      returnedRevenueLost: 20656000,   // cột "Doanh thu hoàn" Pancake
+      returnRateValue: 0.119   // tỷ lệ hoàn theo giá trị đơn = DT hoàn / (DT + DT hoàn)
+    },
+
+    monthly: [
+      { label: "Th7/2026", partial: true, orders: 5, returned: 3, revenue: 734000, cogs: 237200, fee: 208000, vat: 54370, ads: 1647332, topSku: "65101" },
+      { label: "Th8/2026", partial: false, orders: 41, returned: 3, revenue: 18500000, cogs: 6454000, fee: 1576000, vat: 1370371, ads: 8373951, topSku: "65101" },
+      { label: "Th9/2026", partial: false, orders: 176, returned: 31, revenue: 72672000, cogs: 25337576, fee: 6874000, vat: 5383113, ads: 33651293, topSku: "65101" },
+      { label: "Th10/2026", partial: true, orders: 130, returned: 6, revenue: 61122000, cogs: 23772500, fee: 4976000, vat: 1143186, ads: 20409439, topSku: "65101" }
+    ],
+
+    dailySales: [
+      { date: "2026-07-10", gmv: 255000,  units: 1 },
+      { date: "2026-07-15", gmv: 479000,  units: 2 },
+      { date: "2026-08-09", gmv: 859000,  units: 4 },
+      { date: "2026-08-15", gmv: 938000,  units: 4 },
+      { date: "2026-08-16", gmv: 734000,  units: 3 },
+      { date: "2026-08-17", gmv: 765000,  units: 3 },
+      { date: "2026-08-18", gmv: 859000,  units: 4 },
+      { date: "2026-08-21", gmv: 1672000,  units: 7 },
+      { date: "2026-08-22", gmv: 1437000,  units: 6 },
+      { date: "2026-08-23", gmv: 2426000,  units: 10 },
+      { date: "2026-08-24", gmv: 255000,  units: 1 },
+      { date: "2026-08-25", gmv: 978000,  units: 4 },
+      { date: "2026-08-26", gmv: 1677000,  units: 7 },
+      { date: "2026-08-27", gmv: 1657000,  units: 7 },
+      { date: "2026-08-28", gmv: 499000,  units: 2 },
+      { date: "2026-08-29", gmv: 899000,  units: 4 },
+      { date: "2026-08-30", gmv: 1148000,  units: 5 },
+      { date: "2026-08-31", gmv: 1697000,  units: 7 },
+      { date: "2026-09-01", gmv: 2465000,  units: 10 },
+      { date: "2026-09-02", gmv: 1956000,  units: 8 },
+      { date: "2026-09-03", gmv: 2764000,  units: 11 },
+      { date: "2026-09-04", gmv: 4362000,  units: 18 },
+      { date: "2026-09-05", gmv: 2035000,  units: 10 },
+      { date: "2026-09-06", gmv: 4161000,  units: 15 },
+      { date: "2026-09-07", gmv: 6887000,  units: 28 },
+      { date: "2026-09-08", gmv: 3542000,  units: 13 },
+      { date: "2026-09-09", gmv: 2196000,  units: 9 },
+      { date: "2026-09-10", gmv: 1536000,  units: 6 },
+      { date: "2026-09-11", gmv: 998000,  units: 4 },
+      { date: "2026-09-12", gmv: 899000,  units: 4 },
+      { date: "2026-09-13", gmv: 2953000,  units: 10 },
+      { date: "2026-09-14", gmv: 1467000,  units: 6 },
+      { date: "2026-09-15", gmv: 1467000,  units: 6 },
+      { date: "2026-09-16", gmv: 998000,  units: 4 },
+      { date: "2026-09-17", gmv: 1786000,  units: 7 },
+      { date: "2026-09-18", gmv: 2097000,  units: 9 },
+      { date: "2026-09-19", gmv: 2895000,  units: 12 },
+      { date: "2026-09-20", gmv: 4099000,  units: 17 },
+      { date: "2026-09-21", gmv: 2596000,  units: 11 },
+      { date: "2026-09-22", gmv: 3594000,  units: 15 },
+      { date: "2026-09-23", gmv: 498000,  units: 2 },
+      { date: "2026-09-24", gmv: 1752000,  units: 7 },
+      { date: "2026-09-25", gmv: 928000,  units: 2 },
+      { date: "2026-09-26", gmv: 1003000,  units: 3 },
+      { date: "2026-09-27", gmv: 5129000,  units: 18 },
+      { date: "2026-09-28", gmv: 1766000,  units: 7 },
+      { date: "2026-09-29", gmv: 1647000,  units: 9 },
+      { date: "2026-09-30", gmv: 2196000,  units: 9 },
+      { date: "2026-10-01", gmv: 997000,  units: 2 },
+      { date: "2026-10-02", gmv: 3656000,  units: 11 },
+      { date: "2026-10-03", gmv: 1647000,  units: 6 },
+      { date: "2026-10-04", gmv: 998000,  units: 4 },
+      { date: "2026-10-05", gmv: 3193000,  units: 11 },
+      { date: "2026-10-06", gmv: 2445000,  units: 7 },
+      { date: "2026-10-07", gmv: 4344000,  units: 15 },
+      { date: "2026-10-08", gmv: 1745000,  units: 4 },
+      { date: "2026-10-09", gmv: 2117000,  units: 7 },
+      { date: "2026-10-11", gmv: 1746000,  units: 6 },
+      { date: "2026-10-12", gmv: 1666000,  units: 5 },
+      { date: "2026-10-13", gmv: 768000,  units: 3 },
+      { date: "2026-10-14", gmv: 1996000,  units: 8 },
+      { date: "2026-10-15", gmv: 6810000,  units: 26 },
+      { date: "2026-10-16", gmv: 3440000,  units: 11 },
+      { date: "2026-10-17", gmv: 3662000,  units: 12 },
+      { date: "2026-10-18", gmv: 2596000,  units: 11 },
+      { date: "2026-10-19", gmv: 3413000,  units: 13 },
+      { date: "2026-10-20", gmv: 2215000,  units: 8 },
+      { date: "2026-10-21", gmv: 3432000,  units: 12 },
+      { date: "2026-10-22", gmv: 3225000,  units: 12 },
+      { date: "2026-10-23", gmv: 4512000,  units: 18 },
+      { date: "2026-10-24", gmv: 499000,  units: 2 }
+    ],
+
+    dailyAdsGmv: [
+      { date: "2026-06-30", ads: 14601, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-01", ads: 41110, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-02", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-03", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-04", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-05", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-06", ads: 12845, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-07", ads: 69071, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-08", ads: 153032, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-09", ads: 136422, gmv: 0, cogs: 0, fee: 44000, vat: 0 },
+      { date: "2026-07-10", ads: 122330, gmv: 255000, cogs: 73900, fee: 82000, vat: 18889 },
+      { date: "2026-07-11", ads: 115964, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-12", ads: 228951, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-13", ads: 211283, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-14", ads: 168606, gmv: 0, cogs: 0, fee: 44000, vat: 0 },
+      { date: "2026-07-15", ads: 201087, gmv: 479000, cogs: 163300, fee: 38000, vat: 35481 },
+      { date: "2026-07-16", ads: 132022, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-17", ads: 40008, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-18", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-19", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-20", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-21", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-22", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-23", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-24", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-25", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-26", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-27", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-28", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-29", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-30", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-07-31", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-08-01", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-08-02", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-08-03", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-08-04", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-08-05", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-08-06", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-08-07", ads: 0, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-08-08", ads: 36198, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-08-09", ads: 141192, gmv: 859000, cogs: 357600, fee: 38000, vat: 63630 },
+      { date: "2026-08-10", ads: 131574, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-08-11", ads: 175131, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-08-12", ads: 33486, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-08-13", ads: 269592, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-08-14", ads: 221101, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-08-15", ads: 147390, gmv: 938000, cogs: 311100, fee: 76000, vat: 69481 },
+      { date: "2026-08-16", ads: 293679, gmv: 734000, cogs: 237200, fee: 76000, vat: 54370 },
+      { date: "2026-08-17", ads: 389298, gmv: 765000, cogs: 221700, fee: 158000, vat: 56667 },
+      { date: "2026-08-18", ads: 344322, gmv: 859000, cogs: 357600, fee: 38000, vat: 63630 },
+      { date: "2026-08-19", ads: 268613, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-08-20", ads: 169231, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-08-21", ads: 294672, gmv: 1672000, cogs: 548300, fee: 152000, vat: 123852 },
+      { date: "2026-08-22", ads: 280535, gmv: 1437000, cogs: 489900, fee: 114000, vat: 106444 },
+      { date: "2026-08-23", ads: 471711, gmv: 2426000, cogs: 801000, fee: 272000, vat: 179704 },
+      { date: "2026-08-24", ads: 585925, gmv: 255000, cogs: 73900, fee: 38000, vat: 18889 },
+      { date: "2026-08-25", ads: 435446, gmv: 978000, cogs: 326600, fee: 76000, vat: 72444 },
+      { date: "2026-08-26", ads: 461467, gmv: 1677000, cogs: 594800, fee: 114000, vat: 124222 },
+      { date: "2026-08-27", ads: 712824, gmv: 1657000, cogs: 610300, fee: 114000, vat: 122741 },
+      { date: "2026-08-28", ads: 581126, gmv: 499000, cogs: 160400, fee: 38000, vat: 36963 },
+      { date: "2026-08-29", ads: 437313, gmv: 899000, cogs: 346000, fee: 38000, vat: 66593 },
+      { date: "2026-08-30", ads: 809478, gmv: 1148000, cogs: 428600, fee: 76000, vat: 85037 },
+      { date: "2026-08-31", ads: 682647, gmv: 1697000, cogs: 589000, fee: 158000, vat: 125704 },
+      { date: "2026-09-01", ads: 655958, gmv: 2465000, cogs: 823300, fee: 190000, vat: 182593 },
+      { date: "2026-09-02", ads: 1022731, gmv: 1956000, cogs: 671776, fee: 196000, vat: 144889 },
+      { date: "2026-09-03", ads: 1307006, gmv: 2764000, cogs: 899300, fee: 228000, vat: 204741 },
+      { date: "2026-09-04", ads: 829529, gmv: 4362000, cogs: 1522600, fee: 304000, vat: 323111 },
+      { date: "2026-09-05", ads: 889945, gmv: 2035000, cogs: 834300, fee: 228000, vat: 150741 },
+      { date: "2026-09-06", ads: 1522147, gmv: 4161000, cogs: 1357300, fee: 386000, vat: 308222 },
+      { date: "2026-09-07", ads: 1442378, gmv: 6887000, cogs: 2360200, fee: 714000, vat: 510148 },
+      { date: "2026-09-08", ads: 1274274, gmv: 3542000, cogs: 1262000, fee: 436000, vat: 262370 },
+      { date: "2026-09-09", ads: 1257835, gmv: 2196000, cogs: 758100, fee: 152000, vat: 162667 },
+      { date: "2026-09-10", ads: 1173878, gmv: 1536000, cogs: 489900, fee: 152000, vat: 113778 },
+      { date: "2026-09-11", ads: 752987, gmv: 998000, cogs: 326600, fee: 120000, vat: 73926 },
+      { date: "2026-09-12", ads: 930449, gmv: 899000, cogs: 357600, fee: 82000, vat: 66593 },
+      { date: "2026-09-13", ads: 1334561, gmv: 2953000, cogs: 987300, fee: 398000, vat: 218741 },
+      { date: "2026-09-14", ads: 1147465, gmv: 1467000, cogs: 502500, fee: 158000, vat: 108667 },
+      { date: "2026-09-15", ads: 1075962, gmv: 1467000, cogs: 493800, fee: 114000, vat: 108667 },
+      { date: "2026-09-16", ads: 1260590, gmv: 998000, cogs: 320800, fee: 120000, vat: 73926 },
+      { date: "2026-09-17", ads: 850753, gmv: 1786000, cogs: 569800, fee: 152000, vat: 132296 },
+      { date: "2026-09-18", ads: 754863, gmv: 2097000, cogs: 769500, fee: 114000, vat: 155333 },
+      { date: "2026-09-19", ads: 658779, gmv: 2895000, cogs: 987600, fee: 190000, vat: 214444 },
+      { date: "2026-09-20", ads: 1350598, gmv: 4099000, cogs: 1398800, fee: 398000, vat: 303630 },
+      { date: "2026-09-21", ads: 1308770, gmv: 2596000, cogs: 926300, fee: 152000, vat: 192296 },
+      { date: "2026-09-22", ads: 1145198, gmv: 3594000, cogs: 1247100, fee: 228000, vat: 266222 },
+      { date: "2026-09-23", ads: 1038128, gmv: 498000, cogs: 312800, fee: 158000, vat: 36889 },
+      { date: "2026-09-24", ads: 1148079, gmv: 1752000, cogs: 564800, fee: 246000, vat: 129778 },
+      { date: "2026-09-25", ads: 1294206, gmv: 928000, cogs: 294300, fee: 208000, vat: 68741 },
+      { date: "2026-09-26", ads: 979091, gmv: 1003000, cogs: 318700, fee: 38000, vat: 74296 },
+      { date: "2026-09-27", ads: 1485600, gmv: 5129000, cogs: 1786500, fee: 462000, vat: 379926 },
+      { date: "2026-09-28", ads: 998032, gmv: 1766000, cogs: 566800, fee: 152000, vat: 130815 },
+      { date: "2026-09-29", ads: 1506931, gmv: 1647000, cogs: 830100, fee: 202000, vat: 122000 },
+      { date: "2026-09-30", ads: 1254570, gmv: 2196000, cogs: 797100, fee: 196000, vat: 162667 },
+      { date: "2026-10-01", ads: 850659, gmv: 997000, cogs: 329300, fee: 158000, vat: 73852 },
+      { date: "2026-10-02", ads: 1018485, gmv: 3656000, cogs: 1225400, fee: 228000, vat: 270815 },
+      { date: "2026-10-03", ads: 711995, gmv: 1647000, cogs: 608400, fee: 114000, vat: 122000 },
+      { date: "2026-10-04", ads: 845284, gmv: 998000, cogs: 328600, fee: 76000, vat: 73926 },
+      { date: "2026-10-05", ads: 903498, gmv: 3193000, cogs: 1109900, fee: 310000, vat: 236519 },
+      { date: "2026-10-06", ads: 749146, gmv: 2445000, cogs: 880300, fee: 190000, vat: 181111 },
+      { date: "2026-10-07", ads: 762091, gmv: 4344000, cogs: 1897300, fee: 266000, vat: 184963 },
+      { date: "2026-10-08", ads: 601961, gmv: 1745000, cogs: 643400, fee: 190000, vat: 0 },
+      { date: "2026-10-09", ads: 627100, gmv: 2117000, cogs: 875700, fee: 196000, vat: 0 },
+      { date: "2026-10-10", ads: 446840, gmv: 0, cogs: 0, fee: 0, vat: 0 },
+      { date: "2026-10-11", ads: 936521, gmv: 1746000, cogs: 646600, fee: 196000, vat: 0 },
+      { date: "2026-10-12", ads: 785071, gmv: 1666000, cogs: 672300, fee: 196000, vat: 0 },
+      { date: "2026-10-13", ads: 566401, gmv: 768000, cogs: 271300, fee: 76000, vat: 0 },
+      { date: "2026-10-14", ads: 817057, gmv: 1996000, cogs: 754800, fee: 152000, vat: 0 },
+      { date: "2026-10-15", ads: 714254, gmv: 6810000, cogs: 2691400, fee: 576000, vat: 0 },
+      { date: "2026-10-16", ads: 940694, gmv: 3440000, cogs: 1322300, fee: 304000, vat: 0 },
+      { date: "2026-10-17", ads: 823932, gmv: 3662000, cogs: 1441100, fee: 304000, vat: 0 },
+      { date: "2026-10-18", ads: 1394313, gmv: 2596000, cogs: 1059900, fee: 152000, vat: 0 },
+      { date: "2026-10-19", ads: 1098042, gmv: 3413000, cogs: 1352900, fee: 266000, vat: 0 },
+      { date: "2026-10-20", ads: 1070088, gmv: 2215000, cogs: 850000, fee: 190000, vat: 0 },
+      { date: "2026-10-21", ads: 1035555, gmv: 3432000, cogs: 1386800, fee: 304000, vat: 0 },
+      { date: "2026-10-22", ads: 937561, gmv: 3225000, cogs: 1384200, fee: 190000, vat: 0 },
+      { date: "2026-10-23", ads: 1405159, gmv: 4512000, cogs: 1855400, fee: 304000, vat: 0 },
+      { date: "2026-10-24", ads: 367732, gmv: 499000, cogs: 185200, fee: 38000, vat: 0 }
+    ],
+
+    accounts: [
+      { id: "acc1", name: "TK chính", period: "chạy từ 30/06", spend: 49909995, reach: 89749, newContacts: 1797, purchases: 308 },
+      { id: "acc2", name: "TK phụ", period: "chạy 01/09 → 03/10", spend: 6368684, reach: 18681, newContacts: 113, purchases: 20 },
+      { id: "acc3", name: "TK HongKong", period: "chạy 19/09 → 03/10", spend: 1977694, reach: 4461, newContacts: 31, purchases: 4 }
+    ],
+    campaigns: [
+      { name: "Mess | 30Jun", sku: "65101", account: "acc1", status: "inactive", spend: 50647, contacts: 12, purchases: null, revenue: null, roas: null },
+      { name: "Mess | 06Jul", sku: "65101", account: "acc1", status: "inactive", spend: 1076926, contacts: 125, purchases: 3, revenue: null, roas: null },
+      { name: "GMV | 11Jul", sku: "65101", account: "acc1", status: "inactive", spend: 370001, contacts: 45, purchases: null, revenue: null, roas: null },
+      { name: "GMV | 8Aug", sku: "65101", account: "acc1", status: "inactive", spend: 7151495, contacts: 233, purchases: 37, revenue: 15165000, roas: 2.120536 },
+      { name: "Inbox | 11Aug", sku: "65101", account: "acc1", status: "active", spend: 21984928, contacts: 798, purchases: 170, revenue: 80243000, roas: 3.649910 },
+      { name: "GMV | 20Aug", sku: "65101", account: "acc1", status: "inactive", spend: 4264986, contacts: 64, purchases: 23, revenue: 11723000, roas: 2.748661 },
+      { name: "Inbox | 24Aug", sku: "65101", account: "acc1", status: "inactive", spend: 2784561, contacts: 96, purchases: 8, revenue: 3173000, roas: 1.139497 },
+      { name: "Inbox | 26Aug", sku: "2608", account: "acc1", status: "inactive", spend: 1766529, contacts: 55, purchases: 9, revenue: 4113000, roas: 2.328295 },
+      { name: "Test content | Inbox | 22Sep", sku: "65101", account: "acc1", status: "inactive", spend: 2836069, contacts: 40, purchases: 10, revenue: 4036000, roas: 1.423097 },
+      { name: "Mess-Purchase | 22Sep (83011)", sku: "83011", account: "acc1", status: "active", spend: 4230931, contacts: 202, purchases: 33, revenue: 6291000, roas: 1.486907 },
+      { name: "Mess-Purchase | 15Oct", sku: "65101", account: "acc1", status: "active", spend: 880283, contacts: 57, purchases: 9, revenue: 4772000, roas: 5.420984 },
+      { name: "Mess-Lead | 16Oct", sku: "65101", account: "acc1", status: "active", spend: 1792556, contacts: 46, purchases: 5, revenue: 3764000, roas: 2.099795 },
+      { name: "Mess-Purchase | 16Oct", sku: "65101", account: "acc1", status: "active", spend: 720083, contacts: 24, purchases: 1, revenue: 499000, roas: 0.692976 },
+      { name: "Inbox | 1Sep", sku: "65101", account: "acc2", status: "inactive", spend: 3452286, contacts: 80, purchases: 12, revenue: 5190000, roas: 1.503352 },
+      { name: "Inbox | 14Sep", sku: "65101", account: "acc2", status: "inactive", spend: 1744174, contacts: 20, purchases: 7, revenue: 3683000, roas: 2.111601 },
+      { name: "Inbox | 14Sep (83011)", sku: "83011", account: "acc2", status: "inactive", spend: 2906, contacts: 0, purchases: null, revenue: null, roas: null },
+      { name: "GMV-CVS | 19Sep", sku: "65101", account: "acc2", status: "inactive", spend: 193892, contacts: 0, purchases: null, revenue: null, roas: null },
+      { name: "Inbox | 20Sep", sku: "65101", account: "acc2", status: "inactive", spend: 975426, contacts: 13, purchases: 1, revenue: 499000, roas: 0.511571 },
+      { name: "GMV | 19Sep", sku: "65101", account: "acc3", status: "inactive", spend: 689035, contacts: 20, purchases: null, revenue: null, roas: null },
+      { name: "Inbox | 22Sep", sku: "65101", account: "acc3", status: "inactive", spend: 1288659, contacts: 11, purchases: 4, revenue: 1247000, roas: 0.967673 }
+    ],
+
+    skuPnl: [
+      { code: "65101", pcs: 541, giftPcs: 0, revenue: 129354100, cogs: 41467900, giftCost: 5397783, giftCostOwn: 0, fee: 10478131, vat: 6919094 },
+      { code: "83011", pcs: 270, giftPcs: 256, revenue: 13063000, cogs: 4683500, giftCost: 0, giftCostOwn: 4309500, fee: 2038150, vat: 511630 },
+      { code: "2568", pcs: 15, giftPcs: 0, revenue: 3370400, cogs: 1268100, giftCost: 104400, giftCostOwn: 0, fee: 253892, vat: 94844 },
+      { code: "2608", pcs: 14, giftPcs: 0, revenue: 2915000, cogs: 1117200, giftCost: 103700, giftCostOwn: 0, fee: 314553, vat: 215926 },
+      { code: "65123", pcs: 10, giftPcs: 0, revenue: 2614167, cogs: 1028000, giftCost: 103467, giftCostOwn: 0, fee: 273000, vat: 101185 },
+      { code: "5601", pcs: 4, giftPcs: 0, revenue: 993333, cogs: 294800, giftCost: 14950, giftCostOwn: 0, fee: 50828, vat: 55173 },
+      { code: "2402", pcs: 10, giftPcs: 111, revenue: 429000, cogs: 126000, giftCost: 0, giftCostOwn: 1398600, fee: 165447, vat: 31778 },
+      { code: "65192", pcs: 1, giftPcs: 0, revenue: 289000, cogs: 91476, giftCost: 0, giftCostOwn: 0, fee: 38000, vat: 21407 },
+      { code: "SCL888", pcs: 0, giftPcs: 1, revenue: 0, cogs: 0, giftCost: 0, giftCostOwn: 16200, fee: 22000, vat: 0 }
+    ],
+
+    payments: [
+      { account: "acc3", date: "2026-10-01", amount: 376766,  status: "paid" },
+      { account: "acc1", date: "2026-09-30", amount: 2500154, status: "paid" },
+      { account: "acc3", date: "2026-09-29", amount: 235165,  status: "paid" },
+      { account: "acc3", date: "2026-09-28", amount: 235165,  status: "paid" },
+      { account: "acc3", date: "2026-09-27", amount: 235165,  status: "paid" },
+      { account: "acc1", date: "2026-09-26", amount: 3000000, status: "paid" },
+      { account: "acc3", date: "2026-09-25", amount: 235165,  status: "paid" },
+      { account: "acc3", date: "2026-09-24", amount: 133086,  status: "paid" },
+      { account: "acc2", date: "2026-09-23", amount: 5285379, status: "paid" },
+      { account: "acc3", date: "2026-09-23", amount: 133086,  status: "paid" },
+      { account: "acc1", date: "2026-09-22", amount: 2005198, status: "paid" },
+      { account: "acc3", date: "2026-09-22", amount: 133086,  status: "paid" },
+      { account: "acc1", date: "2026-09-20", amount: 2005198, status: "paid" },
+      { account: "acc3", date: "2026-09-20", amount: 52270,   status: "paid" },
+      { account: "acc1", date: "2026-09-16", amount: 2005198, status: "paid" },
+      { account: "acc1", date: "2026-09-14", amount: 2005198, status: "paid" },
+      { account: "acc1", date: "2026-09-12", amount: 2005198, status: "paid" },
+      { account: "acc1", date: "2026-09-10", amount: 2005198, status: "paid" },
+      { account: "acc1", date: "2026-09-08", amount: 2005198, status: "paid" },
+      { account: "acc1", date: "2026-09-06", amount: 1650000, status: "paid" },
+      { account: "acc1", date: "2026-09-04", amount: 990000,  status: "paid" },
+      { account: "acc1", date: "2026-09-03", amount: 990000,  status: "paid" },
+      { account: "acc1", date: "2026-09-02", amount: 990000,  status: "paid" },
+      { account: "acc1", date: "2026-08-31", amount: 990000,  status: "paid" },
+      { account: "acc1", date: "2026-08-30", amount: 933076,  status: "paid" },
+      { account: "acc1", date: "2026-08-28", amount: 990000,  status: "paid" },
+      { account: "acc1", date: "2026-08-26", amount: 990000,  status: "paid" },
+      { account: "acc1", date: "2026-08-24", amount: 990000,  status: "paid" },
+      { account: "acc1", date: "2026-08-22", amount: 496331,  status: "paid" },
+      { account: "acc1", date: "2026-08-20", amount: 496331,  status: "paid" },
+      { account: "acc1", date: "2026-08-18", amount: 496331,  status: "paid" },
+      { account: "acc1", date: "2026-08-17", amount: 496331,  status: "paid" },
+      { account: "acc1", date: "2026-08-14", amount: 496331,  status: "paid" },
+      { account: "acc1", date: "2026-08-12", amount: 496647,  status: "paid" },
+      { account: "acc1", date: "2026-08-12", amount: 496331,  status: "failed" },
+      { account: "acc1", date: "2026-07-30", amount: 158830,  status: "paid" },
+      { account: "acc1", date: "2026-07-16", amount: 496331,  status: "paid" },
+      { account: "acc1", date: "2026-07-13", amount: 365376,  status: "paid" },
+      { account: "acc1", date: "2026-07-11", amount: 290011,  status: "paid" },
+      { account: "acc1", date: "2026-07-09", amount: 79811,   status: "paid" },
+      { account: "acc1", date: "2026-07-08", amount: 79811,   status: "paid" },
+      { account: "acc1", date: "2026-07-08", amount: 61299,   status: "paid" },
+      { account: "acc1", date: "2026-07-07", amount: 58114,   status: "paid" },
+      { account: "acc1", date: "2026-07-06", amount: 57750,   status: "paid" }
+    ],
+    billingBalances: { asOf: "2026-10-03", items: [ { account: "acc1", amount: 2386121 }, { account: "acc2", amount: 1621574 }, { account: "acc3", amount: 201498 } ] },
+
+    orderBehavior: {
+      hourly: [
+        { hour: 0, orders: 0, gmv: 0 }, { hour: 1, orders: 0, gmv: 0 }, { hour: 2, orders: 0, gmv: 0 },
+        { hour: 3, orders: 0, gmv: 0 }, { hour: 4, orders: 2, gmv: 748000 }, { hour: 5, orders: 0, gmv: 0 },
+        { hour: 6, orders: 11, gmv: 4090000 }, { hour: 7, orders: 14, gmv: 6287000 }, { hour: 8, orders: 22, gmv: 10195000 },
+        { hour: 9, orders: 24, gmv: 11319000 }, { hour: 10, orders: 19, gmv: 8165000 }, { hour: 11, orders: 19, gmv: 8057000 },
+        { hour: 12, orders: 29, gmv: 12430000 }, { hour: 13, orders: 28, gmv: 13167000 }, { hour: 14, orders: 32, gmv: 16205000 },
+        { hour: 15, orders: 20, gmv: 9882000 }, { hour: 16, orders: 21, gmv: 8734000 }, { hour: 17, orders: 18, gmv: 8054000 },
+        { hour: 18, orders: 8, gmv: 3124000 }, { hour: 19, orders: 17, gmv: 6506000 }, { hour: 20, orders: 31, gmv: 13204000 },
+        { hour: 21, orders: 21, gmv: 6293000 }, { hour: 22, orders: 12, gmv: 4862000 }, { hour: 23, orders: 4, gmv: 1706000 }
+      ],
+      weekday: [
+        { label: "T2", orders: 59, gmv: 23705000 },
+        { label: "T3", orders: 46, gmv: 19980000 },
+        { label: "T4", orders: 44, gmv: 19772000 },
+        { label: "T5", orders: 53, gmv: 22272000 },
+        { label: "T6", orders: 53, gmv: 24536000 },
+        { label: "T7", orders: 32, gmv: 15914000 },
+        { label: "CN", orders: 65, gmv: 26849000 }
+      ],
+      topProvinces: [
+        { name: "Hà Nội",             orders: 45,  gmv: 20910000 },
+        { name: "Hồ Chí Minh",        orders: 34,  gmv: 15657000 },
+        { name: "Quảng Ninh",         orders: 19,  gmv: 7674000 },
+        { name: "Bình Dương",         orders: 14,  gmv: 7077000 },
+        { name: "Bắc Ninh",           orders: 14,  gmv: 5646000 },
+        { name: "Đắk Lắk",            orders: 14,  gmv: 5252000 }
+      ],
+      otherProvinces: { count: 54, orders: 212, gmv: 90812000 },
+      repeatCustomers: 35,
+      uniqueCustomers: 303,
+      repeatOrders: 81,
+      incrementalRepeatOrders: 46
+    }
+  };
+
+  /* ============================================================ */
+
+  const NBSP = " ";
+  const vnd = n => n === null || n === undefined
+    ? null
+    : new Intl.NumberFormat("vi-VN").format(Math.round(n)) + NBSP + "₫";
+  const num = n => n === null || n === undefined ? null : new Intl.NumberFormat("vi-VN").format(n);
+  const pct = n => n === null || n === undefined ? null : (n * 100).toLocaleString("vi-VN", { maximumFractionDigits: 1 }) + "%";
+
+  function fmtDate(iso) {
+    const [y, m, d] = iso.split("-");
+    return `${d}/${m}/${y}`;
+  }
+  document.getElementById("updated-pill").textContent = "Cập nhật lần cuối: " + fmtDate(DATA.updatedAt);
+  document.getElementById("period-note").textContent = DATA.period;
+
+  const P = DATA.pnl;
+  const cogsRate = P.cogs / P.revenue;               // tỷ lệ giá vốn THỰC, không còn giả định 50%
+  const fees = P.feeSuccess + P.feeReturn;
+  const grossMargin = P.revenue - P.cogs;
+  const profitBeforeAds = grossMargin - fees - P.vatOutput;
+  const adsCost = DATA.dailyAdsGmv.reduce((s, d) => s + d.ads, 0);
+  const profit = profitBeforeAds - adsCost;
+  const margin = profit / P.revenue;
+  const returnRateOrders = P.ordersReturned / P.ordersTotal;
+  const revenuePerOrder = P.revenue / P.ordersSuccess;
+  const profitPerOrder = profit / P.ordersSuccess;
+  const feePerOrder = fees / P.ordersTotal;
+  const unitsPerOrder = P.unitsSold / P.ordersSuccess;
+  const adsToRevenue = adsCost / P.revenue;
+  const breakevenAdsPerOrder = profitBeforeAds / P.ordersSuccess;
+
+  function computeCumulativeProfitSeries() {
+    let cum = 0;
+    return DATA.dailyAdsGmv.map(d => {
+      cum += d.gmv - (d.cogs || 0) - (d.fee || 0) - (d.vat || 0) - d.ads;
+      return { date: d.date, value: cum };
+    });
+  }
+  const cumulativeProfitSeries = computeCumulativeProfitSeries();
+
+  const heroEl = document.getElementById("hero-profit");
+  heroEl.innerHTML = (profit < 0 ? '<span class="sign">−</span>' : '') + vnd(Math.abs(profit));
+  if (profit < 0) heroEl.style.color = "var(--critical)";
+
+  (function renderHeroStatus() {
+    const el = document.getElementById("hero-status");
+    let cls, label;
+    if (margin >= 0.03) { cls = "good"; label = "ĐANG CÓ LÃI"; }
+    else if (margin <= -0.03) { cls = "bad"; label = "ĐANG LỖ"; }
+    else { cls = "warn"; label = "SÁT HOÀ VỐN"; }
+    el.className = "hero-status-badge " + cls;
+    el.innerHTML = `<span class="dot"></span>${label}`;
+  })();
+
+  (function renderHeroTrend() {
+    const el = document.getElementById("hero-trend");
+    const series = cumulativeProfitSeries;
+    if (series.length < 2) { el.remove(); return; }
+
+    const W = 150, H = 34, PAD = 2;
+    const n = series.length;
+    const values = series.map(p => p.value);
+    const minV = Math.min(...values, 0), maxV = Math.max(...values, 0);
+    const range = Math.max(maxV - minV, 1);
+    const xPos = i => PAD + (i / (n - 1)) * (W - PAD * 2);
+    const yPos = v => H - PAD - ((v - minV) / range) * (H - PAD * 2);
+    const last = values[n - 1];
+    const lineColor = last >= 0 ? "var(--good)" : "var(--critical)";
+    const path = series.map((p, i) => `${i === 0 ? "M" : "L"}${xPos(i).toFixed(1)},${yPos(p.value).toFixed(1)}`).join(" ");
+    const zeroY = yPos(0).toFixed(1);
+    const sparkSvg = `<svg class="hero-sparkline" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+      <line x1="0" y1="${zeroY}" x2="${W}" y2="${zeroY}" stroke="var(--ink-faint)" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"></line>
+      <path d="${path}" fill="none" stroke="${lineColor}" stroke-width="2"></path>
+      <circle cx="${xPos(n - 1).toFixed(1)}" cy="${yPos(last).toFixed(1)}" r="3" fill="${lineColor}"></circle>
+    </svg>`;
+
+    function deltaChip(label, from) {
+      if (from === undefined || from === null) return "";
+      const d = last - from;
+      const cls = Math.abs(d) < 1 ? "flat" : d > 0 ? "good" : "bad";
+      const arrow = Math.abs(d) < 1 ? "→" : d > 0 ? "▲" : "▼";
+      return `<div class="hero-delta"><span class="lbl">${label}</span><span class="val ${cls}">${arrow} ${vnd(Math.abs(d))}</span></div>`;
+    }
+    const deltas = [
+      deltaChip("So với hôm qua", n >= 2 ? values[n - 2] : undefined),
+      deltaChip("So với 7 ngày trước", n >= 8 ? values[n - 8] : undefined)
+    ].join("");
+
+    el.innerHTML = sparkSvg + `<div class="hero-deltas">${deltas}</div>`;
+  })();
+
+  (function renderHeroCaveats() {
+    const el = document.getElementById("hero-caveats");
+    const caveats = DATA.caveats || [];
+    if (!caveats.length) { el.remove(); return; }
+    el.innerHTML = caveats.map(c => `<div class="hero-caveat">⚠ ${c}</div>`).join("");
+  })();
+
+  function chip(label, value, opts) {
+    opts = opts || {};
+    return `<span class="stat-chip${opts.accent ? " accent" : ""}"><span class="chip-label">${label}</span><span class="chip-value">${value}</span></span>`;
+  }
+  document.getElementById("hero-sub").innerHTML = `
+      <div class="chip-row">
+        ${chip("Doanh thu", vnd(P.revenue))}
+        <span class="op">−</span>
+        ${chip("Giá vốn (" + pct(cogsRate) + ")", vnd(P.cogs))}
+        <span class="op">=</span>
+        ${chip("Lãi gộp", vnd(grossMargin), { accent: true })}
+      </div>
+      <div class="chip-row">
+        <span class="op">−</span>
+        ${chip("Phí ship+fulfillment", vnd(fees))}
+        <span class="op">−</span>
+        ${chip("VAT 8% (chỉ shop AUF)", vnd(P.vatOutput))}
+        <span class="op">−</span>
+        ${chip("Ads (đã VAT)", vnd(adsCost))}
+        <span class="op">=</span>
+        ${chip("Lợi nhuận", vnd(profit), { accent: true })}
+      </div>`;
+
+  const kpis = [
+    { label: "Tổng số đơn", display: num(P.ordersTotal) + NBSP + "đơn", accent: "var(--ink-faint)" },
+    { label: "Đơn thành công", display: num(P.ordersSuccess), accent: "var(--good)" },
+    { label: "Đơn hoàn", display: num(P.ordersReturned), accent: "var(--critical)" },
+    { label: "Tỷ lệ hoàn (đơn / giá trị)", display: pct(returnRateOrders) + " / " + pct(P.returnRateValue), accent: "var(--critical)", hint: vnd(P.returnedRevenueLost) + " doanh thu mất" },
+    { label: "Số SP bán ra", display: num(P.unitsSold) + NBSP + "cái", accent: "var(--ink-faint)", hint: unitsPerOrder.toLocaleString("vi-VN", { maximumFractionDigits: 1 }) + " cái/đơn" },
+    { label: "Doanh thu BQ / đơn TC", display: vnd(revenuePerOrder), accent: "var(--ink-faint)" },
+    { label: "Lợi nhuận BQ / đơn TC", display: vnd(profitPerOrder), accent: "var(--good)" },
+    { label: "% Ads / Doanh thu", display: pct(adsToRevenue), accent: "var(--critical)", hint: "Hoà vốn ở " + vnd(breakevenAdsPerOrder) + "/đơn TC" },
+    { label: "Biên lợi nhuận", display: pct(margin), accent: "var(--good)" },
+    { label: "Phí BQ / đơn", display: vnd(feePerOrder), accent: "var(--accent)", hint: "38k thường · 44k hoàn" },
+    { label: "VAT 8% (chỉ đơn shop AUF)", display: vnd(P.vatOutput), accent: "var(--ink-soft)", hint: "Shop SAN (từ 07/10) không mất VAT — tiết kiệm " + vnd(P.vatSaved) + " trên " + vnd(P.revenueSan) + " DT" }
+  ];
+  document.getElementById("kpi-grid").innerHTML = kpis.map(k => `<div class="kpi" style="--kpi-accent:${k.accent}">
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-value">${k.display}</div>
+      ${k.hint ? `<div class="kpi-hint">${k.hint}</div>` : ""}
+    </div>`).join("");
+
+  (function renderMonthly() {
+    const months = DATA.monthly.map(m => {
+      const totalCost = m.cogs + m.fee + m.vat + m.ads;
+      const monthProfit = m.revenue - totalCost;
+      const monthMargin = monthProfit / m.revenue;
+      const costPct = totalCost / m.revenue;
+      const adsPct = m.ads / m.revenue; // % Ads (đã VAT 10%) trên doanh thu
+      return Object.assign({}, m, { totalCost, profit: monthProfit, margin: monthMargin, costPct, adsPct });
+    }).reverse(); // tháng gần nhất hiển thị trước/bên trái
+
+    const W = 700, H = 400;
+    const marginLeft = 54, marginRight = 10, marginTop = 40, marginBottom = 46;
+    const plotW = W - marginLeft - marginRight, plotH = H - marginTop - marginBottom;
+    const plotBottom = marginTop + plotH;
+    const n = months.length;
+    const maxVal = Math.max(...months.map(m => Math.max(m.revenue, m.totalCost)), 1);
+    const { ticks, niceMax } = niceTicks(maxVal * 1.08, 4);
+    const yPos = v => plotBottom - (v / niceMax) * plotH;
+    const slotW = plotW / n;
+    const barW = slotW * 0.28;
+    const gap = slotW * 0.08;
+
+    const axisSvg = ticks.map(t => {
+      const y = yPos(t).toFixed(1);
+      return `<line class="combo-gridline" x1="${marginLeft}" y1="${y}" x2="${W - marginRight}" y2="${y}"></line>` +
+        `<text class="combo-axis-label" x="${marginLeft - 6}" y="${(+y + 3).toFixed(1)}" text-anchor="end">${fmtCompactVnd(t)}</text>`;
+    }).join("");
+
+    const COST_COLORS = { cogs: "var(--warn)", fee: "var(--ink-faint)", vat: "var(--ink-soft)", ads: "var(--critical)" };
+    const COST_LABELS = { cogs: "Giá vốn", fee: "Phí ship+fulfillment", vat: "VAT đầu ra", ads: "Quảng cáo" };
+
+    const barsSvg = months.map((m, i) => {
+      const cx = marginLeft + slotW * i + slotW / 2;
+      const revX = cx - gap / 2 - barW;
+      const costX = cx + gap / 2;
+      const revY = yPos(m.revenue);
+      const revBar = `<rect x="${revX.toFixed(1)}" y="${revY.toFixed(1)}" width="${barW.toFixed(1)}" height="${(plotBottom - revY).toFixed(1)}" rx="3" fill="var(--accent)"><title>${m.label} · Doanh thu: ${vnd(m.revenue)}</title></rect>`;
+      let stackY = plotBottom;
+      const segs = ["cogs", "fee", "vat", "ads"].map(key => {
+        const h = (m[key] / niceMax) * plotH;
+        const y = stackY - h;
+        const rect = `<rect x="${costX.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${Math.max(h, 0.5).toFixed(1)}" fill="${COST_COLORS[key]}"><title>${m.label} · ${COST_LABELS[key]}: ${vnd(m[key])}</title></rect>`;
+        stackY = y;
+        return rect;
+      }).join("");
+      const profitColor = m.profit >= 0 ? "var(--good)" : "var(--critical)";
+      const labelY = Math.min(revY, yPos(m.totalCost)) - 10;
+      const profitLabel = `<text x="${cx.toFixed(1)}" y="${labelY.toFixed(1)}" text-anchor="middle" font-size="12" font-weight="650" fill="${profitColor}">${m.profit < 0 ? "−" : ""}${vnd(Math.abs(m.profit))} (${pct(Math.abs(m.margin))}${m.profit < 0 ? " lỗ" : ""})</text>`;
+      const xLabel = `<text class="combo-x-label" x="${cx.toFixed(1)}" y="${(plotBottom + 18).toFixed(1)}">${m.label}${m.partial ? " (1 phần tháng)" : ""}</text>`;
+      return revBar + segs + profitLabel + xLabel;
+    }).join("");
+
+    document.getElementById("monthly-chart").innerHTML = axisSvg + barsSvg;
+    document.getElementById("monthly-legend").innerHTML =
+      `<span class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span>Doanh thu</span>` +
+      Object.keys(COST_COLORS).map(k => `<span class="legend-item"><span class="legend-dot" style="background:${COST_COLORS[k]}"></span>${COST_LABELS[k]}</span>`).join("");
+
+    document.getElementById("monthly-tbody").innerHTML = months.map(m => `
+      <tr>
+        <td>${m.label}${m.partial ? ` <span class="dim" style="font-size:11px;">(1 phần tháng)</span>` : ""}</td>
+        <td class="num">${num(m.orders)}${m.returned ? ` <span class="dim">(${num(m.returned)} hoàn)</span>` : ""}</td>
+        <td class="num">${vnd(m.revenue)}</td>
+        <td class="num">${vnd(m.cogs)}</td>
+        <td class="num">${vnd(m.fee)}</td>
+        <td class="num">${vnd(m.vat)}</td>
+        <td class="num">${vnd(m.ads)}</td>
+        <td class="num">${pct(m.adsPct)}</td>
+        <td class="num">${pct(m.costPct)}</td>
+        <td class="num ${m.profit < 0 ? "neg" : "pos"}">${m.profit < 0 ? "−" : ""}${vnd(Math.abs(m.profit))}</td>
+        <td class="num ${m.margin < 0 ? "neg" : "pos"}">${m.margin < 0 ? "−" : ""}${pct(Math.abs(m.margin))}</td>
+        <td>${m.topSku}</td>
+      </tr>
+    `).join("");
+
+    const tot = months.reduce((s, m) => ({
+      orders: s.orders + m.orders, returned: s.returned + m.returned, revenue: s.revenue + m.revenue,
+      cogs: s.cogs + m.cogs, fee: s.fee + m.fee, vat: s.vat + m.vat, ads: s.ads + m.ads
+    }), { orders: 0, returned: 0, revenue: 0, cogs: 0, fee: 0, vat: 0, ads: 0 });
+    const totCost = tot.cogs + tot.fee + tot.vat + tot.ads;
+    const totProfit = tot.revenue - totCost;
+    document.getElementById("monthly-total-row").innerHTML = `
+      <td>Tổng cộng</td><td class="num">${num(tot.orders)}</td><td class="num">${vnd(tot.revenue)}</td>
+      <td class="num">${vnd(tot.cogs)}</td><td class="num">${vnd(tot.fee)}</td><td class="num">${vnd(tot.vat)}</td>
+      <td class="num">${vnd(tot.ads)}</td><td class="num">${pct(tot.ads / tot.revenue)}</td><td class="num">${pct(totCost / tot.revenue)}</td>
+      <td class="num">${vnd(totProfit)}</td><td class="num">${pct(totProfit / tot.revenue)}</td><td>—</td>
+    `;
+  })();
+
+  const ACC_COLOR = { acc1: "var(--accent)", acc2: "var(--good)", acc3: "var(--warn)" };
+  const ACC_NAME = Object.fromEntries(DATA.accounts.map(a => [a.id, a.name]));
+  function blendedRoasFor(campaignList) {
+    const rev = campaignList.reduce((s, c) => s + (c.revenue || 0), 0);
+    const spend = campaignList.filter(c => c.revenue).reduce((s, c) => s + c.spend, 0);
+    return spend ? rev / spend : null;
+  }
+  const breakevenRoas = 1 / (1 - cogsRate);
+  const breakevenAcos = 1 - cogsRate;
+  const at = DATA.accounts.reduce((s, a) => ({
+    spend: s.spend + a.spend,
+    reach: s.reach + a.reach,
+    newContacts: s.newContacts + a.newContacts,
+    purchases: s.purchases + a.purchases
+  }), { spend: 0, reach: 0, newContacts: 0, purchases: 0 });
+  const trackedRevenue = DATA.campaigns.reduce((s, c) => s + (c.revenue || 0), 0);
+  const trackedSpend = DATA.campaigns.filter(c => c.revenue).reduce((s, c) => s + c.spend, 0);
+  const blendedRoas = trackedRevenue / trackedSpend;
+  const blendedAcos = trackedRevenue ? trackedSpend / trackedRevenue : null;
+  const adTiles = [
+    { label: "Tổng chi tiêu (lũy kế)", value: vnd(at.spend) },
+    { label: `ROAS b.quân (${DATA.campaigns.filter(c => c.revenue).length} CD có ROI)`, value: blendedRoas.toLocaleString("vi-VN", { maximumFractionDigits: 2 }) + "x" },
+    { label: `ACOS lũy kế (${DATA.campaigns.filter(c => c.revenue).length} CD có ROI)`, value: blendedAcos !== null ? `<span class="${blendedAcos <= breakevenAcos ? "roas-good" : "roas-bad"}">${pct(blendedAcos)}</span>` : "—", hint: `Hoà vốn ở ${pct(breakevenAcos)}` },
+    { label: "Tổng liên hệ nhắn tin", value: num(at.newContacts) },
+    { label: "Lượt mua ghi nhận", value: num(at.purchases) }
+  ];
+  document.getElementById("ad-tiles").innerHTML = adTiles.map(t =>
+    `<div class="tile"><div class="tile-label">${t.label}</div><div class="tile-value">${t.value}</div>${t.hint ? `<div class="kpi-hint">${t.hint}</div>` : ""}</div>`
+  ).join("");
+
+
+  function fmtDayLabel(iso) {
+    const [, m, d] = iso.split("-");
+    return `${d}/${m}`;
+  }
+
+  function attachChartHover(svg, xPos, n, onHover, onLeave) {
+    function svgPointFromEvent(evt) {
+      const src = evt.touches && evt.touches.length ? evt.touches[0] : evt;
+      const pt = svg.createSVGPoint();
+      pt.x = src.clientX;
+      pt.y = src.clientY;
+      const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
+      return { x: svgP.x, clientX: src.clientX, clientY: src.clientY };
+    }
+    function nearestIndex(x) {
+      let idx = 0, minDist = Infinity;
+      for (let i = 0; i < n; i++) {
+        const d = Math.abs(xPos(i) - x);
+        if (d < minDist) { minDist = d; idx = i; }
+      }
+      return idx;
+    }
+    function handleMove(evt) {
+      const p = svgPointFromEvent(evt);
+      onHover(nearestIndex(p.x), p.clientX, p.clientY);
+      if (evt.cancelable) evt.preventDefault();
+    }
+    function handleLeave() { onLeave(); hideChartTooltip(); }
+    svg.addEventListener("mousemove", handleMove);
+    svg.addEventListener("mouseleave", handleLeave);
+    svg.addEventListener("touchstart", handleMove, { passive: false });
+    svg.addEventListener("touchmove", handleMove, { passive: false });
+    svg.addEventListener("touchend", handleLeave);
+  }
+  function showChartTooltip(clientX, clientY, html) {
+    const tt = document.getElementById("chart-tooltip");
+    tt.innerHTML = html;
+    tt.style.left = clientX + "px";
+    tt.style.top = clientY + "px";
+    tt.style.transform = "translate(-50%, calc(-100% - 12px))";
+    tt.classList.add("visible");
+    const rect = tt.getBoundingClientRect();
+    const translateY = rect.top < 4 ? "12px" : "calc(-100% - 12px)";
+    const translateX = rect.left < 4 ? "0%" : rect.right > window.innerWidth - 4 ? "-100%" : "-50%";
+    tt.style.transform = `translate(${translateX}, ${translateY})`;
+  }
+  function hideChartTooltip() {
+    document.getElementById("chart-tooltip").classList.remove("visible");
+  }
+  function ttRow(label, value, color) {
+    return `<div class="tt-row"><span class="tt-label">${label}</span><span class="tt-value"${color ? ` style="color:${color}"` : ""}>${value}</span></div>`;
+  }
+
+  function renderBarChart(elId, series, valueFmt, color) {
+    const TRACK_PX = 110;
+    const maxV = Math.max(...series.map(d => d.value), 1);
+    document.getElementById(elId).innerHTML = series.map(d => {
+      const h = Math.max(Math.round((d.value / maxV) * TRACK_PX), d.value > 0 ? 3 : 0);
+      const isToday = d.date === DATA.updatedAt;
+      return `<div class="bar-col${isToday ? " today" : ""}" title="${fmtDayLabel(d.date)}: ${valueFmt(d.value)}">
+        <div class="bar-val">${d.value ? valueFmt(d.value) : ""}</div>
+        <div class="bar-track"><div class="bar-shape" style="height:${h}px; --bar-color:${color}"></div></div>
+        <div class="bar-label">${fmtDayLabel(d.date)}</div>
+      </div>`;
+    }).join("");
+  }
+  renderBarChart("units-chart", DATA.dailySales.map(d => ({ date: d.date, value: d.units })).reverse(), v => num(v), "var(--good)");
+
+  const breakevenAdsGmv = (1 - cogsRate) * 100;
+  function niceNumber(x) {
+    const exp = Math.floor(Math.log10(x));
+    const f = x / Math.pow(10, exp);
+    const nf = f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10;
+    return nf * Math.pow(10, exp);
+  }
+  function niceTicks(maxVal, count) {
+    const step = niceNumber(Math.max(maxVal, 1e-9) / count);
+    const niceMax = Math.ceil(maxVal / step) * step;
+    const ticks = [];
+    for (let v = 0; v <= niceMax + step * 0.001; v += step) ticks.push(Math.round(v * 100) / 100);
+    return { ticks, niceMax };
+  }
+  function fmtCompactVnd(v) {
+    if (v === 0) return "0";
+    if (Math.abs(v) >= 1e6) return (v / 1e6).toLocaleString("vi-VN", { maximumFractionDigits: 1 }) + "tr";
+    if (Math.abs(v) >= 1e3) return Math.round(v / 1e3) + "k";
+    return String(Math.round(v));
+  }
+  (function renderAdsGmvChart() {
+    const series = [...DATA.dailyAdsGmv].reverse(); // ngày gần nhất hiển thị trước/bên trái (chỉ riêng chart này — 2 chart lũy kế vẫn giữ chiều thời gian gốc)
+    const n = series.length;
+    const W = 1800, H = 300;
+    const marginLeft = 6, marginRight = 44, marginTop = 10, marginBottom = 26;
+    const plotW = W - marginLeft - marginRight;
+    const plotH = H - marginTop - marginBottom;
+    const plotBottom = marginTop + plotH;
+
+    const maxMoney = Math.max(...series.map(d => Math.max(d.ads, d.gmv)), 1);
+    const { ticks: moneyTicks, niceMax: moneyMax } = niceTicks(maxMoney, 4);
+    const ratios = series.map(d => d.gmv > 0 ? (d.ads / d.gmv) * 100 : null);
+    const maxRatio = Math.max(...ratios.filter(v => v !== null), breakevenAdsGmv);
+    const { ticks: pctTicks, niceMax: pctMax } = niceTicks(maxRatio * 1.15, 4);
+
+    const yLeft = v => plotBottom - (v / moneyMax) * plotH;
+    const yRight = v => plotBottom - (v / pctMax) * plotH;
+    const slotW = plotW / n;
+    const barW = Math.max(slotW * 0.32, 1);
+    const barGap = slotW * 0.06;
+    const xCenter = i => marginLeft + slotW * i + slotW / 2;
+
+    const AXIS_W = 46;
+    document.getElementById("ads-gmv-axis").innerHTML = moneyTicks.map(t => {
+      const y = yLeft(t).toFixed(1);
+      return `<text class="combo-axis-label" x="${AXIS_W - 6}" y="${(+y + 3).toFixed(1)}" text-anchor="end">${fmtCompactVnd(t)}</text>`;
+    }).join("");
+
+    let axisSvg = moneyTicks.map(t => {
+      const y = yLeft(t).toFixed(1);
+      return `<line class="combo-gridline" x1="0" y1="${y}" x2="${W - marginRight}" y2="${y}"></line>`;
+    }).join("");
+    axisSvg += pctTicks.map(t => {
+      const y = yRight(t).toFixed(1);
+      return `<text class="combo-axis-label" x="${W - marginRight + 6}" y="${(+y + 3).toFixed(1)}" text-anchor="start">${Math.round(t)}%</text>`;
+    }).join("");
+
+    const barsSvg = series.map((d, i) => {
+      const cx = xCenter(i);
+      const isToday = d.date === DATA.updatedAt;
+      const ratio = ratios[i];
+      const tip = `${fmtDayLabel(d.date)} — Ads: ${vnd(d.ads)} · GMV: ${vnd(d.gmv)}${ratio !== null ? " · Ads/GMV: " + pct(ratio / 100) : ""}`;
+      const adsY = yLeft(d.ads), gmvY = yLeft(d.gmv);
+      const adsH = Math.max(plotBottom - adsY, d.ads > 0 ? 1 : 0);
+      const gmvH = Math.max(plotBottom - gmvY, d.gmv > 0 ? 1 : 0);
+      return `<rect class="combo-bar" x="${(cx - barW - barGap / 2).toFixed(1)}" y="${adsY.toFixed(1)}" width="${barW.toFixed(1)}" height="${adsH.toFixed(1)}" fill="var(--warn)"><title>${tip}</title></rect>` +
+        `<rect class="combo-bar" x="${(cx + barGap / 2).toFixed(1)}" y="${gmvY.toFixed(1)}" width="${barW.toFixed(1)}" height="${gmvH.toFixed(1)}" fill="var(--accent)"><title>${tip}</title></rect>` +
+        (isToday ? `<line x1="${cx.toFixed(1)}" y1="${marginTop}" x2="${cx.toFixed(1)}" y2="${plotBottom}" stroke="var(--accent)" stroke-width="1" stroke-dasharray="2 3" opacity="0.5"></line>` : "");
+    }).join("");
+
+    let pathD = "";
+    let drawing = false;
+    ratios.forEach((r, i) => {
+      if (r === null) { drawing = false; return; }
+      const cmd = drawing ? "L" : "M";
+      pathD += `${cmd}${xCenter(i).toFixed(1)},${yRight(r).toFixed(1)} `;
+      drawing = true;
+    });
+    const dotsSvg = ratios.map((r, i) => {
+      if (r === null) return "";
+      const isToday = series[i].date === DATA.updatedAt;
+      const color = r > breakevenAdsGmv ? "var(--critical)" : "var(--good)";
+      const rad = isToday ? 4 : 2.4;
+      const tip = `${fmtDayLabel(series[i].date)}: Ads/GMV ${pct(r / 100)}`;
+      return `<circle cx="${xCenter(i).toFixed(1)}" cy="${yRight(r).toFixed(1)}" r="${rad}" fill="${color}" stroke="var(--surface-raised)" stroke-width="1"><title>${tip}</title></circle>`;
+    }).join("");
+
+    const breakevenY = yRight(breakevenAdsGmv).toFixed(1);
+    const breakevenSvg = `<line class="combo-breakeven-line" x1="${marginLeft}" y1="${breakevenY}" x2="${W - marginRight}" y2="${breakevenY}"></line>` +
+      `<text class="combo-axis-label" x="${marginLeft + 4}" y="${(+breakevenY - 4).toFixed(1)}" fill="var(--critical)">Hoà vốn ${Math.round(breakevenAdsGmv)}%</text>`;
+
+    const xLabelsSvg = series.map((d, i) => {
+      const isToday = d.date === DATA.updatedAt;
+      if (!isToday && i % 2 !== 0) return "";
+      return `<text class="combo-x-label${isToday ? " today" : ""}" x="${xCenter(i).toFixed(1)}" y="${(plotBottom + 14).toFixed(1)}">${fmtDayLabel(d.date)}</text>`;
+    }).join("");
+
+    const hoverGuide = `<line class="chart-guide-line" id="adsgmv-guide-line" x1="0" y1="${marginTop}" x2="0" y2="${plotBottom}"></line>`;
+    const captureRect = `<rect class="chart-hover-capture" x="0" y="0" width="${W}" height="${H}"></rect>`;
+
+    const svg = document.getElementById("ads-gmv-chart");
+    svg.innerHTML = axisSvg + barsSvg + breakevenSvg +
+      `<path class="combo-pct-line" d="${pathD.trim()}"></path>` + dotsSvg + xLabelsSvg + hoverGuide + captureRect;
+
+    const guideLine = document.getElementById("adsgmv-guide-line");
+    attachChartHover(svg, xCenter, n, (idx, clientX, clientY) => {
+      const d = series[idx];
+      const ratio = ratios[idx];
+      guideLine.setAttribute("x1", xCenter(idx).toFixed(1));
+      guideLine.setAttribute("x2", xCenter(idx).toFixed(1));
+      guideLine.style.display = "block";
+      const rows = ttRow("Ads (đã VAT)", vnd(d.ads), "var(--warn)") + ttRow("GMV", vnd(d.gmv), "var(--accent)") +
+        (ratio !== null ? ttRow("Ads/GMV", pct(ratio / 100), ratio > breakevenAdsGmv ? "var(--critical)" : "var(--good)") : "");
+      showChartTooltip(clientX, clientY, `<div class="tt-date">${fmtDayLabel(d.date)}</div>${rows}`);
+    }, () => { guideLine.style.display = "none"; });
+  })();
+
+  (function renderProfitLineChart() {
+    const points = cumulativeProfitSeries;
+    const values = points.map(p => p.value);
+    const minV = Math.min(...values, 0);
+    const maxV = Math.max(...values, 0);
+    const pad = Math.max((maxV - minV) * 0.1, 1);
+    const rangeMin = minV - pad, rangeMax = maxV + pad;
+    const W = 1000, H = 170, PAD_X = 8;
+    const n = points.length;
+    const xPos = i => n > 1 ? PAD_X + (i / (n - 1)) * (W - PAD_X * 2) : W / 2;
+    const yPos = v => H - ((v - rangeMin) / (rangeMax - rangeMin)) * H;
+    const yZero = yPos(0);
+
+    const linePath = points.map((p, i) => `${i === 0 ? "M" : "L"}${xPos(i).toFixed(1)},${yPos(p.value).toFixed(1)}`).join(" ");
+
+    const dots = points.map((p, i) => {
+      const isToday = p.date === DATA.updatedAt;
+      const color = p.value >= 0 ? "var(--good)" : "var(--critical)";
+      const rad = isToday ? 4 : 2.2;
+      const tip = `${fmtDayLabel(p.date)}: ${vnd(p.value)}`;
+      return `<circle class="line-dot" cx="${xPos(i).toFixed(1)}" cy="${yPos(p.value).toFixed(1)}" r="${rad}" fill="${color}"><title>${tip}</title></circle>` +
+        `<circle class="line-dot-hit" cx="${xPos(i).toFixed(1)}" cy="${yPos(p.value).toFixed(1)}" r="9"><title>${tip}</title></circle>`;
+    }).join("");
+
+    const hoverGuide = `<line class="chart-guide-line" id="profit-guide-line" x1="0" y1="0" x2="0" y2="${H}"></line>` +
+      `<circle class="chart-hover-dot" id="profit-hover-dot" r="4"></circle>`;
+    const captureRect = `<rect class="chart-hover-capture" x="0" y="0" width="${W}" height="${H}"></rect>`;
+
+    const svg = document.getElementById("profit-line-chart");
+    svg.innerHTML =
+      `<line class="line-zero" x1="0" y1="${yZero.toFixed(1)}" x2="${W}" y2="${yZero.toFixed(1)}"></line>` +
+      `<text x="${W}" y="${(yZero - 6).toFixed(1)}" text-anchor="end" font-size="10" fill="var(--ink-faint)" font-family="IBM Plex Mono, monospace">Hoà vốn</text>` +
+      `<path class="line-path" d="${linePath}"></path>` +
+      dots + hoverGuide + captureRect;
+
+    const last = points[points.length - 1];
+    const note = document.getElementById("profit-line-note");
+    note.textContent = `${fmtDayLabel(last.date)}: ${vnd(last.value)}`;
+    note.style.color = last.value >= 0 ? "var(--good)" : "var(--critical)";
+
+    const guideLine = document.getElementById("profit-guide-line");
+    const hoverDot = document.getElementById("profit-hover-dot");
+    attachChartHover(svg, xPos, n, (idx, clientX, clientY) => {
+      const p = points[idx];
+      const color = p.value >= 0 ? "var(--good)" : "var(--critical)";
+      guideLine.setAttribute("x1", xPos(idx).toFixed(1));
+      guideLine.setAttribute("x2", xPos(idx).toFixed(1));
+      guideLine.style.display = "block";
+      hoverDot.setAttribute("cx", xPos(idx).toFixed(1));
+      hoverDot.setAttribute("cy", yPos(p.value).toFixed(1));
+      hoverDot.setAttribute("fill", color);
+      hoverDot.style.display = "block";
+      showChartTooltip(clientX, clientY, `<div class="tt-date">${fmtDayLabel(p.date)}</div>${ttRow("Lợi nhuận lũy kế", vnd(p.value), color)}`);
+    }, () => { guideLine.style.display = "none"; hoverDot.style.display = "none"; });
+  })();
+
+  (function renderAcosLineChart() {
+    const series = DATA.dailyAdsGmv;
+    let cumAds = 0, cumGmv = 0;
+    const points = [];
+    series.forEach(d => {
+      cumAds += d.ads;
+      cumGmv += d.gmv;
+      if (cumGmv > 0) points.push({ date: d.date, value: cumAds / cumGmv });
+    });
+    const svg = document.getElementById("acos-line-chart");
+    const note = document.getElementById("acos-line-note");
+    if (!points.length) { svg.innerHTML = ""; note.textContent = ""; return; }
+
+    const W = 1000, H = 190;
+    const marginLeft = 40, marginRight = 6, marginTop = 14, marginBottom = 18;
+    const plotW = W - marginLeft - marginRight, plotH = H - marginTop - marginBottom;
+    const plotBottom = marginTop + plotH;
+    const n = points.length;
+
+    const maxVal = Math.max(...points.map(p => p.value), breakevenAcos);
+    const { ticks, niceMax } = niceTicks(maxVal * 1.05, 4);
+    const xPos = i => n > 1 ? marginLeft + (i / (n - 1)) * plotW : marginLeft + plotW / 2;
+    const yPos = v => plotBottom - (v / niceMax) * plotH;
+
+    const axisSvg = ticks.map(t => {
+      const y = yPos(t).toFixed(1);
+      return `<line class="combo-gridline" x1="${marginLeft}" y1="${y}" x2="${W - marginRight}" y2="${y}"></line>` +
+        `<text class="combo-axis-label" x="${marginLeft - 6}" y="${(+y + 3).toFixed(1)}" text-anchor="end">${pct(t)}</text>`;
+    }).join("");
+
+    const breakevenY = yPos(breakevenAcos).toFixed(1);
+    const breakevenSvg = `<line class="combo-breakeven-line" x1="${marginLeft}" y1="${breakevenY}" x2="${W - marginRight}" y2="${breakevenY}"></line>` +
+      `<text class="combo-axis-label" x="${marginLeft + 4}" y="${(+breakevenY - 4).toFixed(1)}" fill="var(--critical)">Hoà vốn ${pct(breakevenAcos)}</text>`;
+
+    const linePath = points.map((p, i) => `${i === 0 ? "M" : "L"}${xPos(i).toFixed(1)},${yPos(p.value).toFixed(1)}`).join(" ");
+
+    const dots = points.map((p, i) => {
+      const isToday = p.date === DATA.updatedAt;
+      const color = p.value <= breakevenAcos ? "var(--good)" : "var(--critical)";
+      const rad = isToday ? 4 : 2.2;
+      const tip = `${fmtDayLabel(p.date)}: ACOS lũy kế ${pct(p.value)}`;
+      return `<circle class="line-dot" cx="${xPos(i).toFixed(1)}" cy="${yPos(p.value).toFixed(1)}" r="${rad}" fill="${color}"><title>${tip}</title></circle>` +
+        `<circle class="line-dot-hit" cx="${xPos(i).toFixed(1)}" cy="${yPos(p.value).toFixed(1)}" r="9"><title>${tip}</title></circle>`;
+    }).join("");
+
+    const xLabelsSvg =
+      `<text class="combo-x-label" x="${xPos(0).toFixed(1)}" y="${(plotBottom + 14).toFixed(1)}" text-anchor="start">${fmtDayLabel(points[0].date)}</text>` +
+      `<text class="combo-x-label" x="${xPos(n - 1).toFixed(1)}" y="${(plotBottom + 14).toFixed(1)}" text-anchor="end">${fmtDayLabel(points[n - 1].date)}</text>`;
+
+    const hoverGuide = `<line class="chart-guide-line" id="acos-guide-line" x1="0" y1="${marginTop}" x2="0" y2="${plotBottom}"></line>` +
+      `<circle class="chart-hover-dot" id="acos-hover-dot" r="4"></circle>`;
+    const captureRect = `<rect class="chart-hover-capture" x="0" y="0" width="${W}" height="${H}"></rect>`;
+
+    svg.innerHTML = axisSvg + breakevenSvg + `<path class="line-path" d="${linePath}"></path>` + dots + xLabelsSvg + hoverGuide + captureRect;
+
+    const last = points[points.length - 1];
+    note.textContent = `${fmtDayLabel(last.date)}: ${pct(last.value)}`;
+    note.style.color = last.value <= breakevenAcos ? "var(--good)" : "var(--critical)";
+
+    const guideLine = document.getElementById("acos-guide-line");
+    const hoverDot = document.getElementById("acos-hover-dot");
+    attachChartHover(svg, xPos, n, (idx, clientX, clientY) => {
+      const p = points[idx];
+      const color = p.value <= breakevenAcos ? "var(--good)" : "var(--critical)";
+      guideLine.setAttribute("x1", xPos(idx).toFixed(1));
+      guideLine.setAttribute("x2", xPos(idx).toFixed(1));
+      guideLine.style.display = "block";
+      hoverDot.setAttribute("cx", xPos(idx).toFixed(1));
+      hoverDot.setAttribute("cy", yPos(p.value).toFixed(1));
+      hoverDot.setAttribute("fill", color);
+      hoverDot.style.display = "block";
+      showChartTooltip(clientX, clientY, `<div class="tt-date">${fmtDayLabel(p.date)}</div>${ttRow("ACOS lũy kế", pct(p.value), color)}`);
+    }, () => { guideLine.style.display = "none"; hoverDot.style.display = "none"; });
+  })();
+
+  (function renderPayments() {
+    const payments = DATA.payments || [];
+    const paid = payments.filter(p => p.status === "paid");
+    const totalPaid = paid.reduce((s, p) => s + p.amount, 0);
+    const lastPaid = paid[0];
+    const bal = DATA.billingBalances;
+    const totalBal = bal ? bal.items.reduce((s, b) => s + b.amount, 0) : null;
+
+    const tiles = [
+      { label: "Tổng đã thanh toán (lũy kế)", value: vnd(totalPaid), hint: `${num(paid.length)} giao dịch` },
+      ...DATA.accounts.map(a => {
+        const accPaid = paid.filter(p => p.account === a.id);
+        return { label: `Đã thanh toán · ${a.name}`, value: accPaid.length ? vnd(accPaid.reduce((s, p) => s + p.amount, 0)) : "—", hint: accPaid.length ? `${num(accPaid.length)} giao dịch` : "Chưa có dữ liệu" };
+      }),
+      { label: "Giao dịch gần nhất", value: lastPaid ? vnd(lastPaid.amount) : "—", hint: lastPaid ? `${fmtDate(lastPaid.date)} · ${ACC_NAME[lastPaid.account]}` : null },
+      ...(bal ? [{ label: "Dư nợ hiện tại (chưa trả)", value: vnd(totalBal), hint: bal.items.map(b => `${ACC_NAME[b.account]} ${vnd(b.amount)}`).join(" · ") + ` — ngày ${fmtDate(bal.asOf)}` }] : [])
+    ];
+    document.getElementById("payment-tiles").innerHTML = tiles.map(t =>
+      `<div class="tile"><div class="tile-label">${t.label}</div><div class="tile-value">${t.value}</div>${t.hint ? `<div class="kpi-hint">${t.hint}</div>` : ""}</div>`
+    ).join("");
+  })();
+
+  (function renderOrderBehavior() {
+    const ob = DATA.orderBehavior;
+    if (!ob) return;
+    const ordersTotal = ob.hourly.reduce((s, d) => s + d.orders, 0);
+
+    function renderCategoryBars(elId, items, color) {
+      const maxV = Math.max(...items.map(d => d.orders), 1);
+      const TRACK_PX = 110;
+      document.getElementById(elId).innerHTML = items.map(d => {
+        const h = Math.max(Math.round((d.orders / maxV) * TRACK_PX), d.orders > 0 ? 3 : 0);
+        const isPeak = d.orders === maxV && maxV > 0;
+        const label = d.label !== undefined ? d.label : `${d.hour}h`;
+        const tip = `${label}: ${num(d.orders)} đơn · ${vnd(d.gmv)}`;
+        return `<div class="bar-col${isPeak ? " today" : ""}" title="${tip}">
+          <div class="bar-val">${d.orders ? num(d.orders) : ""}</div>
+          <div class="bar-track"><div class="bar-shape" style="height:${h}px; --bar-color:${color}"></div></div>
+          <div class="bar-label">${label}</div>
+        </div>`;
+      }).join("");
+    }
+    renderCategoryBars("hour-chart", ob.hourly, "var(--accent)");
+    renderCategoryBars("weekday-chart", ob.weekday, "var(--good)");
+
+    const maxHourOrders = Math.max(...ob.hourly.map(d => d.orders));
+    const peakHours = ob.hourly.filter(d => d.orders === maxHourOrders);
+    const peakHoursLabel = peakHours.map(d => `${d.hour}h`).join(", ");
+    const peakHoursShare = peakHours.reduce((s, d) => s + d.orders, 0) / ordersTotal;
+    document.getElementById("hour-chart-note").textContent =
+      `Khung giờ nhiều đơn nhất: ${peakHoursLabel} (mỗi khung ${maxHourOrders} đơn) — cộng lại chiếm ${pct(peakHoursShare)} tổng số đơn. Cân nhắc tăng ngân sách Ads vào khung giờ cao điểm, giảm vào khung đêm khuya.`;
+
+    const WD_FULL = { T2: "Thứ Hai", T3: "Thứ Ba", T4: "Thứ Tư", T5: "Thứ Năm", T6: "Thứ Sáu", T7: "Thứ Bảy", CN: "Chủ nhật" };
+    const peakDay = ob.weekday.reduce((a, b) => (b.orders > a.orders ? b : a));
+    const minDay = ob.weekday.reduce((a, b) => (b.orders < a.orders ? b : a));
+    const dayRatio = minDay.orders > 0 ? (peakDay.orders / minDay.orders) : null;
+    document.getElementById("weekday-chart-note").textContent =
+      `${WD_FULL[peakDay.label]} là ngày nhiều đơn nhất (${num(peakDay.orders)} đơn, GMV ròng ${vnd(peakDay.gmv)}) — chiếm ${pct(peakDay.orders / ordersTotal)} tổng số đơn trong tuần${dayRatio ? `, gấp ${dayRatio.toLocaleString("vi-VN", { maximumFractionDigits: 1 })}x ngày thấp nhất (${WD_FULL[minDay.label]})` : ""}.`;
+
+    const repeatCustomerRate = ob.repeatCustomers / ob.uniqueCustomers;
+    const tiles = [
+      { label: "Khung giờ vàng", value: peakHoursLabel, hint: `${pct(peakHoursShare)} tổng đơn rơi vào các khung này` },
+      { label: "Ngày cao điểm", value: WD_FULL[peakDay.label], hint: `${num(peakDay.orders)} đơn — ${pct(peakDay.orders / ordersTotal)} tổng đơn` },
+      { label: "Khách mua lại", value: `${num(ob.repeatCustomers)}/${num(ob.uniqueCustomers)} khách`, hint: `${pct(repeatCustomerRate)} khách — đóng góp ${num(ob.repeatOrders)}/${num(ordersTotal)} đơn (${num(ob.incrementalRepeatOrders)} đơn phát sinh thêm nhờ mua lại)` }
+    ];
+    document.getElementById("behavior-tiles").innerHTML = tiles.map(t =>
+      `<div class="tile"><div class="tile-label">${t.label}</div><div class="tile-value">${t.value}</div>${t.hint ? `<div class="kpi-hint">${t.hint}</div>` : ""}</div>`
+    ).join("");
+
+    const provRows = ob.topProvinces.map(p => `
+      <tr><td>${p.name}</td><td class="num">${num(p.orders)}</td><td class="num">${vnd(p.gmv)}</td></tr>
+    `).join("");
+    const other = ob.otherProvinces;
+    const otherRow = `<tr><td class="dim">Khác (${num(other.count)} tỉnh/thành)</td><td class="num dim">${num(other.orders)}</td><td class="num dim">${vnd(other.gmv)}</td></tr>`;
+    document.getElementById("province-tbody").innerHTML = provRows + otherRow;
+  })();
+
+  (function renderSkuPnl() {
+    const adsBySku = {};
+    DATA.campaigns.forEach(c => { adsBySku[c.sku] = (adsBySku[c.sku] || 0) + c.spend * 1.1; });
+    const rows = DATA.skuPnl.map(x => {
+      const vat = x.vat || 0;   // VAT 8% chỉ phần doanh thu từ đơn shop AUF (tính sẵn trong build)
+      const ads = adsBySku[x.code] || 0;
+      const cost = x.cogs + x.giftCost + x.fee + vat + ads;
+      const profit = x.revenue - cost;
+      return Object.assign({}, x, { vat, ads, profit, margin: x.revenue ? profit / x.revenue : null,
+        adsPct: x.revenue ? ads / x.revenue : null, roas: ads ? x.revenue / ads : null });
+    }).sort((a, b) => (b.revenue + b.ads) - (a.revenue + a.ads));
+    const dash = '<span class="dim">—</span>';
+    const signed = v => `${v < 0 ? "−" : ""}${vnd(Math.abs(v))}`;
+    document.getElementById("sku-pnl-tbody").innerHTML = rows.map(r => `
+      <tr>
+        <td><span class="code-pill">${r.code}</span></td>
+        <td class="num">${r.pcs ? num(r.pcs) : dash}</td>
+        <td class="num">${r.giftPcs ? num(r.giftPcs) : dash}</td>
+        <td class="num">${r.revenue ? vnd(r.revenue) : dash}</td>
+        <td class="num">${vnd(r.cogs + r.giftCost)}</td>
+        <td class="num">${vnd(r.fee)}</td>
+        <td class="num">${r.vat ? vnd(r.vat) : dash}</td>
+        <td class="num">${r.ads ? vnd(r.ads) : dash}</td>
+        <td class="num">${r.adsPct !== null && r.ads ? `<span class="${r.adsPct <= 1 - cogsRate ? "roas-good" : "roas-bad"}">${pct(r.adsPct)}</span>` : dash}</td>
+        <td class="num">${r.roas !== null ? r.roas.toLocaleString("vi-VN", { maximumFractionDigits: 2 }) + "x" : dash}</td>
+        <td class="num ${r.profit < 0 ? "neg" : "pos"}">${signed(r.profit)}</td>
+        <td class="num ${r.margin !== null && r.margin < 0 ? "neg" : "pos"}">${r.margin !== null ? `${r.margin < 0 ? "−" : ""}${pct(Math.abs(r.margin))}` : dash}</td>
+      </tr>`).join("");
+    const t = rows.reduce((s, r) => ({ pcs: s.pcs + r.pcs, gift: s.gift + r.giftPcs, rev: s.rev + r.revenue, cogs: s.cogs + r.cogs + r.giftCost,
+      fee: s.fee + r.fee, vat: s.vat + r.vat, ads: s.ads + r.ads, profit: s.profit + r.profit }), { pcs: 0, gift: 0, rev: 0, cogs: 0, fee: 0, vat: 0, ads: 0, profit: 0 });
+    document.getElementById("sku-pnl-total-row").innerHTML = `
+      <td>Tổng cộng</td><td class="num">${num(t.pcs)}</td><td class="num">${num(t.gift)}</td><td class="num">${vnd(t.rev)}</td>
+      <td class="num">${vnd(t.cogs)}</td><td class="num">${vnd(t.fee)}</td><td class="num">${vnd(t.vat)}</td><td class="num">${vnd(t.ads)}</td>
+      <td class="num">${pct(t.ads / t.rev)}</td><td class="num">${(t.rev / t.ads).toLocaleString("vi-VN", { maximumFractionDigits: 2 })}x</td>
+      <td class="num ${t.profit < 0 ? "neg" : "pos"}">${signed(t.profit)}</td><td class="num">${pct(t.profit / t.rev)}</td>`;
+    const q = DATA.skuPnl.filter(x => x.giftCostOwn > 0);
+    document.getElementById("sku-pnl-note").innerHTML =
+      `Quần đi kèm áo &lt;5 cái (thường 1 quần/áo) là <b>quà tặng</b>: không tính doanh thu, giá vốn quà dồn vào mã áo của đơn đó (${q.map(x => `${x.code} tặng ${num(x.giftPcs)} cái = ${vnd(x.giftCostOwn)}`).join(" · ")}). ` +
+      `Quần bán theo combo 5 cái 249k / 10 cái 429k. Ads chia theo mã SP trong tên chiến dịch (chiến dịch "5101" tháng 6–7 tính cho 65101) — đây là chi phí Ads TRỰC TIẾP; khách vào từ Ads áo vẫn có thể mua thêm quần và ngược lại. ` +
+      `Ads ở đây = tổng chiến dịch × 1,1 nên có thể lệch vài đồng so với mục 01 do làm tròn theo ngày.`;
+  })();
+
+  document.getElementById("spSearch").addEventListener("input", function (e) {
+    const q = e.target.value.trim().toLowerCase();
+    document.querySelectorAll("#spTable tbody tr").forEach(function (tr) {
+      const hay = tr.dataset.code.toLowerCase() + " " + tr.dataset.name.toLowerCase();
+      tr.classList.toggle("hide", q && hay.indexOf(q) === -1);
+    });
+  });
+</script>
+</body>
+</html>
